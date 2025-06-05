@@ -28,8 +28,9 @@ import NotFoundRedirect from "../component/doctorPanel/NotFoundRedirect";
 import PendingPrescription from "../component/doctorPanel/PendingPrescription";
 
 // import PendingAssignedPrescriptionDetails from "../component/doctorPanel/Pendingassignedprescriptiondetails";
-import CompletedAssignedPrescription from "../component/doctorPanel/Completeassignedprescription";
+// import CompletedAssignedPrescription from "../component/doctorPanel/Completeassignedprescription";
 import PendingFullAssigned from "../component/doctorPanel/PendingFullAssigned";
+import CompletedAssignedPrescription from "../component/doctorPanel/CompleteAssignedPrescription";
 import UserProfile from "../pages/UserProfile";
 import PastPatient from "../pages/PastPatient";
 // import StartAppointment from "../pages/StartAppointment";
