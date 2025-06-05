@@ -1,0 +1,266 @@
+import React, { useState, useEffect } from 'react';
+import Header from '../component/doctorPanel/Header';
+import Footer from '../component/doctorPanel/Footer';
+import { Link } from 'react-router-dom';
+import Pagination from '../component/Pagination';
+import { useDispatch, useSelector } from "react-redux";
+import { pastPatient } from '../redux/slices/dataSlice';
+
+
+const PastPatient = () => {
+  const baseUrl = import.meta.env.VITE_BACKEND_URL
+  const { pastPatients, loading, error, patient_id } = useSelector((state) => state.userdata)
+  const dispatch = useDispatch();
+
+  const itemsPerPage = 4;
+
+  const [patients, setPatients] = useState([]);
+  const [filters, setFilters] = useState({ name: '', age: '', disease: '' });
+  const [showFilter, setShowFilter] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [diseaseOptions, setDiseaseOptions] = useState([]);
+  const [allPatients, setAllPatients] = useState([]);
+
+  useEffect(() => {
+    dispatch(pastPatient())
+  }, [dispatch]);
+
+  useEffect(() => {
+    setPatients(pastPatients);
+    setAllPatients(pastPatients);
+    const uniqueDiseases = [
+      ...new Set(
+        pastPatients.map((p) => p.latestDisease)
+          .filter((disease) => disease && disease.trim() !== "" && disease.trim() !== "-")
+      ),
+    ];
+    setDiseaseOptions(uniqueDiseases);
+  }, [pastPatients])
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFilters(prev => ({ ...prev, [name]: value }));
+  };
+  const totalPages = Math.ceil(patients.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  }
+
+  // const handleApplyFilter = (e) => {
+  //   e.preventDefault();
+  //   const filtered = patients.filter((patient) => {
+  //     const nameMatch = patient.name.toLowerCase().includes(filters.name.toLowerCase());
+  //     const ageMatch = filters.age ? patient.age === parseInt(filters.age) : true;
+  //     const diseaseMatch = filters.disease ? patient.disease.toLowerCase() === filters.disease.toLowerCase() : true;
+  //     return nameMatch && ageMatch && diseaseMatch;
+  //   });
+  //   setPatients(filtered);
+  //   setShowFilter(false);
+  // };
+
+
+
+
+
+  const handleApplyFilter = () => {
+    const formData = new FormData();
+    if (filters.name)
+      formData.append('patient_name', filters.name);
+    if (filters.age)
+      formData.append('age', filters.age);
+    if (filters.disease)
+      formData.append('disease', filters.disease);
+    dispatch(pastPatient(formData));
+    setShowFilter(false);
+  };
+
+  const handleClearFilter = (e) => {
+    e.preventDefault();
+    setFilters({ name: '', age: '', disease: '' });
+
+    // 🔁 API call bina filter ke to get original data
+    const formData = new FormData(); // empty formData
+    dispatch(pastPatient(formData)); // ✅ redux update karega
+    setShowFilter(false);
+  };
+
+  const toggleFilterDropdown = () => {
+
+    setShowFilter(prev => {
+      console.log('Toggling filter dropdown. Current value:', prev);
+      return !prev
+    });
+  };
+
+  const PastPatientCard = ({ patient }) => (
+    <div className="col-lg-6 col-md-6">
+      <div className="past-patient-detail-card">
+        <div className="past-patient-cd-img">
+          {/* {patient.id === 0 ? (
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '155px',
+              border: '1px solid #199FD9',
+              borderRadius: '12px',
+              overflow: 'hidden',
+            }}>
+              <img src='./images/client-img-5.png' alt="User" />
+            </div>
+          ) : ( */}
+          <img src={`${baseUrl}/${patient.patient_profile}`} alt="Client" />
+          {/* // )} */}
+        </div>
+        <div className="p-patient-card-content">
+          <div className="p-patient-cd-head">
+            <h3>{patient?.patient_name}</h3>
+            {patient.referred_by_patient_name && (
+              <p>
+                Referred by {patient.referred_by_patient_name}
+              </p>
+            )}
+
+          </div>
+          <div className="p-patient-cd-body">
+            <div className="p-patient-dtl-wrp">
+              <strong className="p-patient-dtl">Age: {patient.age}</strong>
+              <strong className="p-patient-dtl">Gender: {patient.gender}</strong>
+            </div>
+            <div className="p-patient-disease">
+              Latest Disease: <b>{patient.latestDisease}</b>
+            </div>
+            <Link to="/patient-profile" state={{ patientId: patient.patient_id }} className="orange-btn">
+              View full details
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+ 
+  return (
+    <main className="doctor-panel">
+      <div className="container-fluid">
+        <div className="doc-panel-inr">
+          <Header />
+        </div>
+        {loading ? (
+          <div className="loader-main">
+            <span className="loader"></span>
+          </div>
+        ) : (
+
+        <div className="doc-panel-body pp-list-pg">
+          <div className="docpnl-sec-head text-center">
+            <h1 className="h2-title">My Past Patients</h1>
+            <div className="back-btn">
+              <Link to="#" onClick={(e) => {
+                e.preventDefault();
+                window.history.back();
+              }}>
+                <img src="./images/left-arrow.svg" alt="Back" />
+              </Link>
+            </div>
+
+            <div className="past-patient-filter-wrp past-patient-pg">
+              <button type="button" onClick={toggleFilterDropdown}>
+                Filter <img src="./images/filter-icon.svg" alt="Filter" />
+              </button>
+
+
+
+              <div className={`filter-options-drpdn ${showFilter ? "active" : ""}`}>
+
+                <form>
+                  <div className="filter-form">
+                    <div className="filter-grp">
+                      <label>Patient Name</label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={filters.name}
+                        onChange={handleInputChange}
+                        placeholder="Patient Name"
+                      />
+                    </div>
+                    <div className="filter-grp">
+                      <label>Age</label>
+                      <input
+                        type="text"
+                        name="age"
+                        value={filters.age}
+                        onChange={handleInputChange}
+                        placeholder="Age"
+                      />
+                    </div>
+                    <div className="filter-grp">
+                      <label>Disease</label>
+                      <select name="disease" value={filters.disease} onChange={handleInputChange}>
+                        <option value="" disabled>Disease</option>
+                        {diseaseOptions.map((disease, index) => (
+                          <option key={index} value={disease}>{disease}</option>
+                        ))}
+
+                      </select>
+                    </div>
+                  </div>
+                  <div className="filter-form-btn-wrp">
+                    <button type="button" className="orange-btn" onClick={handleClearFilter} style={{ borderRadius: 0 }}>
+                      Clear Filter
+                    </button>
+                    <button type="button" className="orange-btn" onClick={handleApplyFilter} style={{ borderRadius: 0 }}>
+                      Apply Filter
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+            </div>
+          </div>
+
+          <div className="past-patients-list-wrp">
+            <div className="row">
+              {patients.length == 0 ? (
+                <div style={{ textAlign: 'center', padding: "25px 0", fontWeight: 'bold' }}>No data found</div>
+
+              ) : (
+                patients.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                  .map((patient) => (
+                    <PastPatientCard key={patient.id} patient={patient} />
+                  ))
+              )}
+
+            </div>
+          </div>
+          {patients.length > 0 && (
+            <Pagination currentPage={currentPage} totalPages={totalPages}
+              onPageChange={handlePageChange} onPrevious={handlePrevious}
+              onNext={handleNext} />
+          )}
+
+        </div>
+        )}
+
+
+        <Footer />
+      </div>
+
+    </main>
+  );
+};
+
+export default PastPatient;
