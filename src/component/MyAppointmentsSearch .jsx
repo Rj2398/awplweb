@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const MyAppointmentsSearch = ({ onFilterChange, onSearch, activeTab, onSearchDate ,}) => {
   const [patientName, setPatientName] = useState('');
+  
   const [patients, setPatients] = useState([]);
   const [age, setAge] = useState('');
   const [showFilter, setShowFilter] = useState(false);
@@ -16,6 +17,7 @@ const MyAppointmentsSearch = ({ onFilterChange, onSearch, activeTab, onSearchDat
   const [selectingFromDate, setSelectingFromDate] = useState(true);
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
+  // const [showSuggestions, setShowSuggestions] = useState(false);
 
  const[searchQuery,setSearchQuery] = useState('');
 
@@ -74,9 +76,31 @@ const MyAppointmentsSearch = ({ onFilterChange, onSearch, activeTab, onSearchDat
     onSearch(value);
   }
 
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFilters(prev => ({ ...prev, [name]: value }));
+  // };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFilters(prev => ({ ...prev, [name]: value }));
+  
+    if (name === 'name') {
+      // Only allow letters and spaces (no numbers or special characters)
+      const filteredValue = value.replace(/[^A-Za-z\s]/g, '');
+      setFilters(prev => ({ ...prev, [name]: filteredValue }));
+    } 
+    else if (name === 'age') {
+      // Only allow numbers (0-9) and enforce 2-digit limit
+      if (value === '' || /^[0-9\b]+$/.test(value)) {
+        if (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 99 && value.length <= 2)) {
+          setFilters(prev => ({ ...prev, [name]: value }));
+        }
+      }
+    } 
+    else {
+      // Default behavior for other fields (e.g., diagnosis)
+      setFilters(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleFilterToggle = () => {
@@ -99,40 +123,90 @@ const MyAppointmentsSearch = ({ onFilterChange, onSearch, activeTab, onSearchDat
     setCurrentYear(newYear);
   };
 
+  // const renderCalendar = () => {
+  //   const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+  //   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+  //   const weeks = [];
+  //   let days = [];
+
+  //   // Add empty cells for days before the first day of the month
+  //   for (let i = 0; i < firstDay; i++) {
+  //     days.push(<td key={`empty-${i}`} className="empty-cell"></td>);
+  //   }
+
+  //   // Add cells for each day of the month
+  //   for (let day = 1; day <= daysInMonth; day++) {
+  //     const isSelectedFrom = fromDate && fromDate.startsWith(`${day}/${currentMonth + 1}`);
+  //     const isSelectedTo = toDate && toDate.startsWith(`${day}/${currentMonth + 1}`);
+
+  //     days.push(
+  //       <td
+  //         key={`day-${day}`}
+  //         className={`calendar-day ${isSelectedFrom ? 'selected-from' : ''} ${isSelectedTo ? 'selected-to' : ''}`}
+  //         onClick={() => handleDateSelection(day)}
+  //       >
+  //         {day}
+  //       </td>
+  //     );
+
+  //     // Start a new row after Saturday or at the end of the month
+  //     if ((firstDay + day) % 7 === 0 || day === daysInMonth) {
+  //       weeks.push(<tr key={`week-${weeks.length}`}>{days}</tr>);
+  //       days = [];
+  //     }
+  //   }
+
+  //   return weeks;
+  // };
+
   const renderCalendar = () => {
     const firstDay = new Date(currentYear, currentMonth, 1).getDay();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-
+  
     const weeks = [];
     let days = [];
-
+  
     // Add empty cells for days before the first day of the month
     for (let i = 0; i < firstDay; i++) {
       days.push(<td key={`empty-${i}`} className="empty-cell"></td>);
     }
-
+  
     // Add cells for each day of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const isSelectedFrom = fromDate && fromDate.startsWith(`${day}/${currentMonth + 1}`);
       const isSelectedTo = toDate && toDate.startsWith(`${day}/${currentMonth + 1}`);
-
+      
+      // Check if this date is before from date when selecting to date
+      let isDisabled = false;
+      if (!selectingFromDate && fromDate) {
+        const fromParts = fromDate.split('/');
+        const fromDateObj = new Date(fromParts[2], fromParts[1] - 1, fromParts[0]);
+        const currentDateObj = new Date(currentYear, currentMonth, day);
+        isDisabled = currentDateObj <= fromDateObj;
+      }
+  
       days.push(
         <td
           key={`day-${day}`}
-          className={`calendar-day ${isSelectedFrom ? 'selected-from' : ''} ${isSelectedTo ? 'selected-to' : ''}`}
-          onClick={() => handleDateSelection(day)}
+          className={`calendar-day 
+            ${isSelectedFrom ? 'selected-from' : ''} 
+            ${isSelectedTo ? 'selected-to' : ''}
+            ${isDisabled ? 'disabled-day' : ''}`}
+          onClick={() => !isDisabled && handleDateSelection(day)}
+          style={isDisabled ? { color: '#ccc', cursor: 'not-allowed' } : {}}
         >
           {day}
         </td>
       );
-
+  
       // Start a new row after Saturday or at the end of the month
       if ((firstDay + day) % 7 === 0 || day === daysInMonth) {
         weeks.push(<tr key={`week-${weeks.length}`}>{days}</tr>);
         days = [];
       }
     }
-
+  
     return weeks;
   };
 
@@ -144,6 +218,7 @@ const MyAppointmentsSearch = ({ onFilterChange, onSearch, activeTab, onSearchDat
     }
   };
 
+
   // const handleDateSelection = (day) => {
   //   const selectedDate = `${day}/${currentMonth + 1}/${currentYear}`;
 
@@ -152,42 +227,44 @@ const MyAppointmentsSearch = ({ onFilterChange, onSearch, activeTab, onSearchDat
   //     setSelectingFromDate(false);
   //   } else {
   //     setToDate(selectedDate);
-  //     setShowCalendar(false);
-
-  //     // Convert dates to Date objects for comparison
-  //     const fromParts = fromDate.split('/');
-  //     const toParts = selectedDate.split('/');
-
-  //     const startDate = new Date(fromParts[2], fromParts[1] - 1, fromParts[0]);
-  //     const endDate = new Date(toParts[2], toParts[1] - 1, toParts[0]);
-
-  //     // Call the parent component's date search handler
-  //     onSearchDate([startDate, endDate]);
+  //     // Removed the auto-apply logic from here
   //   }
   // };
 
   const handleDateSelection = (day) => {
     const selectedDate = `${day}/${currentMonth + 1}/${currentYear}`;
-
+    
     if (selectingFromDate) {
+      // When selecting from date, just set it
       setFromDate(selectedDate);
       setSelectingFromDate(false);
+      // Clear any existing to date if it's now invalid
+      if (toDate) {
+        const toParts = toDate.split('/');
+        const toDateObj = new Date(toParts[2], toParts[1] - 1, toParts[0]);
+        const newFromDateObj = new Date(currentYear, currentMonth, day);
+        
+        if (toDateObj <= newFromDateObj) {
+          setToDate('');
+        }
+      }
     } else {
-      setToDate(selectedDate);
-      // Removed the auto-apply logic from here
+      // When selecting to date, validate it's after from date
+      const fromParts = fromDate.split('/');
+      const fromDateObj = new Date(fromParts[2], fromParts[1] - 1, fromParts[0]);
+      const toDateObj = new Date(currentYear, currentMonth, day);
+      
+      if (toDateObj > fromDateObj) {
+        setToDate(selectedDate);
+      } else {
+        // Show error or alert that to date must be after from date
+        alert("To Date must be after From Date");
+        // Keep selecting to date
+        return;
+      }
     }
   };
 
-
-  // const handleCalendarToggle = () => {
-  //   setShowCalendar((prev) => !prev);
-  //   setSelectingFromDate(true);
-  //   // Reset dates when reopening calendar
-  //   if (!showCalendar) {
-  //     setFromDate('');
-  //     setToDate('');
-  //   }
-  // };
 
   const handleCalendarToggle = () => {
     setShowCalendar((prev) => !prev);
@@ -396,14 +473,53 @@ const MyAppointmentsSearch = ({ onFilterChange, onSearch, activeTab, onSearchDat
             <div className="filter-form">
               <div className="filter-grp">
                 <label>Patient Name</label>
+                
                 <input
                   type="text"
                   name="name"
                   value={filters.name}
                   onChange={handleInputChange}
                   placeholder="Patient Name"
+                  pattern="[A-Za-z\s]+"  // HTML5 validation (optional)
+                  title="Only letters and spaces allowed"  // Error message (optional)
                 />
               </div>
+              {/* <div className="filter-grp">
+  <label>Patient Name</label>
+  <div className="suggestion-container">
+    <input
+      type="text"
+      name="name"
+      value={filters.name}
+      onChange={handleInputChange}
+      placeholder="Patient Name"
+      pattern="[A-Za-z\s]+"
+      title="Only letters and spaces allowed"
+      onFocus={() => {
+        setInputFocused(true);
+        if (filters.name) setShowSuggestions(true);
+      }}
+      onBlur={() => {
+        setTimeout(() => {
+          setInputFocused(false);
+          setShowSuggestions(false);
+        }, 200);
+      }}
+    />
+    {setShowSuggestions && completedAppointment && (
+      <ul className="suggestions-dropdown">
+        {completedAppointment.patient_name.map((name, index) => (
+          <li
+            key={index}
+            onClick={() => handleSuggestionClick(name)}
+          >
+            {name}
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</div> */}
               <div className="filter-grp">
                 <label>Age</label>
                 <input
@@ -412,16 +528,19 @@ const MyAppointmentsSearch = ({ onFilterChange, onSearch, activeTab, onSearchDat
                   value={filters.age}
                   onChange={handleInputChange}
                   placeholder="Age"
+                        maxLength={2}
+      // inputMode="numeric"
+      pattern="[0-9]*"  // Helps with mobile numeric keyboard
                 />
               </div>
               <div className="filter-grp">
-                <label>Diagnosis</label>
+                <label>Disease</label>
                 <select
                   name="diagnosis"
                   value={filters.diagnosis}
                   onChange={handleInputChange}
                 >
-                  <option value="">All Diagnoses</option>
+                  <option value="">Disease</option>
                   {diagnosisOptions.map((diagnosis, index) => (
                     <option key={index} value={diagnosis}>
                       {diagnosis}
@@ -461,144 +580,3 @@ export default MyAppointmentsSearch;
 
 
 
-
-
-
-
-
-
-
-// import { useState, useEffect } from 'react';
-// import { DateRangePicker } from 'rsuite';
-// import 'rsuite/DateRangePicker/styles/index.css';
-
-// const MyAppointmentsSearch = ({ onFilterChange, onSearch, activeTab ,onSearchDate}) => {
-//   const [patientName, setPatientName] = useState('');
-//   const [age, setAge] = useState('');
-//   const [disease, setDisease] = useState('');
-//   const [showFilter, setShowFilter] = useState(false);
-
-//   // Reset the state when the component is mounted
-//   useEffect(() => {
-//     resetForm();
-//   }, []);
-
-//   const resetForm = () => {
-//     setPatientName('');
-//     setAge('');
-//     setDisease('');
-//     setShowFilter(false);
-//   };
-
-//   const handleFilterToggle = () => {
-//     setShowFilter((prev) => {
-//       const newValue = !prev;
-//       if (newValue) {
-//         setPatientName('');
-//         setAge('');
-//         setDisease('');
-//       }
-//       return newValue;
-//     });
-//   };
-
-//   const handleFilterSubmit = (e, action) => {
-//     e.preventDefault();
-//     if (action === 'clear') {
-//       setPatientName('');
-//       setAge('');
-//       setDisease('');
-//       onFilterChange({ patientName: '', age: '', disease: '' });
-//     } else {
-//       onFilterChange({
-//         patientName,
-//         age,
-//         disease: disease || '',
-//       });
-//       setShowFilter(false);
-//     }
-//   };
-
-//   const buttonStyle = {
-//     backgroundColor: '#199fd9',
-//     color: 'white',
-//     border: 'none',
-//     padding: '10px 20px',
-//     cursor: 'pointer',
-//     fontSize: '14px',
-//     borderRadius: '5px',
-//     margin: '5px',
-//   };
-
-//   const buttonHoverStyle = {
-//     backgroundColor: '#199fd9',
-//   };
-
-//   return (
-//     <div className="my-appointments-search-wrp" style={{display:"flex", justifyContent:"center", alignItems:"center", gap:"10px"}}>
-//       <div className='datepicker-wrp' style={(activeTab == "upcoming" || activeTab ==  "cancelled") ? { display: "none" } : {}}>
-//         <DateRangePicker format="MM/dd/yyyy" character=" - " placement='bottomEnd' onChange={(dateRange) => {onSearchDate(dateRange)}} onClean={() => { onSearchDate(null);  }} />
-//       </div>
-     
-//       <div className="formfield" style={activeTab == "completed" ? { display: "none" } : {}}>
-//         <input 
-//           placeholder="Search anything here" 
-//           type="text" 
-//           onChange={(e) => onSearch(e.target.value.trim())}
-//         />
-//         <input type="submit" />
-//       </div>
-
-//       <div className="past-patient-filter-wrp" style={activeTab === "cancelled" || activeTab === "upcoming" ? { display: "none" } : {}}>
-
-//         <button type="button" onClick={handleFilterToggle}> 
-//           Filter
-//           <img src="./images/filter-icon.svg" alt="Icon"/> 
-//         </button>
-
-//         <div className={`filter-options-drpdn ${showFilter ? "active" : ""}`}>
-//           <div>
-//             <div className="filter-form">
-//               <div className="filter-grp">
-//                 <label>Patient Name</label>
-//                 <input type="text" placeholder="Patient Name" value={patientName} onChange={(e) => setPatientName(e.target.value)} />
-//               </div>
-
-//               <div className="filter-grp">
-//                 <label>Age</label>
-//                 <input type="text" placeholder="Age" value={age} onChange={(e) => setAge(e.target.value)} />
-//               </div>
-
-//               <div className="filter-grp">
-//                 <label>Disease</label>
-//                 <select value={disease} onChange={(e) => setDisease(e.target.value)} >
-//                   <option value="" disabled> Disease </option>
-//                   <option value="Parasitic disease">Parasitic Disease</option>
-//                 </select>
-//               </div>
-
-//             </div>
-
-//             <div className="filter-form-btn-wrp">
-//               <button type="button" onClick={(e) => handleFilterSubmit(e, 'clear')} style={{ padding:"10px 20px", cursor:"pointer", fontSize:"14px", borderRadius:"5px", margin:"5px"}} 
-//               onMouseOver={(e) => {e.target.style.backgroundColor = '#199fd9', e.target.style.color = "white",
-//                 e.target.style.border = "none"}}
-//               onMouseOut={(e) => {e.target.style.backgroundColor = 'white', e.target.style.color = "black", e.target.style.border = "0.5px solid black" }}
-//               >
-//                 Clear Filter
-//               </button>
-
-//               <button type="button" onClick={(e) => handleFilterSubmit(e, 'apply')} style={buttonStyle}
-//                 onMouseOver={(e) => (e.target.style.backgroundColor = buttonHoverStyle.backgroundColor) }
-//                 onMouseOut={(e) => (e.target.style.backgroundColor = buttonStyle.backgroundColor) } >
-//                 Apply Filter
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default MyAppointmentsSearch;

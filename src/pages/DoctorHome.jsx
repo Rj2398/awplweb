@@ -52,127 +52,25 @@ const DoctorHome = () => {
 
 
 
-  // New helper functions to parse the date and time strings
-  // const parseDisplayDate = (dateStr) => {
-  //   // Example: "Mon May 19" -> May 19, current year
-  //   const [weekday, month, day] = dateStr.split(" ");
-  //   const year = new Date().getFullYear();
-  //   return new Date(`${month} ${day}, ${year}`);
-  // };
-
-  // const parseTimeRange = (timeStr) => {
-  //   // Example: "01:30 - 01:45 PM" -> { start: "01:30 PM", end: "01:45 PM" }
-  //   const [startTime, endTime] = timeStr.split(" - ");
-  //   const period = endTime.includes("AM") ? "AM" : "PM";
-  //   return {
-  //     start: `${startTime} ${period}`,
-  //     end: endTime,
-  //   };
-  // };
-
-
-  // const isCurrentTimeInRange = (dateStr, timeStr) => {
-  //   try {
-  //     const date = parseDisplayDate(dateStr);
-  //     const { start, end } = parseTimeRange(timeStr);
-
-  //     const startDateTime = new Date(`${date.toDateString()} ${start}`);
-  //     const endDateTime = new Date(`${date.toDateString()} ${end}`);
-  //     const now = new Date();
-
-  //     return now >= startDateTime && now <= endDateTime;
-  //   } catch (error) {
-  //     console.error("Error parsing date/time:", error);
-  //     return false;
-  //   }
-  // };
-
-  // Updated useEffect for checking appointments
-  // useEffect(() => {
-  //   if (userdata?.upcomingAppointments) {
-  //     const checkForCurrentAppointments = () => {
-  //       const matchingAppointment = userdata.upcomingAppointments.find(
-  //         (appointment) => {
-  //           // return isCurrentTimeInRange(appointment.date, appointment.time);
-  //           return isCurrentTimeInRange("Mon June 02", "02:44 - 07:30 PM"); // working for both start and end time.
-  //         }
-  //       );
-
-  //       if (matchingAppointment) {
-  //         console.log("Found matching appointment:", matchingAppointment);
-  //         setCurrentAppointment(matchingAppointment);
-  //         setShowAppointmentSection(true);
-  //       } else {
-  //         setShowAppointmentSection(false);
-  //         setCurrentAppointment(null);
-  //       }
-  //     };
-
-  //     // Check immediately
-  //     checkForCurrentAppointments();
-
-  //     // Set up interval to check every 30 seconds
-  //     const checkInterval = setInterval(checkForCurrentAppointments, 30000);
-
-  //     return () => clearInterval(checkInterval);
-  //   }
-  // }, [userdata]);
-
-  // New Condition Check for active appointments (status ===1)
-  // useEffect(() => {
-  //   if(userdata?.upcomingAppointments){
-  //     const activeAppointment = userdata.upcomingAppointments.find(
-  //       appointment => appointment.status === 1
-  //     );
-  //     if (true){
-  //       console.log("Found active appointment:", activeAppointment);
-  //       setCurrentAppointment(true);
-  //       setShowAppointmentSection(true);
-  //     } else{
-  //       setCurrentAppointment(null);
-  //       setShowAppointmentSection(false);
-  //     }
-  //   }
-  // }, [userdata?.upcomingAppointments]);
-
   // New Condition Check for active appointments (status === 1)
-useEffect(() => {
-  if (userdata?.upcomingAppointments) {
-    const activeAppointment = userdata.upcomingAppointments.find(
-      appointment => appointment.status === 1
-    );
-    
-    if (activeAppointment) {
-      console.log("Found active appointment:", activeAppointment);
-      setCurrentAppointment(activeAppointment); // Set the actual appointment object
-      setShowAppointmentSection(true);
-    } else {
-      setCurrentAppointment(null);
-      setShowAppointmentSection(false);
+  useEffect(() => {
+    if (userdata?.upcomingAppointments) {
+      const activeAppointment = userdata.upcomingAppointments.find(
+        appointment => appointment.status === 1
+      );
+
+      if (activeAppointment) {
+        console.log("Found active appointment:", activeAppointment);
+        setCurrentAppointment(activeAppointment); // Set the actual appointment object
+        setShowAppointmentSection(true);
+      } else {
+        setCurrentAppointment(null);
+        setShowAppointmentSection(false);
+      }
     }
-  }
-}, [userdata?.upcomingAppointments]);
+  }, [userdata?.upcomingAppointments]);
 
-// useEffect(() => {
-//   // Simulate an active appointment (status = 1)
-//   const testAppointment = {
-//     appointment_id: 123, // Example ID
-//     patient_id: 456, // Example patient ID
-//     patient_name: "Test Patient",
-//     patient_profile: "default-profile.jpg", // Example image
-//     date: "Mon June 03", // Example date
-//     time: "02:30 - 03:00 PM", // Example time
-//     status: 1, // Force status = 1 (active)
-//     is_referred_patient: false, // Example
-//     ds_code: null, // Example
-//   };
 
-//   setCurrentAppointment(testAppointment);
-//   setShowAppointmentSection(true);
-
-//   // Optional: Log to confirm it's working
-//   console.log("TEST MODE: Forcing static appointment", testAppointment);
-// }, []);
 
   const handleCancelClick = (id) => {
     setSelectedAppointmentId(id);
@@ -259,58 +157,82 @@ useEffect(() => {
       });
     }
   };
-  // const handleCreateChannel = async (id) => {
-  //   console.log(id, `JoinCall + ${DoctorLoginId?.id}`, "params of the data");
-    
-  //   try {
-  //     await dispatch(
-  //       getJoinVideoCall({
-  //         channelName: `JoinCall + ${DoctorLoginId?.id}`,
-  //         appointmentId: id,
-  //       })
-  //     ).unwrap(); // unwrap() throws if the action rejects
-  
-  //     await dispatch(
-  //       sendPushNotification({
-  //         appointment_id: id,
-  //       })
-  //     ).unwrap();
-  
-  //     navigate("/VideoCall", {
-  //       state: {
-  //         id: currentAppointment.appointment_id,
-  //         patientId: currentAppointment.patient_id,
-  //         name: currentAppointment?.patient_name,
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.error("Failed to create video channel:", error);
-  //     // Show error message to user
+
+
+  // const convertTimeRangeTo24Hour = (timeRange) => {
+  //   const [startTime, endTime] = timeRange.split(" - ");
+
+  //   const convertTo24Hour = (timeStr) => {
+  //     const [time, modifier] = timeStr.split(" ");
+  //     let [hours, minutes] = time.split(":");
+
+  //     if (modifier === "PM" && hours !== "12") {
+  //       hours = parseInt(hours, 10) + 12;
+  //     }
+  //     if (modifier === "AM" && hours === "12") {
+  //       hours = "00";
+  //     }
+
+  //     return `${String(hours).padStart(2, '0')}:${minutes}`;
+  //   };
+
+  //   const start24 = convertTo24Hour(startTime + " " + endTime.split(" ")[1]); // include AM/PM from endTime
+  //   const end24 = convertTo24Hour(endTime);
+
+  //   return `${start24} - ${end24}`;
+  // };
+
+
+
+  // const convertTo24HourTiming = (dateTimeStr) => {
+  //   if (!dateTimeStr) return '';
+
+  //   const parts = dateTimeStr.split(' ');
+  //   if (parts.length < 2) return '';
+
+  //   const [time, modifier] = [parts[1], parts[2]];
+  //   let [hours, minutes] = time.split(':');
+  //   hours = parseInt(hours, 10);
+
+  //   if (modifier === "PM" && hours !== 12) {
+  //     hours += 12;
   //   }
-  // };
+  //   if (modifier === "AM" && hours === 12) {
+  //     hours = 0;
+  //   }
 
-  //FOR TESTING WITH STATIC DATA
-
-  // const handleCreateChannel = async (id) => {
-  //   console.log("TEST MODE: Simulating video call for appointment ID:", id);
-  
-  //   // Simulate Redux dispatch (optional)
-  //   dispatch(
-  //     getJoinVideoCall({
-  //       channelName: `JoinCall + ${DoctorLoginId?.id}`,
-  //       appointmentId: id,
-  //     })
-  //   ).then(() => {
-  //     console.log("TEST MODE: Video channel created successfully");
-  //     navigate("/VideoCall", {
-  //       state: {
-  //         id: currentAppointment?.appointment_id || 123, // Fallback to test ID
-  //         patientId: currentAppointment?.patient_id || 456, // Fallback
-  //         name: currentAppointment?.patient_name || "Test Patient", // Fallback
-  //       },
-  //     });
-  //   });
+  //   return `${String(hours).padStart(2, '0')}:${minutes}`;
   // };
+  const isCancelDisabled = (dateStr, timeStr) => {
+    if (!dateStr || !timeStr)
+      return false;
+
+    try {
+      // Parse the date string (assuming format like "Mon May 19")
+      const [weekday, month, day] = dateStr.split(" ");
+      const year = new Date().getFullYear();
+      const date = new Date(`${month} ${day}, ${year}`);
+
+      // Parse the time string (assuming format like "01:30 - 01:45 PM")
+      const [startTime, endTimeWithPeriod] = timeStr.split(" - ");
+      const period = endTimeWithPeriod.includes("AM") ? "AM" : "PM";
+      const startTimeStr = `${startTime} ${period}`;
+
+      // Combine date and time
+      const appointmentDateTime = new Date(`${date.toDateString()} ${startTimeStr}`);
+      const now = new Date();
+
+      // Calculate difference in hours
+      const diffInMs = appointmentDateTime - now;
+      const diffInHours = diffInMs / (1000 * 60 * 60);
+
+      // Disable cancel if within 2 hours of appointment
+      return diffInHours <= 2;
+    } catch (error) {
+      console.error('Date parse error:', error);
+      return false;
+    }
+  };
 
   return (
     <>
@@ -326,55 +248,44 @@ useEffect(() => {
               <span className="loader"></span>
             </div>
           ) : (
-          <div className="doc-panel-body">
-            <div className="appointments">
-              {/* Start Appointment */}
-              {showAppointmentSection && currentAppointment && (
-                <div className="start-appointment cmn-mb">
-                  <div className="docpnl-sec-head">
-                    <h1 className="h2-title">Start Appointment</h1>
-                  </div>
-                  <div className="apointment-detail-card">
-                    <div className="apoint-dtl-img">
-                      <img
-                        src={`${baseUrl}/${currentAppointment.patient_profile}`}
-                        alt={currentAppointment.patient_name}
-                      />
+            <div className="doc-panel-body">
+              <div className="appointments">
+                {/* Start Appointment */}
+                {showAppointmentSection && currentAppointment && (
+                  <div className="start-appointment cmn-mb">
+                    <div className="docpnl-sec-head">
+                      <h1 className="h2-title">Start Appointment</h1>
                     </div>
-                    <div className="appoint-dtl-content">
-                      <div className="appoint-dtl-left">
-                        <div className="appoint-dtl-head">
-                          <h2 className="h3-title">
-                            {currentAppointment.patient_name}
-                          </h2>
-                          {currentAppointment.is_referred_patient && (
-                            <p>Referred by DS: {currentAppointment.ds_code}</p>
-                          )}
-                        </div>
-                        <div className="appoint-btm">
-                          <p>
-                            <img src="/images/clock-icon.svg" alt="Icon" />
-                            {currentAppointment.date}
-                          </p>
-                          <p className="appoint-time">
-                            {currentAppointment.time}
-                          </p>
-                          {/* <a
-                            // to="/VideoCall"
-                            // state={{
-                            //   id: currentAppointment.appointment_id,
-                            //   patientId: currentAppointment.patient_id,
-                            // }}
-                            className="orange-btn" style={{cursor:"pointer"}}
-                            onClick={() =>
-                              handleCreateChannel(
-                                currentAppointment.appointment_id
-                              )
-                            }
-                          >
-                            Start now
-                          </a> */}
-                          <a
+                    <div className="apointment-detail-card">
+                      <div className="apoint-dtl-img">
+                        <img
+                          src={`${baseUrl}/${currentAppointment.patient_profile}`}
+                          alt={currentAppointment.patient_name}
+                        />
+                      </div>
+                      <div className="appoint-dtl-content">
+                        <div className="appoint-dtl-left">
+                          <div className="appoint-dtl-head">
+                            <h2 className="h3-title">
+                              {currentAppointment.patient_name}
+                            </h2>
+                            {currentAppointment.is_referred_patient && (
+                              <p>Referred by DS: {currentAppointment.ds_code}</p>
+                            )}
+                          </div>
+                          <div className="appoint-btm">
+                            <p>
+                              <img src="/images/clock-icon.svg" alt="Icon" />
+                              {currentAppointment.date}
+                            </p>
+                            <p className="appoint-time">
+                              {currentAppointment.time}
+                            </p>
+                            {/* <p className="appoint-time">{convertTimeRangeTo24Hour(currentAppointment.time)}</p> */}
+
+
+
+                            <a
                               className="orange-btn"
                               onClick={() =>
                                 handleCreateChannel(String(currentAppointment.appointment_id))
@@ -382,35 +293,26 @@ useEffect(() => {
                             >
                               Start now
                             </a>
-                            
-                          {console.log(
-                            "patientId123:",
-                            currentAppointment.patient_id
-                          )}
+
+                            {console.log(
+                              "patientId123:",
+                              currentAppointment.patient_id
+                            )}
+                          </div>
                         </div>
+                        <Link
+                          to="/patient-profile"
+                          state={{ patientId: currentAppointment.patient_id }}
+                          className="cmn-btn"
+                        >
+                          View profile
+                        </Link>
                       </div>
-                      <Link
-                        to="/patient-profile"
-                        state={{ patientId: currentAppointment.patient_id }}
-                        className="cmn-btn"
-                      >
-                        View profile
-                      </Link>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* <div className="upcoming-apoints cmn-mb">
-                <div className="docpnl-sec-head">
-                  <h1 className="h2-title">Upcoming Appointments</h1>
-                  <button
-                    className="cmn-btn"
-                    onClick={() => setShowAllAppointments(!showAllAppointments)}
-                  >
-                    {showAllAppointments ? "Show less" : "See all"}
-                  </button>
-                </div> */}
+
                 <div className="upcoming-apoints cmn-mb">
                   <div className="docpnl-sec-head">
                     <h1 className="h2-title">Upcoming Appointments</h1>
@@ -421,66 +323,85 @@ useEffect(() => {
                       See all
                     </button>
                   </div>
-                {/* Upcoming Appointments */}
-                <div className="appointments-row-wrp cmn-mb">
-                  <div className="appointments-row row">
-                    {visibleAppointments.map((appointment, idx) => (
-                      <div
-                        className="appointment-card-wrp col-lg-3 col-md-4 col-sm-6"
-                        key={idx}
-                      >
-                        <div className="appointment-card">
-                          <div className="card-img">
-                            <img
-                              src={
-                                `${baseUrl}/${appointment.patient_profile}` ||
-                                ""
-                              }
-                              alt={appointment.patient_name}
-                            />
-                          </div>
-                          <div className="card-body">
-                            <Link
-                              to="/patient-details"
-                              state={{
-                                id: appointment.appointment_id,
-                                patientId: appointment.patient_id,
-                                referrerDscode:appointment.ds_code,
-                                referrer:appointment.referred_patient_name
-                              }}
-                              className="cmn-btn"
-                            >
-                              View full detail
-                            </Link>
-                            {console.log(
-                              "appointment_id for patient details",
-                              appointment.appointment_id
-                            )}
-                            <div className="appointment-datetime">
-                              <p className="date">{appointment.date}</p>
-                              <p className="time">{appointment.time}</p>
+                  {/* Upcoming Appointments */}
+                  <div className="appointments-row-wrp cmn-mb">
+                    <div className="appointments-row row">
+                      {visibleAppointments.map((appointment, idx) => (
+                        <div
+                          className="appointment-card-wrp col-lg-3 col-md-4 col-sm-6"
+                          key={idx}
+                        >
+                          <div className="appointment-card">
+                            <div className="card-img">
+                              <img
+                                src={
+                                  `${baseUrl}/${appointment.patient_profile}` ||
+                                  ""
+                                }
+                                alt={appointment.patient_name}
+                              />
                             </div>
-                            {appointment.is_referred_patient && (
-                              <p>Referred by DS Code: {appointment.ds_code}</p>
-                            )}
-                            <h3>{appointment.patient_name}</h3>
+                            <div className="card-body">
+                              <Link
+                                to="/patient-details"
+                                state={{
+                                  id: appointment.appointment_id,
+                                  patientId: appointment.patient_id,
+                                  referrerDscode: appointment.ds_code,
+                                  referrer: appointment.referred_patient_name
+                                }}
+                                className="cmn-btn"
+                              >
+                                View full detail
+                              </Link>
+                              {console.log(
+                                "appointment_id for patient details",
+                                appointment.appointment_id
+                              )}
+                              <div className="appointment-datetime">
+                                <p className="date">{appointment.date}</p>
+                                <p className="time">{appointment.time}</p>
+                                {/* <p className="appoint-time">{convertTimeRangeTo24Hour(appointment.time)}</p> */}
+
+
+                              </div>
+
+                              {/* Add min-height to maintain consistent space */}
+                              <div style={{ minHeight: '24px' }}>
+                                {appointment.is_referred_patient ? (
+                                  // <p>Referred by DS Code: {appointment.ds_code}</p>
+                                  <p>Referred by DS Code: {<span style={{ color: "#199FD9" }}>{appointment.ds_code}</span>}</p>
+
+                                ) : (
+                                  <p style={{ visibility: 'hidden' }}>Placeholder</p>
+                                )}
+                              </div>
+                              <h3>{appointment.patient_name}</h3>
+
+                              
+                              <input
+                                type="submit"
+                                value="Cancel"
+                                className="w-100"
+                                onClick={() =>
+                                  handleCancelClick(appointment.appointment_id)
+                                }
+                                disabled={isCancelDisabled(appointment.dayDate, appointment.time)
+                                  ? { opacity: 0.5, cursor: 'not-allowed' } : {}
+                                }
+                              />
+
+
+
                            
-                            <input
-                              type="submit"
-                              value="Cancel"
-                              className="w-100"
-                              onClick={() =>
-                                handleCancelClick(appointment.appointment_id)
-                              }
-                            />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
 
-                <div className="pending-prescriptions">
+                  <div className="pending-prescriptions">
                     <div className="docpnl-sec-head">
                       <h2>Pending Prescriptions</h2>
                       <button
@@ -492,52 +413,65 @@ useEffect(() => {
                         See all
                       </button>
                     </div>
-                  <div className="pending-presc-table">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>S.no.</th>
-                          <th>Patient Name</th>
-                          <th>Upload Date</th>
-                          <th>View Details</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {visiblePrescriptions.map((prescription, index) => (
-                          <tr key={index}>
-                            <td>{index + 1}</td>
-                            <Link to="/patient-profile" state={{ patientId: prescription.patient_id }} ><td>{prescription.patient_name}</td></Link>
-                            <td>
-                              <div className="date">
-                                {prescription.symptom_upload_date.split(" ")[0]}
-                              </div>
-                              <div className="time">
-                                {prescription.symptom_upload_date.split(" ")[1]}
-                              </div>
-                            </td>
-                            <td>
-                              <Link
-                                to="/PendingAssignedPrescriptionDetails"
-                                state={{
-                                  id: prescription.symptom_id,
-                                  patientId: prescription.patient_id,
-                                }}
-                              >
-                                View
-                              </Link>
-                            </td>
+                    <div className="pending-presc-table">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>S.no.</th>
+                            <th>Patient Name</th>
+                            <th>Upload Date</th>
+                            <th>View Details</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {visiblePrescriptions.length == 0 && <tr>
+                            <td colSpan="8" style={{ textAlign: "center" }}>{loading ? "Loading..." : "No data found"}</td>
+                          </tr>}
+                          {visiblePrescriptions.map((prescription, index) => (
+                            <tr key={index}>
+                              {/* <td>{index + 1}</td> */}
+                              <td>{String(index + 1).padStart(2, '0')}</td>
+
+                              <td style={{ textAlign: 'left', paddingLeft: '45px', width: '200px' }}><Link to="/patient-profile" state={{ patientId: prescription.patient_id }} className="no-underline-link" style={{ display: 'inline-block' }}>{prescription.patient_name}</Link>
+                                {(prescription?.ds_code &&
+                                  <div className="time" style={{ color: "#199FD9" }}>
+                                    (DS Code: {prescription.ds_code})
+                                  </div>
+                                )}
+                              </td>
+                              <td>
+                                <div className="date">
+                                  {prescription.symptom_upload_date.split(" ")[0]}
+                                </div>
+                                <div className="time">
+                                  {prescription.symptom_upload_date.split(" ")[1]} {prescription.symptom_upload_date.split(" ")[2]}
+                                  {/* {convertTo24HourTiming(prescription.symptom_upload_date)} */}
+                                </div>
+                              </td>
+                              <td>
+                                <Link
+                                  to="/PendingAssignedPrescriptionDetails"
+                                  state={{
+                                    id: prescription.symptom_id,
+                                    patientId: prescription.patient_id,
+                                  }}
+                                >
+                                  View
+                                </Link>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Footer */}
-            <Footer />
-          </div>
+              {/* Footer */}
+              {/* <Footer /> */}
+
+            </div>
           )}
           {!showAppointmentSection && showReminderModal && (
             <div
@@ -619,6 +553,7 @@ useEffect(() => {
               </div>
             </div>
           )}
+          <Footer />
         </div>
         <CustomModal
           visible={showModal}
@@ -654,6 +589,7 @@ useEffect(() => {
           onCancel={() => setShowSuccessModal(false)}
           actionType="success"
         />
+
       </main>
     </>
   );

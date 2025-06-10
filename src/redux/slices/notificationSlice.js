@@ -200,7 +200,8 @@ const notificationSlice = createSlice({
                   .addCase(changeAppointmentNotificaiton.fulfilled, (state, action) => {
                       state.loading = false;
                       state.isNotificationActive = action.payload.data.isActive;
-                      action.payload.data.isActive ? toast.success("Notification Turned On") : toast.error("Notification Turned off")
+                      // action.payload.data.isActive ? toast.success("Notification Turned On") : toast.error("Notification Turned off")     
+                      // sir told to remove the toast from notification.
                   })
                   .addCase(changeAppointmentNotificaiton.rejected, (state, action) => {
                       state.loading = false;

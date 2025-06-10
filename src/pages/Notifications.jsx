@@ -66,9 +66,11 @@ const Notifications = () => {
       toast.error("Please select atleast one notification");
       console.log("why notification toast is not coming");
       return;
-      }
+    }
     dispatch(deleteNotification(selectedIds)).then(() => {
       setSelectedIds([]);
+      dispatch(unreadCount());
+
       dispatch(getAllNotifications()); // Refresh the list
     });
   };
@@ -108,7 +110,7 @@ const Notifications = () => {
               onClick={() => toggleSelect(n?.id)}
               style={{
                 backgroundColor: selectedIds.includes(n?.id)
-                  ? '#e0e0e0' // Darker gray for selected
+                  ? '#c0c0c0' // Darker gray for selected
                   : n.is_read === "true"                                   //yha data backend se fetch hoga
                     ? '#f0f0f0' // Light gray for read
                     : '#ffffff', // White for unread
@@ -183,81 +185,109 @@ const Notifications = () => {
           </div>
         ) : (
 
-        <div className="doc-panel-body">
-          <div className="notifications-section">
-            <div className="docpnl-sec-head text-center">
-              <h1 className="h2-title px-5">Notifications</h1>
-              <div className="back-btn" onClick={() => window.history.back()}>
-                <a href="#" onClick={(e) => e.preventDefault()}>
-                  <img src="./images/left-arrow.svg" alt="Back" />
-                </a>
+          <div className="doc-panel-body">
+            <div className="notifications-section">
+              <div className="docpnl-sec-head text-center">
+                <h1 className="h2-title px-5">Notifications</h1>
+                <div className="back-btn" onClick={() => window.history.back()}>
+                  <a href="#" onClick={(e) => e.preventDefault()}>
+                    <img src="./images/left-arrow.svg" alt="Back" />
+                  </a>
+                </div>
               </div>
-            </div>
-
-            
-
-            {/* Bulk Actions */}
-            {/* {(doctorNotifications?.today?.length > 0 ||
-              doctorNotifications?.yesterday?.length > 0 ||
-              doctorNotifications?.older?.length > 0) && ( */}
-
-            <div className="bulk-actions">
-              <button className="select-all-btn" onClick={handleSelectAll}>
-                <label htmlFor="selectAll">Select all</label>
-                <div className="radio-btn-wrp">
-                  <input
-                    type="radio"
-                    name="selectAction"
-                    id="selectAll"
-                    checked={
-                      finalNotification.length > 0 &&
-                      selectedIds.length === finalNotification.length
-                    }
-                    readOnly
-                  />
-
-                  <span></span>
-                </div>
-              </button>
-              <button className="delete-all-btn" onClick={handleDeleteAll}>
-                <label htmlFor="deleteAll">Delete all</label>
-                <div className="radio-btn-wrp">
-                  <input type="radio" name="selectAction" id="deleteAll" disabled={selectedIds.length === 0}/>
-                  <span></span>
-                </div>
-              </button>
 
 
-            </div>
-              {/*  )} */}
+
+              {/* Bulk Actions */}
+              {(doctorNotifications?.today?.length > 0 ||
+                doctorNotifications?.yesterday?.length > 0 ||
+                doctorNotifications?.older?.length > 0) && (
+
+                  <div className="bulk-actions">
+                    <button className="select-all-btn" onClick={handleSelectAll}>
+                      <label htmlFor="selectAll">Select all</label>
+                      <div className="radio-btn-wrp">
+                        <input
+                          type="radio"
+                          name="selectAction"
+                          id="selectAll"
+                          checked={
+                            finalNotification.length > 0 &&
+                            selectedIds.length === finalNotification.length
+                          }
+                          readOnly
+                        />
+
+                        <span></span>
+                      </div>
+                    </button>
+                    <button className="delete-all-btn" onClick={handleDeleteAll}>
+                      <label htmlFor="deleteAll">Delete</label>
+                      <div className="radio-btn-wrp">
+                        <input type="radio" name="selectAction" id="deleteAll" disabled={selectedIds.length === 0} />
+                        <span></span>
+                      </div>
+                    </button>
 
 
-            {/* <div className="group-header">
+                  </div>
+                )}
+
+
+              {/* <div className="group-header">
               <button className="mark-all-btn" onClick={() => handleMarkAllAsRead(group)}>
               Mark all as read
             </button>
             </div> */}
 
-            {/* Show "Mark all as read" only if any notifications exist */}
-            {(doctorNotifications?.today?.length > 0 ||
-              doctorNotifications?.yesterday?.length > 0 ||
-              doctorNotifications?.older?.length > 0) && (
-                <div className="group-header" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <button className="mark-all-btn" onClick={handleMarkAllAsRead}>
-                    Mark all as read
-                  </button>
-                </div>
-              )}
+              {/* Show "Mark all as read" only if any notifications exist */}
+              {(doctorNotifications?.today?.length > 0 ||
+                doctorNotifications?.yesterday?.length > 0 ||
+                doctorNotifications?.older?.length > 0) && (
+                  <div className="group-header" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <button className="mark-all-btn" onClick={handleMarkAllAsRead}>
+                      Mark all as read
+                    </button>
+                  </div>
+                )}
 
-            {/* Notification Lists */}
-            {/* {renderNotifications(doctorNotifications?.data?.older)}
+              {/* Notification Lists */}
+              {/* {renderNotifications(doctorNotifications?.data?.older)}
             {renderNotifications(doctorNotifications?.data?.today)} */}
-            {/* {renderNotifications('yesterday')} */}
-            {renderNotifications('today')}
+              {/* {renderNotifications('yesterday')} */}
+              {/* {renderNotifications('today')}
             {renderNotifications('yesterday')}
-            {renderNotifications('older')}
+            {renderNotifications('older')} */}
+              {(doctorNotifications?.today?.length === 0 &&
+                doctorNotifications?.yesterday?.length === 0 &&
+                doctorNotifications?.older?.length === 0) ? (
+                <p style={{
+                  fontSize: '1.5rem',
+                  fontWeight: '500',
+                  color: '#6b7280',
+                  textAlign: 'center',
+                  margin: '2rem 0',
+                  padding: '1.5rem',
+                  // backgroundColor: '#f9fafb',
+                  borderRadius: '0.5rem',
+                  // boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                  width: '100%',
+                  maxWidth: '600px',
+                  marginLeft: 'auto',
+                  marginRight: 'auto'
+                }}>
+                  {loading ? "Loading..." : "No Notifications found"}
+                </p>
+              ) : (
+                <>
+                  {renderNotifications('today')}
+                  {renderNotifications('yesterday')}
+                  {renderNotifications('older')}
+                </>
+              )
+              }
+            </div>
           </div>
-        </div>
         )}
 
         <Footer />

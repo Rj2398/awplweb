@@ -444,7 +444,8 @@ const CompletedAppointment = () => {
                                     type="text"
                                     value={
                                       completeAppointmentPatientDetail
-                                        ?.basicInformation?.Patient_gender || ""
+                                        ?.basicInformation?.Patient_gender.charAt(0).toUpperCase() + completeAppointmentPatientDetail
+                                        ?.basicInformation?.Patient_gender.slice(1) || ""
                                     }
                                     readOnly
                                   />

@@ -259,6 +259,7 @@ const userSlice = createSlice({
     medicineSearch: [],
     completeAssignedPrescription: null,
     loading: false,
+    loading2: false,
     error: null,
     message: null,
   },
@@ -521,16 +522,16 @@ const userSlice = createSlice({
       // })
 
       .addCase(medicineSearch.pending, (state) => {
-        state.loading = true;
+        state.loading2 = true;
         state.error = null;
       })
       .addCase(medicineSearch.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loading2 = false;
         state.medicineSearch = action.payload?.data?.results;
 
       })
       .addCase(medicineSearch.rejected, (state, action) => {
-        state.loading = false;
+        state.loading2 = false;
         state.error = action.payload || "Failed to search medicine";
         toast.error(action.payload.message || "Failed to search medicine")
 

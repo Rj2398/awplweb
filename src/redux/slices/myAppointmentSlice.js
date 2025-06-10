@@ -179,7 +179,7 @@ const myAppointmentSlice = createSlice({
       .addCase(getAllUpcomingAppointment.fulfilled, (state, action) => {
         state.upcomingLoading = false;
         state.upcommingAppointment =
-          action.payload?.data?.upcommingAppointments;
+          action.payload?.data?.upcomingAppointments;
       })
       .addCase(getAllUpcomingAppointment.rejected, (state, action) => {
         state.upcomingLoading = false;

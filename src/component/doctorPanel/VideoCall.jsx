@@ -391,7 +391,7 @@ const VideoCall = () => {
                           {[
                             { label: "Patient Name", value: patientInfo.name || "N/A" },
                             { label: "Age", value: patientInfo.age || "N/A" },
-                            { label: "Gender", value: patientInfo.gender || "N/A" },
+                            { label: "Gender", value: patientInfo.gender ? patientInfo.gender.charAt(0).toUpperCase() + patientInfo.gender.slice(1) : "N/A" },
                             { label: "Height", value: patientInfo.height || "N/A" },
                             { label: "Weight", value: patientInfo.weight || "N/A" },
                             { label: "Contact No.", value: patientInfo.phone_no || "N/A" },
@@ -610,7 +610,7 @@ const VideoCall = () => {
                       <div className="add-notes-wrp vdoclscrnpd">
                         <div className="formfield">
                           <label>
-                            Diagnosis <span>*</span>
+                            Disease <span>*</span>
                           </label>
                           <input
                             type="text"

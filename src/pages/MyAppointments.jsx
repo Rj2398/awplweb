@@ -60,6 +60,8 @@ const MyAppointments = () => {
         setFilteredCancelledPatients(cancelledAppointment);
     }, [activeTab, upcommingAppointment, completedAppointment, cancelledAppointment]);
 
+    console.log("$$$$$$$$$$$$", upcommingAppointment);
+
 
     useEffect(() => {
         setFilteredCompletedPatients(applyFilters(completedAppointment, 'completed'));
@@ -411,9 +413,9 @@ const MyAppointments = () => {
                                     <div className="my-appointments-tab-head">
                                         <ul style={{ position: 'relative' }}>
                                             <li className="tab-bg"></li>
-                                            <li style={activeTab == 'upcoming' ? { backgroundColor: 'white' } : {}} onClick={() => setActiveTab('upcoming')} > Upcoming </li>
-                                            <li style={activeTab == 'completed' ? { backgroundColor: 'white' } : {}} onClick={() => setActiveTab('completed')} > Completed </li>
-                                            <li style={activeTab == 'cancelled' ? { backgroundColor: 'white' } : {}} onClick={() => setActiveTab('cancelled')} > Cancelled </li>
+                                            <li style={activeTab == 'upcoming' ? { backgroundColor: 'white', borderRadius:"10px", color:'#356598' } : {}} onClick={() => setActiveTab('upcoming')} > Upcoming </li>
+                                            <li style={activeTab == 'completed' ? { backgroundColor: 'white', borderRadius:"10px", color:'#356598' } : {}} onClick={() => setActiveTab('completed')} > Completed </li>
+                                            <li style={activeTab == 'cancelled' ? { backgroundColor: 'white', borderRadius:"10px", color:'#356598' } : {}} onClick={() => setActiveTab('cancelled')} > Cancelled </li>
                                         </ul>
                                     </div>
 
@@ -444,28 +446,55 @@ const MyAppointments = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    {console.log("filteredUpcomingPatients1234: ", filteredUpcomingPatients)}
                                                     {getPaginatedPatients(filteredUpcomingPatients)?.length == 0 && <tr>
                                                         <td colSpan="8" style={{ textAlign: "center", padding: "25px 0" }}>No data found</td>
                                                     </tr>}
                                                     {getPaginatedPatients(filteredUpcomingPatients)?.map((patient, index) => (
                                                         <tr key={`upcoming-${index}`}>
-                                                            <td>{(currentPage - 1) * patientsPerPage + index + 1}</td>
-                                                            <td>
+                                                            {/* <td>{(currentPage - 1) * patientsPerPage + index + 1}</td> */}
+                                                            <td>{String((currentPage - 1) * patientsPerPage + index + 1).padStart(2, '0')}</td>
+                                                            {/* <td>
                                                                 <img src={baseUrl + "/" + patient?.patient_profile} alt="Patient" />
-                                                                {/* <img src={`./images/patient-img-${(patient.id % 3) + 1}.png`} alt="Patient" /> */}
-                                                                <Link to="/patient-profile" state={{ patientId: patient.patient_id }}><h3>{patient.patient_name || "-"}</h3></Link>
+                                                                <Link to="/patient-profile" state={{ patientId: patient.patient_id }}><h3>{patient.patient_name || "-"}</h3></Link> 
+                                                                
+                                                                <div className="time" style={{ color: "#199fd9" }}>
+                                                                     (DS Code: {patient.ds_code})
+                                                                </div>
+                                                                
 
+                                                            </td> */}
+
+                                                            <td style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                                                <img src={baseUrl + "/" + patient?.patient_profile} alt="Patient" />
+
+                                                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                                                    <Link to="/patient-profile" state={{ patientId: patient.patient_id }}>
+                                                                        <h3 style={{ margin: 0, textAlign: "left" }}>{patient.patient_name || "-"}</h3>
+                                                                    </Link>
+                                                                    {(patient?.ds_code &&
+                                                                        <div style={{ color: "#199fd9", marginTop: "2px" }}>
+                                                                            (DS Code: {patient.ds_code})
+                                                                        </div>
+                                                                    )}
+                                                                </div>
                                                             </td>
 
                                                             <td>{patient.patient_age || "-"}</td>
-                                                            <td>{patient.patient_gender || "-"}</td>
+                                                            {/* <td>{patient.patient_gender || "-"}</td> */}
+                                                            <td>{patient.patient_gender?.charAt(0).toUpperCase() + patient.patient_gender?.slice(1).toLowerCase()}</td>
                                                             <td>{patient.patient_phone || "-"}</td>
                                                             <td>
-                                                                <div className="date h3-title">{patient.datetime}</div>
-                                                                {/* <div className="date h3-title">{patient.date}</div>
-                                                            <div className="time">{patient.time}</div> */}
+                                                                {/* <div className="date h3-title">{patient.datetime}</div> */}
+                                                                <div className="date h3-title">
+                                                                    {patient.datetime.split(" ")[0]}
+                                                                </div>
+                                                                <div className="time">
+                                                                    {patient.datetime.split(" ")[1]} {patient.datetime.split(" ")[2]}
+                                                         
+                                                                </div>
                                                             </td>
-                                                            <td>
+                                                            {/* <td>
                                                                 {patient.status === 1 ? (
                                                                     // <Link to="/videocall" className="orange-btn">Start Now</Link>
                                                                     <a className="orange-btn" style={{ cursor: "pointer" }} onClick={() => handleCreateChannel(patient.appointment_id)}>Start now</a>) : isWithinTwoHours(patient.datetime) ? (
@@ -475,6 +504,30 @@ const MyAppointments = () => {
                                                                         </div>
                                                                     ) : (
                                                                     <button type="button" className="cmn-btn blue-bg" onClick={() => handleCancelClick(patient.appointment_id)}>
+                                                                        Cancel
+                                                                    </button>
+                                                                )}
+                                                            </td> */}
+                                                            <td>
+                                                                {patient.status === 1 ? (
+                                                                    <a
+                                                                        className="orange-btn"
+                                                                        style={{ cursor: "pointer" }}
+                                                                        onClick={() => handleCreateChannel(patient.appointment_id)}
+                                                                    >
+                                                                        Start now
+                                                                    </a>
+                                                                ) : (
+                                                                    <button
+                                                                        type="button"
+                                                                        className="cmn-btn blue-bg"
+                                                                        onClick={() => handleCancelClick(patient.appointment_id)}
+                                                                        disabled={isWithinTwoHours(patient.datetime)} // disable if appointment time <= 2 hours
+                                                                        style={{
+                                                                            opacity: isWithinTwoHours(patient.datetime) ? 0.6 : 1,
+                                                                            cursor: isWithinTwoHours(patient.datetime) ? "not-allowed" : "pointer",
+                                                                        }}
+                                                                    >
                                                                         Cancel
                                                                     </button>
                                                                 )}
@@ -510,31 +563,53 @@ const MyAppointments = () => {
                                                         <th>Gender</th>
                                                         <th>Phone number</th>
                                                         <th>Appointment date</th>
-                                                        <th>Diagnosis</th>
+                                                        <th>Disease</th>
                                                         <th>Prescription Details</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    {/* {console.log("filteredCompletedPatients123456: ", filteredCompletedPatients)} */}
                                                     {getPaginatedPatients(filteredCompletedPatients)?.length == 0 && <tr>
                                                         <td colSpan="8" style={{ textAlign: "center", padding: "25px 0" }}>No data found</td>
                                                     </tr>}
                                                     {getPaginatedPatients(filteredCompletedPatients)?.map((patient, index) => (
                                                         <tr key={`completed-${index}`}>
-                                                            <td>{(currentPage - 1) * patientsPerPage + index + 1}</td>
-                                                            <td>
+                                                            {/* <td>{(currentPage - 1) * patientsPerPage + index + 1}</td> */}
+                                                            <td>{String((currentPage - 1) * patientsPerPage + index + 1).padStart(2, '0')}</td>
+                                                            {/* <td>
                                                                 <img src={baseUrl + "/" + patient?.patient_profile} alt="Patient" />
-                                                                {/* <img src={`./images/patient-img-${(patient.id % 3) + 1}.png`} alt="Patient" /> */}
+                                                               
                                                                 <Link to="/patient-profile" state={{ patientId: patient.patient_id }}><h3>{patient.patient_name || "-"}</h3></Link>
 
+                                                            </td> */}
+                                                            <td style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                                                <img src={baseUrl + "/" + patient?.patient_profile} alt="Patient" />
+
+                                                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                                                    <Link to="/patient-profile" state={{ patientId: patient.patient_id }}>
+                                                                        <h3 style={{ margin: 0, textAlign: "left" }}>{patient.patient_name || "-"}</h3>
+                                                                    </Link>
+                                                                    {(patient?.ds_code &&
+                                                                        <div style={{ color: "#199fd9", marginTop: "2px" }}>
+                                                                            (DS Code: {patient.ds_code})
+                                                                        </div>
+                                                                    )}
+                                                                </div>
                                                             </td>
                                                             <td>{patient.patient_age || "-"}</td>
-                                                            <td>{patient.patient_gender || "-"}</td>
+                                                            {/* <td>{patient.patient_gender || "-"}</td> */}
+                                                            <td>{patient.patient_gender?.charAt(0).toUpperCase() + patient.patient_gender?.slice(1).toLowerCase()}</td>
                                                             <td>{patient.patient_phone || "-"}</td>
                                                             <td>
-                                                                <div className="date h3-title">{patient.datetime}</div>
-                                                                {/* <div className="date h3-title">{patient.date}</div>
-                                                            <div className="time">{patient.time}</div> */}
+                                                                {/* <div className="date h3-title">{patient.datetime}</div> */}
+                                                                <div className="date h3-title">
+                                                                    {patient.datetime.split(" ")[0]}
+                                                                </div>
+                                                                <div className="time">
+                                                                    {patient.datetime.split(" ")[1]} {patient.datetime.split(" ")[2]}
+                                                         
+                                                                </div>
                                                             </td>
                                                             <td>{patient.diagnosis || "-"}</td>
                                                             <td><Link
@@ -543,12 +618,11 @@ const MyAppointments = () => {
                                                                     id: patient.prescription_id,
                                                                     patientId: patient.patient_id,
                                                                     chat_id: patient.chat_id,
-                                                                }}
-                                                                className="link"
+                                                                }} style={{ color: '#199FD9', textDecoration: 'underline !important' }} className="text-primary text-decoration-underline"
                                                             >
                                                                 View
                                                             </Link></td>
-                                                            <td><Link to="/patient-profile" state={{ patientId: patient.patient_id, appointmentId: patient.appointment_id, source:"completed", hideSchedule: false }} className="cmn-btn">View Profile</Link></td>
+                                                            <td><Link to="/patient-profile" state={{ patientId: patient.patient_id, appointmentId: patient.appointment_id, source: "completed", hideSchedule: false }} className="cmn-btn">View Profile</Link></td>
                                                         </tr>
                                                     ))}
                                                 </tbody>
@@ -586,21 +660,44 @@ const MyAppointments = () => {
                                                     </tr>}
                                                     {getPaginatedPatients(filteredCancelledPatients)?.map((patient, index) => (
                                                         <tr key={`cancelled-${index}`}>
-                                                            <td>{(currentPage - 1) * patientsPerPage + index + 1}</td>
-                                                            <td>
+                                                            {/* <td>{(currentPage - 1) * patientsPerPage + index + 1}</td> */}
+                                                            <td>{String((currentPage - 1) * patientsPerPage + index + 1).padStart(2, '0')}</td>
+                                                            {/* <td>
                                                                 <img src={baseUrl + "/" + patient?.patient_profile} alt="Patient" />
-                                                                {/* <img src={`./images/patient-img-${(patient.id % 3) + 1}.png`} alt="Patient" /> */}
+                                                                
                                                                 <Link to="/patient-profile" state={{ patientId: patient.patient_id }}><h3>{patient.patient_name || "-"}</h3></Link>
 
+                                                            </td> */}
+                                                            <td style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                                                <img src={baseUrl + "/" + patient?.patient_profile} alt="Patient" />
+
+                                                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                                                    <Link to="/patient-profile" state={{ patientId: patient.patient_id }}>
+                                                                        <h3 style={{ margin: 0, textAlign: "left" }}>{patient.patient_name || "-"}</h3>
+                                                                    </Link>
+                                                                    {(patient?.ds_code &&
+                                                                        <div style={{ color: "#199fd9", marginTop: "2px" }}>
+                                                                            (DS Code: {patient.ds_code})
+                                                                        </div>
+                                                                    )}
+                                                                </div>
                                                             </td>
                                                             <td>{patient.patient_age || "-"}</td>
-                                                            <td>{patient.patient_gender || "-"}</td>
+                                                            {/* <td>{patient.patient_gender || "-"}</td> */}
+                                                            <td>{patient.patient_gender?.charAt(0).toUpperCase() + patient.patient_gender?.slice(1).toLowerCase()}</td>
                                                             <td>{patient.patient_phone || "-"}</td>
                                                             <td>
-                                                                <div className="date h3-title">{patient.datetime}</div>
+                                                                {/* <div className="date h3-title">{patient.datetime}</div> */}
+                                                                <div className="date h3-title">
+                                                                    {patient.datetime.split(" ")[0]}
+                                                                </div>
+                                                                <div className="time">
+                                                                    {patient.datetime.split(" ")[1]} {patient.datetime.split(" ")[2]}
+                                                         
+                                                                </div>
 
                                                             </td>
-                                                            <td><Link to="/patient-profile" state={{ patientId: patient.patient_id, appointmentId: patient.appointment_id, source:"cancelled", hideSchedule: false }} className="cmn-btn">View Profile</Link></td>
+                                                            <td><Link to="/patient-profile" state={{ patientId: patient.patient_id, appointmentId: patient.appointment_id, source: "cancelled", hideSchedule: false }} className="cmn-btn">View Profile</Link></td>
                                                         </tr>
                                                     ))}
                                                 </tbody>

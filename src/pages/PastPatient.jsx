@@ -37,10 +37,33 @@ const PastPatient = () => {
     setDiseaseOptions(uniqueDiseases);
   }, [pastPatients])
 
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFilters(prev => ({ ...prev, [name]: value }));
+  // };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFilters(prev => ({ ...prev, [name]: value }));
+
+    if (name === 'name') {
+      // Only allow letters and spaces (no numbers or special characters)
+      const filteredValue = value.replace(/[^A-Za-z\s]/g, '');
+      setFilters(prev => ({ ...prev, [name]: filteredValue }));
+    }
+    else if (name === 'age') {
+      // Only allow numbers (0-9) and enforce 2-digit limit
+      if (value === '' || /^[0-9\b]+$/.test(value)) {
+        if (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 99 && value.length <= 2)) {
+          setFilters(prev => ({ ...prev, [name]: value }));
+        }
+      }
+    }
+    else {
+      // Default behavior for other fields (e.g., diagnosis)
+      setFilters(prev => ({ ...prev, [name]: value }));
+    }
   };
+
   const totalPages = Math.ceil(patients.length / itemsPerPage);
 
   const handlePageChange = (pageNumber) => {
@@ -138,10 +161,12 @@ const PastPatient = () => {
           <div className="p-patient-cd-body">
             <div className="p-patient-dtl-wrp">
               <strong className="p-patient-dtl">Age: {patient.age}</strong>
-              <strong className="p-patient-dtl">Gender: {patient.gender}</strong>
+              {/* <strong className="p-patient-dtl">Gender: {patient.gender}</strong> */}
+              <strong className="p-patient-dtl">Gender: {patient.gender?.charAt(0).toUpperCase() + patient.gender?.slice(1).toLowerCase()}</strong>
+
             </div>
             <div className="p-patient-disease">
-              Latest Disease: <b>{patient.latestDisease}</b>
+              <b>Latest Disease: {patient.latestDisease}</b>
             </div>
             <Link to="/patient-profile" state={{ patientId: patient.patient_id }} className="orange-btn">
               View full details
@@ -151,10 +176,10 @@ const PastPatient = () => {
       </div>
     </div>
   );
- 
+
   return (
-    <main className="doctor-panel">
-      <div className="container-fluid">
+    <main className="doctor-panel" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <div className="container-fluid" style={{ flex: 1 }}>
         <div className="doc-panel-inr">
           <Header />
         </div>
@@ -164,95 +189,107 @@ const PastPatient = () => {
           </div>
         ) : (
 
-        <div className="doc-panel-body pp-list-pg">
-          <div className="docpnl-sec-head text-center">
-            <h1 className="h2-title">My Past Patients</h1>
-            <div className="back-btn">
-              <Link to="#" onClick={(e) => {
-                e.preventDefault();
-                window.history.back();
-              }}>
-                <img src="./images/left-arrow.svg" alt="Back" />
-              </Link>
-            </div>
+          <div className="doc-panel-body pp-list-pg">
+            <div className="docpnl-sec-head text-center">
+              <h1 className="h2-title">My Past Patients</h1>
+              <div className="back-btn">
+                <Link to="#" onClick={(e) => {
+                  e.preventDefault();
+                  window.history.back();
+                }}>
+                  <img src="./images/left-arrow.svg" alt="Back" />
+                </Link>
+              </div>
 
-            <div className="past-patient-filter-wrp past-patient-pg">
-              <button type="button" onClick={toggleFilterDropdown}>
-                Filter <img src="./images/filter-icon.svg" alt="Filter" />
-              </button>
+              <div className="past-patient-filter-wrp past-patient-pg">
+                <button type="button" onClick={toggleFilterDropdown}>
+                  Filter <img src="./images/filter-icon.svg" alt="Filter" />
+                </button>
 
 
 
-              <div className={`filter-options-drpdn ${showFilter ? "active" : ""}`}>
+                <div className={`filter-options-drpdn ${showFilter ? "active" : ""}`}>
 
-                <form>
-                  <div className="filter-form">
-                    <div className="filter-grp">
-                      <label>Patient Name</label>
-                      <input
+                  <form>
+                    <div className="filter-form">
+                      <div className="filter-grp">
+                        <label>Patient Name</label>
+                        {/* <input
                         type="text"
                         name="name"
                         value={filters.name}
                         onChange={handleInputChange}
                         placeholder="Patient Name"
-                      />
-                    </div>
-                    <div className="filter-grp">
-                      <label>Age</label>
-                      <input
-                        type="text"
-                        name="age"
-                        value={filters.age}
-                        onChange={handleInputChange}
-                        placeholder="Age"
-                      />
-                    </div>
-                    <div className="filter-grp">
-                      <label>Disease</label>
-                      <select name="disease" value={filters.disease} onChange={handleInputChange}>
-                        <option value="" disabled>Disease</option>
-                        {diseaseOptions.map((disease, index) => (
-                          <option key={index} value={disease}>{disease}</option>
-                        ))}
+                      /> */}
+                        <input
+                          type="text"
+                          name="name"
+                          value={filters.name}
+                          onChange={handleInputChange}
+                          placeholder="Patient Name"
+                          pattern="[A-Za-z\s]+"  // HTML5 validation (optional)
+                          title="Only letters and spaces allowed"  // Error message (optional)
+                        />
+                      </div>
+                      <div className="filter-grp">
+                        <label>Age</label>
+                        <input
+                          type="text"
+                          name="age"
+                          value={filters.age}
+                          onChange={handleInputChange}
+                          placeholder="Age"
+                          maxLength={2}
+                          // inputMode="numeric"
+                          pattern="[0-9]*"  // Helps with mobile numeric keyboard
+                        />
+                      </div>
+                      <div className="filter-grp">
+                        <label>Disease</label>
+                        <select name="disease" value={filters.disease} onChange={handleInputChange}>
+                          <option value="" disabled>Disease</option>
+                          {diseaseOptions.map((disease, index) => (
+                            <option key={index} value={disease}>{disease}</option>
+                          ))}
 
-                      </select>
+                        </select>
+                      </div>
                     </div>
-                  </div>
-                  <div className="filter-form-btn-wrp">
-                    <button type="button" className="orange-btn" onClick={handleClearFilter} style={{ borderRadius: 0 }}>
-                      Clear Filter
-                    </button>
-                    <button type="button" className="orange-btn" onClick={handleApplyFilter} style={{ borderRadius: 0 }}>
-                      Apply Filter
-                    </button>
-                  </div>
-                </form>
+                    <div className="filter-form-btn-wrp">
+                      <button type="button" className="orange-btn" onClick={handleClearFilter} style={{ borderRadius: 0 }}>
+                        Clear Filter
+                      </button>
+                      <button type="button" className="orange-btn" onClick={handleApplyFilter} style={{ borderRadius: 0 }}>
+                        Apply Filter
+                      </button>
+                    </div>
+                  </form>
+                </div>
+
               </div>
-
             </div>
-          </div>
 
-          <div className="past-patients-list-wrp">
-            <div className="row">
-              {patients.length == 0 ? (
-                <div style={{ textAlign: 'center', padding: "25px 0", fontWeight: 'bold' }}>No data found</div>
+            <div className="past-patients-list-wrp">
+              <div className="row">
+                {patients.length == 0 ? (
+                  <div style={{ textAlign: 'center', padding: "25px 0", fontWeight: 'bold' }}>No data found</div>
 
-              ) : (
-                patients.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-                  .map((patient) => (
-                    <PastPatientCard key={patient.id} patient={patient} />
-                  ))
-              )}
+                ) : (
+                  patients.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                    .map((patient) => (
+                      <PastPatientCard key={patient.id} patient={patient} />
+                    ))
+                )}
 
+              </div>
             </div>
-          </div>
-          {patients.length > 0 && (
-            <Pagination currentPage={currentPage} totalPages={totalPages}
-              onPageChange={handlePageChange} onPrevious={handlePrevious}
-              onNext={handleNext} />
-          )}
+            {patients.length > 0 && (
+              <Pagination currentPage={currentPage} totalPages={totalPages}
+                onPageChange={handlePageChange} onPrevious={handlePrevious}
+                onNext={handleNext} />
+            )}
 
-        </div>
+          </div>
         )}
 
 

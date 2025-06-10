@@ -50,7 +50,7 @@ const PendingPrescription = () => {
     const indexOfLastPatient = currentPage * patientsPerPage;
     const indexOfFirstPatient = indexOfLastPatient - patientsPerPage;
     const currentPatients = currentData.slice(indexOfFirstPatient, indexOfLastPatient);
-    
+
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
@@ -64,6 +64,27 @@ const PendingPrescription = () => {
         pageNumbers.push(i);
     }
 
+    // const convertTo24HourTime = (dateTimeStr) => {
+    //     if (!dateTimeStr) return '';
+
+    //     const parts = dateTimeStr.split(' ');
+    //     if (parts.length < 2) return '';
+
+    //     const [time, modifier] = [parts[1], parts[2]];
+    //     let [hours, minutes] = time.split(':');
+    //     hours = parseInt(hours, 10);
+
+    //     if (modifier === "PM" && hours !== 12) {
+    //       hours += 12;
+    //     }
+    //     if (modifier === "AM" && hours === 12) {
+    //       hours = 0;
+    //     }
+
+    //     return `${String(hours).padStart(2, '0')}:${minutes}`;
+    //   };
+
+
     return (
         <>
             <main className="doctor-panel">
@@ -72,139 +93,155 @@ const PendingPrescription = () => {
                         <Header />
                     </div>
                     {loading ? (
-          <div className="loader-main">
-            <span className="loader"></span>
-          </div>
-        ) : (
-
-                    <div className="doc-panel-body">
-                        <div className="docpnl-sec-head">
-                            <h1 className="h2-title">Pending Prescriptions</h1>
+                        <div className="loader-main">
+                            <span className="loader"></span>
                         </div>
-                        <div className="pending-prescriptions-wrp">
-                            <div className="my-appointments-inr">
-                                <div className="my-appointments-tab-header">
-                                    <div className="">
-                                        <ul style={{ display: 'flex', gap: '10px', listStyle: 'none', padding: 0, }}>
-                                            <li className='cmn-btn' onClick={() => toggleTab('pending')}
-                                                style={getTabStyle('pending')}
-                                                onMouseEnter={() => setHoveredTab('pending')}
-                                                onMouseLeave={() => setHoveredTab(null)} >
-                                                Pending
-                                            </li>
-                                            <li className='cmn-btn' onClick={() => toggleTab('completed')}
-                                                style={getTabStyle('completed')}
-                                                onMouseEnter={() => setHoveredTab('completed')}
-                                                onMouseLeave={() => setHoveredTab(null)}>
-                                                Completed
-                                            </li>
-                                        </ul>
+                    ) : (
+
+                        <div className="doc-panel-body">
+                            <div className="docpnl-sec-head">
+                                <h1 className="h2-title">Pending Prescriptions</h1>
+                            </div>
+                            <div className="pending-prescriptions-wrp">
+                                <div className="my-appointments-inr">
+                                    <div className="my-appointments-tab-header">
+                                        <div className="">
+                                            <ul style={{ display: 'flex', gap: '10px', listStyle: 'none', padding: 0, }}>
+                                                <li className='cmn-btn' onClick={() => toggleTab('pending')}
+                                                    style={getTabStyle('pending')}
+                                                    onMouseEnter={() => setHoveredTab('pending')}
+                                                    onMouseLeave={() => setHoveredTab(null)} >
+                                                    Pending
+                                                </li>
+                                                <li className='cmn-btn' onClick={() => toggleTab('completed')}
+                                                    style={getTabStyle('completed')}
+                                                    onMouseEnter={() => setHoveredTab('completed')}
+                                                    onMouseLeave={() => setHoveredTab(null)}>
+                                                    Completed
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
 
-                                {activeTab === 'pending' && (
-                                    <div className="myapintmnt-content-tab pending">
-                                        <div className="pending-presc-table">
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th>S.no.</th>
-                                                        <th>Patient Name</th>
-                                                        <th>Symptom Upload Date</th>
-                                                        <th>View Details</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                { currentPatients.length == 0 && <tr>
-                                                    <td colSpan="8" style={{ textAlign: "center" }}>{loading ? "Loading..." : "No data found"}</td>
-                                                </tr>}
-                                                    {currentPatients.map((data, index) => (
-                                                        <tr key={index}>
-                                                            {/* <td>{index + 1}</td> */}
-                                                            <td>{(currentPage - 1) * patientsPerPage + index + 1}</td>
+                                    {activeTab === 'pending' && (
+                                        <div className="myapintmnt-content-tab pending">
+                                            <div className="pending-presc-table">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S.no.</th>
+                                                            <th>Patient Name</th>
+                                                            <th>Symptom Upload Date</th>
+                                                            <th>View Details</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {currentPatients.length == 0 && <tr>
+                                                            <td colSpan="8" style={{ textAlign: "center" }}>{loading ? "Loading..." : "No data found"}</td>
+                                                        </tr>}
+                                                        {currentPatients.map((data, index) => (
+                                                            <tr key={index}>
+                                                                {/* <td>{index + 1}</td> */}
+                                                                <td>{(currentPage - 1) * patientsPerPage + index + 1}</td>
 
-                                                            {/* <td>{data.patient_name || `Unknown Patient ${data.id}`}</td> */}
-                                                            <td><Link to="/patient-profile" state={{patientId:data.patient_id}}>{data.patient_name}</Link></td>
-                                                            {/* <td>
+                                                                {/* <td>{data.patient_name || `Unknown Patient ${data.id}`}</td> */}
+                                                                <td style={{ textAlign: 'left', paddingLeft: '45px', width: '200px' }}><Link to="/patient-profile" state={{ patientId: data.patient_id }} className="no-underline-link" style={{ display: 'inline-block' }}>{data.patient_name}</Link>
+                                                                {(data?.ds_code && 
+                                                                    <div className="time" style={{ color: "#199FD9" }}>
+                                                                        (DS Code: {data.ds_code})
+                                                                    </div> )}
+                                                                </td>
+                                                                {/* <td>
 
                                                                 <div className="date">{data.symptom_upload_date || 'N/A'}</div>
                                                                 <div className="time">{data.uploadTime || ''}</div>
                                                             </td> */}
 
-                                                            <td>
-                                                                <div className="date">{data.symptom_upload_date?.split(' ')[0]}</div>
-                                                                <div className="time">{data.symptom_upload_date?.split(' ').slice(1).join(' ')}</div>
-                                                            </td>
-                                                            <td><Link to="/PendingAssignedPrescriptionDetails" state={{ id: data.id, patientId:data.patient_id }} >View</Link></td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
+                                                                <td>
+                                                                    <div className="date">{data.symptom_upload_date?.split(' ')[0]}</div>
+                                                                    <div className="time">{data.symptom_upload_date?.split(' ').slice(1).join(' ')}</div>
+                                                                    {/* <div className="time">{convertTo24HourTime(data.symptom_upload_date)}</div> */}
+
+                                                                </td>
+                                                                <td><Link to="/PendingAssignedPrescriptionDetails" state={{ id: data.id, patientId: data.patient_id }} >View</Link></td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
+                                    )}
 
-                                {activeTab === 'completed' && (
-                                    <div className="myapintmnt-content-tab completed">
-                                        <div className="pending-presc-table">
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th>S.no.</th>
-                                                        <th>Patient Name</th>
-                                                        <th>Symptom Upload Date</th>
-                                                        <th>Respond Date</th>
-                                                        <th>Download Prescription</th>
-                                                        <th>View Profile</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {currentPatients.map((data, index) => (
-
-                                                        <tr key={index}>
-                                                            {/* <td>{index + 1}</td> */}
-                                                            <td>{indexOfFirstPatient + index + 1}</td>
-
-                                                            {/* <td>{data.patient_name}</td> */}
-                                                            <td><Link to="/patient-profile" state={{patientId:data.patient_id}}>{data.patient_name}</Link></td>
-                                                            <td>
-                                                                <div className="date">{data.symptom_upload_date.split(' ')[0]}</div>
-                                                                <div className="time">{data.symptom_upload_date.split(' ').slice(1).join(' ')}</div>
-                                                            </td>
-                                                            <td>
-                                                            <div className="date">{data.respond_date?.split(' ')[0]}</div>
-                                                            <div className="time">{data.respond_date?.split(' ').slice(1).join(' ')}</div>
-                                                            </td>
-                                                            <td>
-                                                                <div className="dwnld-btn">
-                                                                    {/* profilePic: (baseUrl+"/"+user.profile_path) || '',  */}
-                                                                    <img src="./images/dwnld-icon.svg" alt="Download Icon" />
-                                                                    <a href={(baseUrl+"/"+data.prescription_link)} download target="_blank">Download</a>
-                                                                </div>
-                                                            </td>
-                                                            <td><Link to="/patient-profile" state={{patientId:data.patient_id , hideSchedule: true, source:"prescription"}}>View</Link></td>
+                                    {activeTab === 'completed' && (
+                                        <div className="myapintmnt-content-tab completed">
+                                            <div className="pending-presc-table">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S.no.</th>
+                                                            <th>Patient Name</th>
+                                                            <th>Symptom Upload Date</th>
+                                                            <th>Respond Date</th>
+                                                            <th>Download Prescription</th>
+                                                            <th>View Profile</th>
                                                         </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {currentPatients.map((data, index) => (
 
-                                                    ))}
-                                                </tbody>
-                                            </table>
+                                                            <tr key={index}>
+                                                                {/* <td>{index + 1}</td> */}
+                                                                <td>{indexOfFirstPatient + index + 1}</td>
+
+                                                                {/* <td>{data.patient_name}</td> */}
+                                                                <td style={{ textAlign: 'left', paddingLeft: '45px', width: '200px' }}><Link to="/patient-profile" state={{ patientId: data.patient_id }} className="no-underline-link" style={{ display: 'inline-block' }}>{data.patient_name}</Link>
+                                                                {(data?.ds_code && 
+                                                                    <div className="time" style={{ color: "#199FD9" }}>
+                                                                        (DS Code: {data.ds_code})
+                                                                    </div> )}
+                                                                </td>
+                                                                <td>
+                                                                    <div className="date">{data.symptom_upload_date.split(' ')[0]}</div>
+                                                                    <div className="time">{data.symptom_upload_date.split(' ').slice(1).join(' ')}</div>
+                                                                    {/* <div className="time">{convertTo24HourTime(data.symptom_upload_date)}</div> */}
+
+                                                                </td>
+                                                                <td>
+                                                                    <div className="date">{data.respond_date?.split(' ')[0]}</div>
+                                                                    <div className="time">{data.respond_date?.split(' ').slice(1).join(' ')}</div>
+                                                                    {/* <div className="time">{convertTo24HourTime(data.respond_date)}</div> */}
+
+                                                                </td>
+                                                                <td>
+                                                                    <div className="dwnld-btn">
+                                                                        {/* profilePic: (baseUrl+"/"+user.profile_path) || '',  */}
+                                                                        <img src="./images/dwnld-icon.svg" alt="Download Icon" />
+                                                                        <a href={(baseUrl + "/" + data.prescription_link)} download target="_blank">Download</a>
+                                                                    </div>
+                                                                </td>
+                                                                <td><Link to="/patient-profile" state={{ patientId: data.patient_id, hideSchedule: true, source: "prescription" }}>View</Link></td>
+                                                            </tr>
+
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
+                                    )}
 
-{currentData.length > 0 && (
-    <Pagination 
-        currentPage={currentPage} 
-        totalPages={totalPages}
-        onPageChange={handlePageChange} 
-        onPrevious={prevPage}
-        onNext={nextPage} 
-    />
-)}
+                                    {currentData.length > 0 && (
+                                        <Pagination
+                                            currentPage={currentPage}
+                                            totalPages={totalPages}
+                                            onPageChange={handlePageChange}
+                                            onPrevious={prevPage}
+                                            onNext={nextPage}
+                                        />
+                                    )}
+                                </div>
                             </div>
                         </div>
-                    </div>
-        )}
+                    )}
                     <Footer />
                 </div>
             </main>
