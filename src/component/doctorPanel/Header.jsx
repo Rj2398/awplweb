@@ -92,7 +92,9 @@ const Header = () => {
                   alt="Icon"
                   style={{ height: "20px", width: "20px" }}
                 />
-                <Link to="/doctor-home">Dashboard</Link>
+                <Link to="/doctor-home" onClick={() => setIsSidebarOpen(false)}>
+                  Dashboard
+                </Link>
               </li>
               <li>
                 <div className="notification-set">
@@ -119,15 +121,27 @@ const Header = () => {
 
               <li>
                 <img src="/images/appointment-icon.svg" alt="Icon" />
-                <Link to="/my-appointments">My Appointments</Link>
+                <Link
+                  to="/my-appointments"
+                  onClick={() => setIsSidebarOpen(false)}
+                >
+                  My Appointments
+                </Link>
               </li>
               <li>
                 <img src="/images/pending-prescription-icon.svg" alt="Icon" />
-                <Link to="/pendingprescription">Pending prescriptions</Link>
+                <Link
+                  to="/pendingprescription"
+                  onClick={() => setIsSidebarOpen(false)}
+                >
+                  Pending prescriptions
+                </Link>
               </li>
               <li>
                 <img src="/images/past-patients-icon.svg" alt="Icon" />
-                <Link to="/pastpatient">My Past Patients</Link>
+                <Link to="/pastpatient" onClick={() => setIsSidebarOpen(false)}>
+                  My Past Patients
+                </Link>
               </li>
               {/* <li>
                 <img src="/images/terms-of-service-icon.svg" alt="Icon" />
