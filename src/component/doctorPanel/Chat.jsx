@@ -1369,7 +1369,8 @@ function Chat({ chat_id, senderImg, receiverImg }) {
                           src={msg.message} // Use msg.message for the image source
                           alt="Message attachment"
                           style={{
-                            maxWidth: "100%",
+                            maxWidth: "40%",
+                            height: 100,
                             borderRadius: "8px",
                             display: "block",
                           }}

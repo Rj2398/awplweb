@@ -403,6 +403,34 @@ const MyAppointmentsSearch = ({
     setShowSuggestions(false);
   };
 
+  // Add this utility function at the top of your file
+  const formatDateDisplay = (dateStr) => {
+    if (!dateStr) return "";
+
+    const [day, month, year] = dateStr.split("/").map(Number);
+    const date = new Date(year, month - 1, day);
+
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    return `${monthNames[date.getMonth()]} ${date
+      .getDate()
+      .toString()
+      .padStart(2, "0")}, ${date.getFullYear()}`;
+  };
+
   return (
     <div
       className="my-appointments-search-wrp"
@@ -418,14 +446,27 @@ const MyAppointmentsSearch = ({
         className="datepicker-wrp"
         style={activeTab == "upcoming" ? { display: "none" } : {}}
       >
+        {/* <input
+          type="text"
+          id="dateRangeInput"
+          placeholder="Select date range"
+          readOnly
+          value={fromDate && toDate ? `${fromDate} - ${toDate}` : ''}
+          onClick={handleCalendarToggle}
+        /> */}
         <input
           type="text"
           id="dateRangeInput"
           placeholder="Select date range"
           readOnly
-          value={fromDate && toDate ? `${fromDate} - ${toDate}` : ""}
+          value={
+            fromDate && toDate
+              ? `${formatDateDisplay(fromDate)} - ${formatDateDisplay(toDate)}`
+              : ""
+          }
           onClick={handleCalendarToggle}
         />
+
         {showCalendar && (
           <div
             className="calendar-popup"
@@ -444,21 +485,39 @@ const MyAppointmentsSearch = ({
           >
             <div className="calendar-header">
               <div className="cal-head-btn-wrp">
+                {/* <button
+                  type="button"
+                  className={`range-btn ${selectingFromDate ? 'active' : ''}`}
+                  onClick={() => setSelectingFromDate(true)}
+                >
+                  <span id="fromDateLabel">{fromDate || 'From Date'}</span>
+                </button> */}
                 <button
                   type="button"
                   className={`range-btn ${selectingFromDate ? "active" : ""}`}
                   onClick={() => setSelectingFromDate(true)}
                 >
-                  <span id="fromDateLabel">{fromDate || "From Date"}</span>
+                  <span id="fromDateLabel">
+                    {fromDate ? formatDateDisplay(fromDate) : "From Date"}
+                  </span>
                 </button>
               </div>
               <div className="cal-head-btn-wrp">
+                {/* <button
+                  type="button"
+                  className={`range-btn ${!selectingFromDate ? 'active' : ''}`}
+                  onClick={() => setSelectingFromDate(false)}
+                >
+                  <span id="toDateLabel">{toDate || 'To Date'}</span>
+                </button> */}
                 <button
                   type="button"
                   className={`range-btn ${!selectingFromDate ? "active" : ""}`}
                   onClick={() => setSelectingFromDate(false)}
                 >
-                  <span id="toDateLabel">{toDate || "To Date"}</span>
+                  <span id="toDateLabel">
+                    {toDate ? formatDateDisplay(toDate) : "To Date"}
+                  </span>
                 </button>
               </div>
 
