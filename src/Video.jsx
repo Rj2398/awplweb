@@ -1023,16 +1023,14 @@ import AgoraRTC from "agora-rtc-sdk-ng";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-const Video = ({ isCameraOn, isMuted }) => {
+const Video = ({ isCameraOn, isMuted, name }) => {
   const location = useLocation();
-  const { name: localUserName } = location.state || {}; // Renamed 'name' to 'localUserName' for clarity
-  const localUserInitial = localUserName
-    ? localUserName.charAt(0).toUpperCase()
-    : "";
+  // const { name } = location.state || {}; // Renamed 'name' to 'localUserName' for clarity
+  const localUserInitial = name ? name.charAt(0).toUpperCase() : "";
 
-  console.log(
-    `Local user name: ${localUserName}, Initial: ${localUserInitial}`
-  );
+  // console.log(
+  //   `Local user name: ${localUserName}, Initial: ${localUserInitial}`
+  // );
 
   const { channelDetails } = useSelector((state) => state.appointments);
 
@@ -1378,26 +1376,13 @@ const Video = ({ isCameraOn, isMuted }) => {
                 }}
               >
                 {/* Display remote user's initial or generic text */}
-                {user.remoteDisplayInitial ? (
-                  <span style={{ fontSize: "3em" }}>
-                    {user.remoteDisplayInitial}
-                  </span>
+                {localUserInitial ? (
+                  <span style={{ fontSize: "3em" }}>{localUserInitial}</span>
                 ) : (
                   <span>Video Off</span> // Fallback if no initial
                 )}
-                {/* Optional: Display remote user's full name if available */}
-                {user.remoteDisplayName && user.remoteDisplayInitial && (
-                  <span style={{ fontSize: "0.8em", marginTop: "5px" }}>
-                    ({user.remoteDisplayName})
-                  </span>
-                )}
               </div>
             ) : (
-              // When video is NOT muted, Agora will inject the <video> tag directly into
-              // the `id={`remote-player-${user.uid}`} div itself.
-              // No need for an extra wrapper div here.
-              // The critical styling for the Agora injected video will be applied dynamically.
-              // This div will simply act as the container for the video.
               <div
                 style={{
                   position: "absolute", // Make this fill the parent
