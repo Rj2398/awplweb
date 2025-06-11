@@ -1176,6 +1176,20 @@ function Chat({ chat_id, senderImg, receiverImg }) {
     }
   };
 
+  const isImageURL = (str) => {
+    if (typeof str !== "string") return false;
+
+    // Updated regex:
+    // - Look for .extension
+    // - Then optionally allow for query parameters (?...) or hash fragments (#...)
+    // - Match case-insensitively
+    const imageRegex = /\.(jpg|jpeg|png|gif|webp|bmp|tiff|svg)(\?.*)?(#.*)?$/i;
+
+    return (
+      (str.startsWith("http://") || str.startsWith("https://")) &&
+      imageRegex.test(str)
+    );
+  };
   return (
     <div className="completed-appoint-scrn-right col-lg-6">
       <div className="completed-appoint-chat-scrn">
@@ -1333,11 +1347,46 @@ function Chat({ chat_id, senderImg, receiverImg }) {
                           />
                         )}
 
-                      {/* Display message/caption only if it's a text message type */}
-                      {msg.type === "text" && msg.message && (
+                      {/* {msg.type == "image" &&
+                        msg.message && ( // Now check msg.message as it holds the URL
+                          <img
+                            src={msg.message} // Use msg.message for the image source
+                            alt="Message attachment"
+                            style={{
+                              maxWidth: "100%",
+                              borderRadius: "8px",
+                              display: "block",
+                            }}
+                          />
+                        )}
+                      {/* Display text content ONLY if it's a text message type */}
+                      {/* {msg.type === "text" && msg.message && (
                         <div>{msg.message}</div>
-                      )}
+                      )} */}
 
+                      {isImageURL(msg.message) ? ( // Check if msg.message is an image URL
+                        <img
+                          src={msg.message} // Use msg.message for the image source
+                          alt="Message attachment"
+                          style={{
+                            maxWidth: "100%",
+                            borderRadius: "8px",
+                            display: "block",
+                          }}
+                          onError={(e) => {
+                            // Added onError to help debug broken image URLs
+                            console.error(
+                              "Error loading image from URL:",
+                              e.target.src
+                            );
+                            e.target.style.display = "none"; // Hide the broken image icon
+                            // Optional: display a fallback message or icon if the image fails to load
+                          }}
+                        />
+                      ) : (
+                        // If it's NOT detected as an image URL, then display it as text
+                        msg.message && <div>{msg.message}</div>
+                      )}
                       <div
                         style={{
                           fontSize: "10px",
