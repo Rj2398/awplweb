@@ -413,7 +413,7 @@
 
 // export default Chat;
 
-// // //
+// //
 // import React, { useEffect, useState, useRef } from "react";
 // import {
 //   collection,
@@ -427,20 +427,15 @@
 //   writeBatch,
 //   serverTimestamp,
 // } from "firebase/firestore";
-// import {
-//   ref, // For creating storage references
-//   uploadBytes, // For uploading bytes/files
-//   getDownloadURL, // For getting the public URL of an uploaded file
-// } from "firebase/storage"; // <--- Import Storage functions
-// import { v4 as uuidv4 } from "uuid"; // <--- Import uuid for unique filenames
-// import { db, storage } from "./Firebase"; // <--- Import storage here
+// import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+// import { v4 as uuidv4 } from "uuid";
+// import { db, storage } from "./Firebase";
 
 // function Chat({ chat_id, senderImg, receiverImg }) {
 //   const [messages, setMessages] = useState([]);
 //   const [text, setText] = useState("");
-//   const [imageFile, setImageFile] = useState(null); // <--- New state for selected image
-//   console.log(imageFile, "sjdfklashdfjksahdfjhdfk");
-//   const [isUploading, setIsUploading] = useState(false); // <--- New state for upload status
+//   const [imageFile, setImageFile] = useState(null);
+//   const [isUploading, setIsUploading] = useState(false);
 
 //   const messagesEndRef = useRef(null);
 
@@ -472,7 +467,6 @@
 //   };
 //   // --- End Helper functions ---
 
-//   // useEffect for fetching messages and real-time updates
 //   useEffect(() => {
 //     if (!chatId) {
 //       console.warn("chatId is missing, skipping message fetch.");
@@ -494,25 +488,18 @@
 //     return () => unsubscribe();
 //   }, [chatId]);
 
-//   // useEffect for auto-scrolling
 //   useEffect(() => {
-//     // Scroll to bottom when messages change, but only if the user hasn't scrolled up manually
-//     // or if it's the initial load.
 //     if (messagesEndRef.current) {
 //       const { scrollTop, scrollHeight, clientHeight } = messagesEndRef.current;
-//       // Only scroll to bottom if we are already at the bottom or very close to it
-//       // This prevents interrupting user if they are reading older messages
 //       if (
 //         scrollHeight - scrollTop < clientHeight + 200 ||
 //         messages.length <= 1
 //       ) {
-//         // 200px tolerance
 //         messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
 //       }
 //     }
 //   }, [messages]);
 
-//   // --- NEW useEffect for marking messages as 'seen' ---
 //   useEffect(() => {
 //     if (!chatId || !myUserId || !otherParticipantId) return;
 
@@ -549,91 +536,92 @@
 
 //     return () => unsubscribeSeenUpdater();
 //   }, [chatId, myUserId, otherParticipantId]);
-//   // --- END NEW useEffect ---
 
-//   // --- New Function for Image Selection ---
 //   const handleImageChange = (e) => {
 //     if (e.target.files[0]) {
 //       setImageFile(e.target.files[0]);
 //     }
 //   };
 
-//   // --- Function to clear selected image preview ---
 //   const clearImage = () => {
 //     setImageFile(null);
-//     // Also clear the file input's value if it's a controlled component
 //     const fileInput = document.getElementById("fileInput");
 //     if (fileInput) {
-//       fileInput.value = ""; // Clear the file input value
+//       fileInput.value = "";
 //     }
 //   };
 
 //   const sendMessage = async (e) => {
 //     e.preventDefault();
 
-//     // Check if there's text or an image to send
 //     if (!text.trim() && !imageFile) {
-//       return; // Nothing to send, exit the function
+//       return;
 //     }
 
-//     // Set uploading state to prevent multiple sends
 //     setIsUploading(true);
 
-//     const clientTimestamp = Date.now(); // Client-side timestamp for immediate display
+//     const clientTimestamp = Date.now();
 //     let messageData = {
 //       senderId: myUserId,
 //       receiverId: otherParticipantId,
-//       timestamp: clientTimestamp, // Use client timestamp for optimistic UI
-//       seen: false, // Seen status applies to all messages, including images
+//       timestamp: clientTimestamp,
+//       seen: false,
 //     };
 
 //     try {
 //       if (imageFile) {
-//         // 1. Upload image to Firebase Storage
 //         const imageFileName = `chat_images/${chatId}/${uuidv4()}-${
 //           imageFile.name
 //         }`;
-
 //         const storageReference = ref(storage, imageFileName);
-//         console.log(storageReference, "storage reference data***");
 
 //         const uploadTaskSnapshot = await uploadBytes(
 //           storageReference,
 //           imageFile
 //         );
-//         console.log(uploadTaskSnapshot, "upload task*****");
 //         const imageUrl = await getDownloadURL(uploadTaskSnapshot.ref);
 
 //         messageData = {
 //           ...messageData,
-//           type: "image", // Mark as image message
-//           imageUrl: imageUrl, // Store the download URL
-//           message: text.trim() ? text : null, // Optional: caption for the image
+//           type: "image",
+//           message: imageUrl, // <--- Image URL is now stored under the 'message' key
+//           // Note: If you want a separate text caption, you'll need a new field here, e.g., 'caption: text,'
+//           // as 'message' now holds the imageUrl.
 //         };
 //       } else {
-//         // It's a plain text message
 //         messageData = {
 //           ...messageData,
-//           type: "text", // Mark as text message
+//           type: "text",
 //           message: text,
 //         };
 //       }
 
-//       // 2. Add message to Firestore
 //       await addDoc(collection(db, "chats", chatId, "messages"), messageData);
 
-//       // Clear inputs and states after successful send
 //       setText("");
-//       setImageFile(null); // Clear selected image
-//       clearImage(); // Ensure file input is reset too
+//       setImageFile(null);
+//       clearImage();
 //     } catch (error) {
 //       console.error("Error sending message:", error);
-//       // You might want to show a user-friendly error message here
 //     } finally {
-//       setIsUploading(false); // Reset uploading state
+//       setIsUploading(false);
 //     }
 //   };
 
+//   const isImageURL = (str) => {
+//     if (typeof str !== "string") return false;
+
+//     // Updated regex:
+//     // - Look for .extension
+//     // - Then optionally allow for query parameters (?...) or hash fragments (#...)
+//     // - Match case-insensitively
+//     const imageRegex = /\.(jpg|jpeg|png|gif|webp|bmp|tiff|svg)(\?.*)?(#.*)?$/i;
+
+//     return (
+//       (str.startsWith("http://") || str.startsWith("https://")) &&
+//       imageRegex.test(str)
+//     );
+//   };
 //   return (
 //     <div className="completed-appoint-scrn-right col-lg-6">
 //       <div className="completed-appoint-chat-scrn">
@@ -680,8 +668,6 @@
 //                   showDateSeparator = true;
 //                 } else {
 //                   const prevMsg = messages[index - 1];
-//                   // Use the actual timestamp from Firestore for comparison, not clientTimestamp
-//                   // For newly sent messages, `timestamp` will be a number. For old messages, it might be a Firestore Timestamp object.
 //                   const prevTimestamp = prevMsg.timestamp?.toDate
 //                     ? prevMsg.timestamp.toDate().getTime()
 //                     : prevMsg.timestamp;
@@ -778,23 +764,44 @@
 //                           : otherMessageBorderRadius),
 //                       }}
 //                     >
-//                       {/* --- Conditional Rendering for Image vs. Text --- */}
-//                       {msg.type === "image" && msg.imageUrl && (
+//                       {/* --- Conditional Rendering for Image vs. Text (UPDATED) --- */}
+//                       {msg.type === "image" &&
+//                         msg.message && ( // Now check msg.message as it holds the URL
+//                           <img
+//                             src={msg.message} // Use msg.message for the image source
+//                             alt="Message attachment"
+//                             style={{
+//                               maxWidth: "100%",
+//                               borderRadius: "8px",
+//                               // No marginBottom here unless you introduce a separate caption field
+//                               display: "block",
+//                             }}
+//                           />
+//                         )}
+
+//                       {isImageURL(msg.message) ? ( // Check if msg.message is an image URL
 //                         <img
-//                           src={msg.imageUrl}
+//                           src={msg.message} // Use msg.message for the image source
 //                           alt="Message attachment"
 //                           style={{
 //                             maxWidth: "100%",
 //                             borderRadius: "8px",
-//                             marginBottom: msg.message ? "8px" : "0", // Add margin only if there's a caption
 //                             display: "block",
 //                           }}
+//                           onError={(e) => {
+//                             // Added onError to help debug broken image URLs
+//                             console.error(
+//                               "Error loading image from URL:",
+//                               e.target.src
+//                             );
+//                             e.target.style.display = "none"; // Hide the broken image icon
+//                             // Optional: display a fallback message or icon if the image fails to load
+//                           }}
 //                         />
+//                       ) : (
+//                         // If it's NOT detected as an image URL, then display it as text
+//                         msg.message && <div>{msg.message}</div>
 //                       )}
-
-//                       {/* Display message/caption only if it exists */}
-//                       {msg.message && <div>{msg.message}</div>}
-
 //                       <div
 //                         style={{
 //                           fontSize: "10px",
@@ -862,10 +869,8 @@
 //                 </React.Fragment>
 //               );
 //             })}
-//             {/* This div is for scrolling to bottom */}
 //             <div ref={messagesEndRef} />
 //           </div>
-//           {/* --- Image Preview Section (New) --- */}
 //           {imageFile && (
 //             <div
 //               style={{
@@ -913,7 +918,6 @@
 //               </button>
 //             </div>
 //           )}
-//           {/* --- End Image Preview Section --- */}
 
 //           <form
 //             onSubmit={sendMessage}
@@ -937,7 +941,7 @@
 //                   borderRadius: "30px",
 //                   border: "1px solid #ccc",
 //                 }}
-//                 disabled={isUploading} // Disable text input during upload
+//                 disabled={isUploading}
 //               />
 //               <div
 //                 className="chat-file-upld"
@@ -948,14 +952,13 @@
 //                   transform: "translateY(-50%)",
 //                 }}
 //               >
-//                 {/* Connect your existing file input */}
 //                 <input
 //                   type="file"
 //                   style={{ display: "none" }}
 //                   id="fileInput"
-//                   accept="image/*" // Accept only image files
-//                   onChange={handleImageChange} // Handle file selection
-//                   disabled={isUploading} // Disable file input during upload
+//                   accept="image/*"
+//                   onChange={handleImageChange}
+//                   disabled={isUploading}
 //                 />
 //                 <label
 //                   htmlFor="fileInput"
@@ -969,7 +972,7 @@
 //             <button
 //               type="submit"
 //               className="send-btn"
-//               disabled={isUploading || (!text.trim() && !imageFile)} // Disable if uploading, or no text/image
+//               disabled={isUploading || (!text.trim() && !imageFile)}
 //             >
 //               <img src="./images/send-icon.svg" alt="Icon" />
 //             </button>
@@ -981,6 +984,8 @@
 // }
 
 // export default Chat;
+
+//
 
 import React, { useEffect, useState, useRef } from "react";
 import {
@@ -999,13 +1004,23 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { db, storage } from "./Firebase";
 
+// Helper function for image URL detection (keep this outside the component or memoized)
+const isImageURL = (str) => {
+  if (typeof str !== "string") return false;
+  const imageRegex = /\.(jpg|jpeg|png|gif|webp|bmp|tiff|svg)(\?.*)?(#.*)?$/i;
+  return (
+    (str.startsWith("http://") || str.startsWith("https://")) &&
+    imageRegex.test(str)
+  );
+};
+
 function Chat({ chat_id, senderImg, receiverImg }) {
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  const messagesEndRef = useRef(null);
+  const messagesEndRef = useRef(null); // Ref for the scrollable container's end
 
   const chatId = chat_id;
   const ids = chat_id.split("_");
@@ -1056,15 +1071,11 @@ function Chat({ chat_id, senderImg, receiverImg }) {
     return () => unsubscribe();
   }, [chatId]);
 
+  // --- UPDATED useEffect for consistent auto-scrolling ---
+  // This will scroll to the bottom whenever messages state changes.
   useEffect(() => {
     if (messagesEndRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = messagesEndRef.current;
-      if (
-        scrollHeight - scrollTop < clientHeight + 200 ||
-        messages.length <= 1
-      ) {
-        messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
-      }
+      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
     }
   }, [messages]);
 
@@ -1134,6 +1145,7 @@ function Chat({ chat_id, senderImg, receiverImg }) {
       receiverId: otherParticipantId,
       timestamp: clientTimestamp,
       seen: false,
+      type: "text", // Default to text, will be overridden for image
     };
 
     try {
@@ -1152,9 +1164,7 @@ function Chat({ chat_id, senderImg, receiverImg }) {
         messageData = {
           ...messageData,
           type: "image",
-          message: imageUrl, // <--- Image URL is now stored under the 'message' key
-          // Note: If you want a separate text caption, you'll need a new field here, e.g., 'caption: text,'
-          // as 'message' now holds the imageUrl.
+          message: imageUrl,
         };
       } else {
         messageData = {
@@ -1176,20 +1186,6 @@ function Chat({ chat_id, senderImg, receiverImg }) {
     }
   };
 
-  const isImageURL = (str) => {
-    if (typeof str !== "string") return false;
-
-    // Updated regex:
-    // - Look for .extension
-    // - Then optionally allow for query parameters (?...) or hash fragments (#...)
-    // - Match case-insensitively
-    const imageRegex = /\.(jpg|jpeg|png|gif|webp|bmp|tiff|svg)(\?.*)?(#.*)?$/i;
-
-    return (
-      (str.startsWith("http://") || str.startsWith("https://")) &&
-      imageRegex.test(str)
-    );
-  };
   return (
     <div className="completed-appoint-scrn-right col-lg-6">
       <div className="completed-appoint-chat-scrn">
@@ -1197,11 +1193,12 @@ function Chat({ chat_id, senderImg, receiverImg }) {
           className="chat-container"
           style={{ padding: "20px", maxHeight: "600px" }}
         >
+          {/* Apply ref to the actual scrollable div */}
           <div
             className="chat-messages"
-            ref={messagesEndRef}
+            ref={messagesEndRef} // <-- Ensure this ref is on the scrollable div
             style={{
-              height: "400px",
+              height: "400px", // Make sure this height is fixed for scrolling to work
               overflowY: "scroll",
               marginBottom: "10px",
               WebkitOverflowScrolling: "touch",
@@ -1332,60 +1329,27 @@ function Chat({ chat_id, senderImg, receiverImg }) {
                           : otherMessageBorderRadius),
                       }}
                     >
-                      {/* --- Conditional Rendering for Image vs. Text (UPDATED) --- */}
-                      {msg.type === "image" &&
-                        msg.message && ( // Now check msg.message as it holds the URL
-                          <img
-                            src={msg.message} // Use msg.message for the image source
-                            alt="Message attachment"
-                            style={{
-                              maxWidth: "100%",
-                              borderRadius: "8px",
-                              // No marginBottom here unless you introduce a separate caption field
-                              display: "block",
-                            }}
-                          />
-                        )}
-
-                      {/* {msg.type == "image" &&
-                        msg.message && ( // Now check msg.message as it holds the URL
-                          <img
-                            src={msg.message} // Use msg.message for the image source
-                            alt="Message attachment"
-                            style={{
-                              maxWidth: "100%",
-                              borderRadius: "8px",
-                              display: "block",
-                            }}
-                          />
-                        )}
-                      {/* Display text content ONLY if it's a text message type */}
-                      {/* {msg.type === "text" && msg.message && (
-                        <div>{msg.message}</div>
-                      )} */}
-
-                      {isImageURL(msg.message) ? ( // Check if msg.message is an image URL
+                      {isImageURL(msg.message) ? (
                         <img
-                          src={msg.message} // Use msg.message for the image source
+                          src={msg.message}
                           alt="Message attachment"
                           style={{
-                            maxWidth: "40%",
-                            height: 100,
+                            maxWidth: "100%",
+                            width: "200px", // Changed from 250px
+                            height: "250px", // Changed from 300px
+                            objectFit: "cover",
                             borderRadius: "8px",
                             display: "block",
                           }}
                           onError={(e) => {
-                            // Added onError to help debug broken image URLs
                             console.error(
                               "Error loading image from URL:",
                               e.target.src
                             );
-                            e.target.style.display = "none"; // Hide the broken image icon
-                            // Optional: display a fallback message or icon if the image fails to load
+                            e.target.style.display = "none";
                           }}
                         />
                       ) : (
-                        // If it's NOT detected as an image URL, then display it as text
                         msg.message && <div>{msg.message}</div>
                       )}
                       <div
@@ -1455,7 +1419,6 @@ function Chat({ chat_id, senderImg, receiverImg }) {
                 </React.Fragment>
               );
             })}
-            <div ref={messagesEndRef} />
           </div>
           {imageFile && (
             <div
