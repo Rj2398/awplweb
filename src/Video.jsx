@@ -549,16 +549,16 @@ import AgoraRTC from "agora-rtc-sdk-ng";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-const Video = ({ isCameraOn, isMuted }) => {
+const Video = ({ isCameraOn, isMuted, patientInfo }) => {
   const location = useLocation();
-  const { name: localUserName } = location.state || {}; // Renamed 'name' to 'localUserName' for clarity
-  const localUserInitial = localUserName
-    ? localUserName.charAt(0).toUpperCase()
+  // const { name: localUserName } = location.state || {}; // Renamed 'name' to 'localUserName' for clarity
+  const localUserInitial = patientInfo
+    ? patientInfo.charAt(0).toUpperCase()
     : "";
 
-  console.log(
-    `Local user name: ${localUserName}, Initial: ${localUserInitial}`
-  );
+  // console.log(
+  //   `Local user name: ${localUserName}, Initial: ${localUserInitial}`
+  // );
 
   const { channelDetails } = useSelector((state) => state.appointments);
 
@@ -858,10 +858,12 @@ const Video = ({ isCameraOn, isMuted }) => {
           // Adjust grid for responsiveness based on number of users
           gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
           gap: "10px",
-          padding: "10px",
+          // padding: "10px",
           overflowY: "auto", // Enable scrolling if many remote users
           justifyContent: "center", // Center grid items
           alignContent: "center", // Center grid rows
+          width: "100%",
+          height: "700px",
         }}
       >
         {Object.entries(remoteUsers).map(([uid, user]) => (
@@ -884,6 +886,8 @@ const Video = ({ isCameraOn, isMuted }) => {
               textAlign: "center",
               boxShadow: "0 2px 8px rgba(0,0,0,0.4)",
               backgroundColor: "#0c0d0f", // Ensure background for mute state
+              width: "100%",
+              height: "700px",
             }}
           >
             {/* Display placeholder if remote user's video is muted */}
@@ -904,18 +908,10 @@ const Video = ({ isCameraOn, isMuted }) => {
                 }}
               >
                 {/* Display remote user's initial or generic text */}
-                {user.remoteDisplayInitial ? (
-                  <span style={{ fontSize: "3em" }}>
-                    {user.remoteDisplayInitial}
-                  </span>
+                {localUserInitial ? (
+                  <span style={{ fontSize: "3em" }}>{localUserInitial}</span>
                 ) : (
                   <span>Video Off</span> // Fallback if no initial
-                )}
-                {/* Optional: Display remote user's full name if available */}
-                {user.remoteDisplayName && user.remoteDisplayInitial && (
-                  <span style={{ fontSize: "0.8em", marginTop: "5px" }}>
-                    ({user.remoteDisplayName})
-                  </span>
                 )}
               </div>
             ) : (

@@ -585,16 +585,6 @@ const MyAppointments = () => {
                                       1
                                   ).padStart(2, "0")}
                                 </td>
-                                {/* <td>
-                                                                <img src={baseUrl + "/" + patient?.patient_profile} alt="Patient" />
-                                                                <Link to="/patient-profile" state={{ patientId: patient.patient_id }}><h3>{patient.patient_name || "-"}</h3></Link> 
-                                                                
-                                                                <div className="time" style={{ color: "#199fd9" }}>
-                                                                     (DS Code: {patient.ds_code})
-                                                                </div>
-                                                                
-
-                                                            </td> */}
 
                                 <td
                                   style={{
@@ -626,11 +616,7 @@ const MyAppointments = () => {
                                         {patient.patient_name || "-"}
                                       </h3>
                                     </Link>
-                                    {/* {(patient?.ds_code &&
-                                                                        <div style={{ color: "#199fd9", marginTop: "2px" }}>
-                                                                            (DS Code: {patient.ds_code})
-                                                                        </div>
-                                                                    )} */}
+
                                     {patient?.referred == true ? (
                                       <div
                                         style={{
@@ -676,20 +662,7 @@ const MyAppointments = () => {
                                     {patient.datetime.split(" ")[2]}
                                   </div>
                                 </td>
-                                {/* <td>
-                                                                {patient.status === 1 ? (
-                                                                    // <Link to="/videocall" className="orange-btn">Start Now</Link>
-                                                                    <a className="orange-btn" style={{ cursor: "pointer" }} onClick={() => handleCreateChannel(patient.appointment_id)}>Start now</a>) : isWithinTwoHours(patient.datetime) ? (
-                                                                        <div className="info-tooltip">
-                                                                            <i className="fas fa-info-circle"></i>
 
-                                                                        </div>
-                                                                    ) : (
-                                                                    <button type="button" className="cmn-btn blue-bg" onClick={() => handleCancelClick(patient.appointment_id)}>
-                                                                        Cancel
-                                                                    </button>
-                                                                )}
-                                                            </td> */}
                                 <td>
                                   {patient.status === 1 ? (
                                     <a

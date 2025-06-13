@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Video from "../../Video";
-import Header from '../doctorPanel/Header';
+import Header from "../doctorPanel/Header";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { completePrescription, medicineSearch } from "../../redux/slices/userSlice";
+import {
+  completePrescription,
+  medicineSearch,
+} from "../../redux/slices/userSlice";
 import { toast } from "react-toastify";
 import { getPatientProfileData } from "../../redux/slices/patientProfileSlice";
 import { videoCallSubmit } from "../../redux/slices/dataSlice";
@@ -24,7 +27,7 @@ const VideoCall = () => {
 
   useEffect(() => {
     if (patientId) {
-      dispatch(getPatientProfileData({ "patientId": patientId }));
+      dispatch(getPatientProfileData({ patientId: patientId }));
     }
   }, [dispatch, patientId]);
 
@@ -34,7 +37,8 @@ const VideoCall = () => {
     loading,
     loading2,
     error,
-    medicineSearch: medicineSearchResults, user
+    medicineSearch: medicineSearchResults,
+    user,
   } = useSelector((state) => state.user);
   // const [showModal, setShowModal] = useState(false);
   const [debouncedQueries, setDebouncedQueries] = useState([]);
@@ -61,10 +65,9 @@ const VideoCall = () => {
 
   const [seconds, setSeconds] = useState(0);
 
-
   useEffect(() => {
     const timer = setInterval(() => {
-      setSeconds(prev => prev + 1);
+      setSeconds((prev) => prev + 1);
     }, 1000);
     return () => clearInterval(timer);
   }, []);
@@ -135,10 +138,9 @@ const VideoCall = () => {
 
     setMedicines(updated);
 
-
     setMedicineErrors((prev) => {
       const newErrors = [...prev];
-      newErrors[index] = '';
+      newErrors[index] = "";
       return newErrors;
     });
     setServerSuggestions((prev) => ({
@@ -181,10 +183,14 @@ const VideoCall = () => {
   };
   const handleSubmit = async () => {
     // Validate required fields
-    if (!diagnosis || medicines.some(med =>
-      !med.medicineName || !med.dosage || !med.frequency || !med.duration
-    )) {
-      toast.error('All fields are required (marked with *)');
+    if (
+      !diagnosis ||
+      medicines.some(
+        (med) =>
+          !med.medicineName || !med.dosage || !med.frequency || !med.duration
+      )
+    ) {
+      toast.error("All fields are required (marked with *)");
       return;
     }
 
@@ -200,17 +206,17 @@ const VideoCall = () => {
         );
 
         if (!isValid) {
-          errors[i] = 'Please select a valid medicine name from suggestions';
+          errors[i] = "Please select a valid medicine name from suggestions";
           hasErrors = true;
         } else {
-          errors[i] = '';
+          errors[i] = "";
           // Update the isValid flag if it was valid but the flag wasn't set
           const updated = [...medicines];
           updated[i].isValid = true;
           setMedicines(updated);
         }
       } else {
-        errors[i] = '';
+        errors[i] = "";
       }
     });
 
@@ -224,30 +230,26 @@ const VideoCall = () => {
     //   return;
     // }
 
-
     const formData = {
       // symptom_id: id,
       appointment_id: id,
       diagnosis,
       notes,
-      medicines: medicines.map(med => ({
+      medicines: medicines.map((med) => ({
         name: med.medicineName,
         dosage: med.dosage,
         frequency: med.frequency,
-        duration: med.duration
-      }))
+        duration: med.duration,
+      })),
     };
-    console.log(formData, 'ffff')
+    console.log(formData, "ffff");
 
-    const res = await dispatch(videoCallSubmit(formData))
+    const res = await dispatch(videoCallSubmit(formData));
     // if (res.payload && res.payload.status) {
     //   // setShowModal(true);
     //   navigate("/doctor-home")
 
     // }
-
-
-
   };
 
   const handleToggleMute = () => setIsMuted((prev) => !prev);
@@ -268,17 +270,22 @@ const VideoCall = () => {
   // };
 
   const formatTime = (totalSeconds) => {
-    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
-    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
-    const secs = String(totalSeconds % 60).padStart(2, '0');
+    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
+      2,
+      "0"
+    );
+    const secs = String(totalSeconds % 60).padStart(2, "0");
     return `${hours}:${minutes}:${secs}`;
   };
-
 
   return (
     <main className="doctor-panel video-call-pg">
       <div className="container-fluid">
-        <div className="doc-panel-inr"> <Header /> </div>
+        <div className="doc-panel-inr">
+          {" "}
+          <Header />{" "}
+        </div>
         {/* Header */}
         {/* <div className="doc-panel-header">
             <div className="logo">
@@ -300,8 +307,9 @@ const VideoCall = () => {
                       <h1>{user.name}</h1>
                       <div className="vdoscrn-status-time-wrp">
                         <span className="vdoscrn-status live">LIVE</span>
-                        <span className="vdoscrnduration-time">{formatTime(seconds)}</span>
-
+                        <span className="vdoscrnduration-time">
+                          {formatTime(seconds)}
+                        </span>
                       </div>
                     </div>
                     <div className="vdoscrn-controls-body">
@@ -375,7 +383,11 @@ const VideoCall = () => {
 
                   <div className="patient-vdo-screen">
                     {/* <img src="./images/patient-video-thumb.png" alt="Patient Video Thumbnail" /> */}
-                    <Video isCameraOn={isCameraOn} isMuted={isMuted} />
+                    <Video
+                      isCameraOn={isCameraOn}
+                      isMuted={isMuted}
+                      patientInfo={patientInfo.name}
+                    />
                   </div>
                 </div>
               </div>
@@ -396,12 +408,30 @@ const VideoCall = () => {
                         <h2>Patient Details:</h2>
                         <div className="vdoclscrnpd">
                           {[
-                            { label: "Patient Name", value: patientInfo.name || "N/A" },
+                            {
+                              label: "Patient Name",
+                              value: patientInfo.name || "N/A",
+                            },
                             { label: "Age", value: patientInfo.age || "N/A" },
-                            { label: "Gender", value: patientInfo.gender ? patientInfo.gender.charAt(0).toUpperCase() + patientInfo.gender.slice(1) : "N/A" },
-                            { label: "Height", value: patientInfo.height || "N/A" },
-                            { label: "Weight", value: patientInfo.weight || "N/A" },
-                            { label: "Contact No.", value: patientInfo.phone_no || "N/A" },
+                            {
+                              label: "Gender",
+                              value: patientInfo.gender
+                                ? patientInfo.gender.charAt(0).toUpperCase() +
+                                  patientInfo.gender.slice(1)
+                                : "N/A",
+                            },
+                            {
+                              label: "Height",
+                              value: patientInfo.height || "N/A",
+                            },
+                            {
+                              label: "Weight",
+                              value: patientInfo.weight || "N/A",
+                            },
+                            {
+                              label: "Contact No.",
+                              value: patientInfo.phone_no || "N/A",
+                            },
                           ].map((item, index) => (
                             <div className="vdoclscrnpd-grp" key={index}>
                               <span className="vdoclscrnpd-label">
@@ -444,7 +474,6 @@ const VideoCall = () => {
                                     autoComplete="off"
                                   />
 
-
                                   <input type="submit" value="search" />
                                   {medicineErrors[index] && (
                                     <div
@@ -458,7 +487,8 @@ const VideoCall = () => {
                                     </div>
                                   )}
                                   {activeMedicineIndex === index &&
-                                    medicine.medicineName && !medicineErrors[index] && (
+                                    medicine.medicineName &&
+                                    !medicineErrors[index] && (
                                       <ul
                                         style={{
                                           position: "absolute",
@@ -472,42 +502,40 @@ const VideoCall = () => {
 
                                           paddingLeft: "10px",
                                           listStyle: "none",
-
                                         }}
                                       >
                                         {medicine.suggestions.length > 0
                                           ? medicine.suggestions.map(
-                                            (sug, i) => (
+                                              (sug, i) => (
+                                                <li
+                                                  key={i}
+                                                  onClick={() =>
+                                                    handleSuggestionSelect(
+                                                      index,
+                                                      sug.product_name
+                                                    )
+                                                  }
+                                                  style={{
+                                                    cursor: "pointer",
+                                                    padding: 5,
+                                                  }}
+                                                >
+                                                  {sug.product_name}
+                                                </li>
+                                              )
+                                            )
+                                          : medicine.medicineName.trim()
+                                              .length > 0 &&
+                                            !medicineErrors[index] && (
                                               <li
-                                                key={i}
-                                                onClick={() =>
-                                                  handleSuggestionSelect(
-                                                    index,
-                                                    sug.product_name
-                                                  )
-                                                }
                                                 style={{
-                                                  cursor: "pointer",
                                                   padding: 5,
+                                                  color: "#999",
                                                 }}
                                               >
-                                                {sug.product_name}
+                                                No data found
                                               </li>
-                                            )
-                                          )
-                                          : medicine.medicineName.trim()
-                                            .length > 0 &&
-                                          !medicineErrors[index] && (
-                                            <li
-                                              style={{
-                                                padding: 5,
-                                                color: "#999",
-
-                                              }}
-                                            >
-                                              No data found
-                                            </li>
-                                          )}
+                                            )}
                                       </ul>
                                     )}
                                 </div>
@@ -531,25 +559,38 @@ const VideoCall = () => {
                                 />
                               </div>
                               <div className="formfield">
-                                <label>Frequency<span>*</span></label>
+                                <label>
+                                  Frequency<span>*</span>
+                                </label>
                                 <select
                                   value={medicine.frequency}
-                                  onChange={(e) => handleMedicineChange(index, 'frequency', e.target.value)}
+                                  onChange={(e) =>
+                                    handleMedicineChange(
+                                      index,
+                                      "frequency",
+                                      e.target.value
+                                    )
+                                  }
                                   required
                                   style={{
-                                    backgroundColor: '#F9F9F9',
+                                    backgroundColor: "#F9F9F9",
 
-
-                                    padding: '8px',
-                                    width: '100%',
-                                    borderRadius: '4px',
-                                    fontSize: '16px'
+                                    padding: "8px",
+                                    width: "100%",
+                                    borderRadius: "4px",
+                                    fontSize: "16px",
                                   }}
                                 >
                                   <option value="">Select Frequency</option>
-                                  <option value="1 time (in a day)">1 time (in a day)</option>
-                                  <option value="2 times (in a day)">2 times (in a day)</option>
-                                  <option value="3 times (in a day)">3 times (in a day)</option>
+                                  <option value="1 time (in a day)">
+                                    1 time (in a day)
+                                  </option>
+                                  <option value="2 times (in a day)">
+                                    2 times (in a day)
+                                  </option>
+                                  <option value="3 times (in a day)">
+                                    3 times (in a day)
+                                  </option>
                                 </select>
                               </div>
 
@@ -570,10 +611,7 @@ const VideoCall = () => {
                                   }
                                   required
                                 />
-
                               </div>
-
-
                             </div>
 
                             <hr
@@ -617,16 +655,15 @@ const VideoCall = () => {
                             onChange={handleNotesChange}
                             rows={4}
                             style={{
-                              width: '100%',
-                              resize: 'vertical',
-                              backgroundColor: '#fff',  // ✅ Fixes blue background
-                              color: '#000',            // ✅ Optional: ensure readable text
-                              border: '1px solid #ccc', // Optional: better border
-                              borderRadius: '4px',      // Optional: softer corners
-                              padding: '8px'            // Optional: internal spacing
+                              width: "100%",
+                              resize: "vertical",
+                              backgroundColor: "#fff", // ✅ Fixes blue background
+                              color: "#000", // ✅ Optional: ensure readable text
+                              border: "1px solid #ccc", // Optional: better border
+                              borderRadius: "4px", // Optional: softer corners
+                              padding: "8px", // Optional: internal spacing
                             }}
                           />
-
                         </div>
                       </div>
 
@@ -664,10 +701,8 @@ const VideoCall = () => {
                 </form>
               )}
             </div>
-
           </div>
         </div>
-
       </div>
     </main>
   );
