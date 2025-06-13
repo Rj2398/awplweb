@@ -413,9 +413,9 @@ const MyAppointments = () => {
                                     <div className="my-appointments-tab-head">
                                         <ul style={{ position: 'relative' }}>
                                             <li className="tab-bg"></li>
-                                            <li style={activeTab == 'upcoming' ? { backgroundColor: 'white', borderRadius:"10px", color:'#356598' } : {}} onClick={() => setActiveTab('upcoming')} > Upcoming </li>
-                                            <li style={activeTab == 'completed' ? { backgroundColor: 'white', borderRadius:"10px", color:'#356598' } : {}} onClick={() => setActiveTab('completed')} > Completed </li>
-                                            <li style={activeTab == 'cancelled' ? { backgroundColor: 'white', borderRadius:"10px", color:'#356598' } : {}} onClick={() => setActiveTab('cancelled')} > Cancelled </li>
+                                            <li style={activeTab == 'upcoming' ? { backgroundColor: 'white', borderRadius: "10px", color: '#356598' } : {}} onClick={() => setActiveTab('upcoming')} > Upcoming </li>
+                                            <li style={activeTab == 'completed' ? { backgroundColor: 'white', borderRadius: "10px", color: '#356598' } : {}} onClick={() => setActiveTab('completed')} > Completed </li>
+                                            <li style={activeTab == 'cancelled' ? { backgroundColor: 'white', borderRadius: "10px", color: '#356598' } : {}} onClick={() => setActiveTab('cancelled')} > Cancelled </li>
                                         </ul>
                                     </div>
 
@@ -440,7 +440,7 @@ const MyAppointments = () => {
                                                         <th>Age</th>
                                                         <th>Gender</th>
                                                         <th>Phone number</th>
-                                                        <th>Appointment date</th>
+                                                        <th>Appointment date</th>p
                                                         <th>Status</th>
                                                         <th>Action</th>
                                                     </tr>
@@ -470,17 +470,36 @@ const MyAppointments = () => {
 
                                                                 <div style={{ display: "flex", flexDirection: "column" }}>
                                                                     <Link to="/patient-profile" state={{ patientId: patient.patient_id }}>
-                                                                        <h3 style={{ margin: 0, textAlign: "left",}}>{patient.patient_name || "-"}</h3>
+                                                                        <h3 style={{ margin: 0, textAlign: "left", }}>{patient.patient_name || "-"}</h3>
                                                                     </Link>
-                                                                    {(patient?.ds_code &&
+                                                                    {/* {(patient?.ds_code &&
                                                                         <div style={{ color: "#199fd9", marginTop: "2px" }}>
+                                                                            (DS Code: {patient.ds_code})
+                                                                        </div>
+                                                                    )} */}
+                                                                    {(patient?.referred == true) ? (
+                                                                        <div
+                                                                            style={{
+                                                                                color: "#199fd9",
+                                                                                marginTop: "2px",
+                                                                            }}
+                                                                        >
+                                                                            (Referred by DS Code: {patient.ds_code})
+                                                                        </div>
+                                                                    ) : (
+                                                                        <div
+                                                                            style={{
+                                                                                color: "#199fd9",
+                                                                                marginTop: "2px",
+                                                                            }}
+                                                                        >
                                                                             (DS Code: {patient.ds_code})
                                                                         </div>
                                                                     )}
                                                                 </div>
                                                             </td>
 
-                                                            <td style={{ margin: 0,padding:"0"}}>{patient.patient_age || "-"}</td>
+                                                            <td style={{ margin: 0, padding: "0" }}>{patient.patient_age || "-"}</td>
                                                             {/* <td>{patient.patient_gender || "-"}</td> */}
                                                             <td>{patient.patient_gender?.charAt(0).toUpperCase() + patient.patient_gender?.slice(1).toLowerCase()}</td>
                                                             <td>{patient.patient_phone || "-"}</td>
@@ -491,7 +510,7 @@ const MyAppointments = () => {
                                                                 </div>
                                                                 <div className="time">
                                                                     {patient.datetime.split(" ")[1]} {patient.datetime.split(" ")[2]}
-                                                         
+
                                                                 </div>
                                                             </td>
                                                             {/* <td>
@@ -590,8 +609,27 @@ const MyAppointments = () => {
                                                                     <Link to="/patient-profile" state={{ patientId: patient.patient_id }}>
                                                                         <h3 style={{ margin: 0, textAlign: "left" }}>{patient.patient_name || "-"}</h3>
                                                                     </Link>
-                                                                    {(patient?.ds_code &&
+                                                                    {/* {(patient?.ds_code &&
                                                                         <div style={{ color: "#199fd9", marginTop: "2px" }}>
+                                                                            (DS Code: {patient.ds_code})
+                                                                        </div>
+                                                                    )} */}
+                                                                    {(patient?.referred == true) ? (
+                                                                        <div
+                                                                            style={{
+                                                                                color: "#199fd9",
+                                                                                marginTop: "2px",
+                                                                            }}
+                                                                        >
+                                                                            (Referred by DS Code: {patient.ds_code})
+                                                                        </div>
+                                                                    ) : (
+                                                                        <div
+                                                                            style={{
+                                                                                color: "#199fd9",
+                                                                                marginTop: "2px",
+                                                                            }}
+                                                                        >
                                                                             (DS Code: {patient.ds_code})
                                                                         </div>
                                                                     )}
@@ -608,7 +646,7 @@ const MyAppointments = () => {
                                                                 </div>
                                                                 <div className="time">
                                                                     {patient.datetime.split(" ")[1]} {patient.datetime.split(" ")[2]}
-                                                         
+
                                                                 </div>
                                                             </td>
                                                             <td>{patient.diagnosis || "-"}</td>
@@ -675,8 +713,27 @@ const MyAppointments = () => {
                                                                     <Link to="/patient-profile" state={{ patientId: patient.patient_id }}>
                                                                         <h3 style={{ margin: 0, textAlign: "left" }}>{patient.patient_name || "-"}</h3>
                                                                     </Link>
-                                                                    {(patient?.ds_code &&
+                                                                    {/* {(patient?.ds_code &&
                                                                         <div style={{ color: "#199fd9", marginTop: "2px" }}>
+                                                                            (DS Code: {patient.ds_code})
+                                                                        </div>
+                                                                    )} */}
+                                                                    {(patient?.referred == true) ? (
+                                                                        <div
+                                                                            style={{
+                                                                                color: "#199fd9",
+                                                                                marginTop: "2px",
+                                                                            }}
+                                                                        >
+                                                                            (Referred by DS Code: {patient.ds_code})
+                                                                        </div>
+                                                                    ) : (
+                                                                        <div
+                                                                            style={{
+                                                                                color: "#199fd9",
+                                                                                marginTop: "2px",
+                                                                            }}
+                                                                        >
                                                                             (DS Code: {patient.ds_code})
                                                                         </div>
                                                                     )}
@@ -693,7 +750,7 @@ const MyAppointments = () => {
                                                                 </div>
                                                                 <div className="time">
                                                                     {patient.datetime.split(" ")[1]} {patient.datetime.split(" ")[2]}
-                                                         
+
                                                                 </div>
 
                                                             </td>

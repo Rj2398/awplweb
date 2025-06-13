@@ -50,13 +50,11 @@ const DoctorHome = () => {
   // State to store the current appointment that matches the time
   const [currentAppointment, setCurrentAppointment] = useState(null);
 
-
-
   // New Condition Check for active appointments (status === 1)
   useEffect(() => {
     if (userdata?.upcomingAppointments) {
       const activeAppointment = userdata.upcomingAppointments.find(
-        appointment => appointment.status === 1
+        (appointment) => appointment.status === 1
       );
 
       if (activeAppointment) {
@@ -69,8 +67,6 @@ const DoctorHome = () => {
       }
     }
   }, [userdata?.upcomingAppointments]);
-
-
 
   const handleCancelClick = (id) => {
     setSelectedAppointmentId(id);
@@ -102,9 +98,7 @@ const DoctorHome = () => {
   };
 
   useEffect(() => {
-    const reminderTimer = setTimeout(() => {
-
-    }, 1000);
+    const reminderTimer = setTimeout(() => {}, 1000);
 
     const appointmentTimer = setTimeout(() => {
       setShowAppointmentSection(true); // Show the appointment section after the reminder
@@ -158,7 +152,6 @@ const DoctorHome = () => {
     }
   };
 
-
   // const convertTimeRangeTo24Hour = (timeRange) => {
   //   const [startTime, endTime] = timeRange.split(" - ");
 
@@ -181,8 +174,6 @@ const DoctorHome = () => {
 
   //   return `${start24} - ${end24}`;
   // };
-
-
 
   // const convertTo24HourTiming = (dateTimeStr) => {
   //   if (!dateTimeStr) return '';
@@ -268,7 +259,9 @@ const DoctorHome = () => {
                               {currentAppointment.patient_name}
                             </h2>
                             {currentAppointment.is_referred_patient && (
-                              <p>Referred by DS: {currentAppointment.ds_code}</p>
+                              <p>
+                                Referred by DS: {currentAppointment.ds_code}
+                              </p>
                             )}
                           </div>
                           <div className="appoint-btm">
@@ -281,14 +274,14 @@ const DoctorHome = () => {
                             </p>
                             {/* <p className="appoint-time">{convertTimeRangeTo24Hour(currentAppointment.time)}</p> */}
 
-
-
                             <a
                               className="orange-btn"
                               onClick={() =>
-                                handleCreateChannel(String(currentAppointment.appointment_id))
+                                handleCreateChannel(
+                                  String(currentAppointment.appointment_id)
+                                )
                               }
-                              style={{cursor:"pointer"}}
+                              style={{ cursor: "pointer" }}
                             >
                               Start now
                             </a>
@@ -311,7 +304,6 @@ const DoctorHome = () => {
                   </div>
                 )}
 
-
                 <div className="upcoming-apoints cmn-mb">
                   <div className="docpnl-sec-head">
                     <h1 className="h2-title">Upcoming Appointments</h1>
@@ -325,8 +317,18 @@ const DoctorHome = () => {
                   {/* Upcoming Appointments */}
                   <div className="appointments-row-wrp cmn-mb">
                     <div className="appointments-row row">
-                      {visibleAppointments.length == 0 && 
-                      <h3 style={{textAlign: 'center', padding:'25px 0', fontWeight:'bold', color:'#356598'}}>No upcoming appointments.</h3>}
+                      {visibleAppointments.length == 0 && (
+                        <h3
+                          style={{
+                            textAlign: "center",
+                            padding: "25px 0",
+                            fontWeight: "bold",
+                            color: "#356598",
+                          }}
+                        >
+                          No upcoming appointments.
+                        </h3>
+                      )}
                       {visibleAppointments.map((appointment, idx) => (
                         <div
                           className="appointment-card-wrp col-lg-3 col-md-4 col-sm-6"
@@ -349,7 +351,7 @@ const DoctorHome = () => {
                                   id: appointment.appointment_id,
                                   patientId: appointment.patient_id,
                                   referrerDscode: appointment.ds_code,
-                                  referrer: appointment.referred_patient_name
+                                  referrer: appointment.referred_patient_name,
                                 }}
                                 className="cmn-btn"
                               >
@@ -363,35 +365,40 @@ const DoctorHome = () => {
                                 <p className="date">{appointment.date}</p>
                                 <p className="time">{appointment.time}</p>
                                 {/* <p className="appoint-time">{convertTimeRangeTo24Hour(appointment.time)}</p> */}
-
-
                               </div>
 
                               {/* Add min-height to maintain consistent space */}
-                              <div style={{ minHeight: '24px' }}>
+                              <div style={{ minHeight: "24px" }}>
                                 {appointment.is_referred_patient ? (
                                   // <p>Referred by DS Code: {appointment.ds_code}</p>
-                                  <p>Referred by DS Code: {<span style={{ color: "#199FD9" }}>{appointment.ds_code}</span>}</p>
-
+                                  <p>
+                                    Referred by DS Code:{" "}
+                                    {
+                                      <span style={{ color: "#199FD9" }}>
+                                        {appointment.ds_code}
+                                      </span>
+                                    }
+                                  </p>
                                 ) : (
-                                  <p style={{ visibility: 'hidden' }}>Placeholder</p>
+                                  <p style={{ visibility: "hidden" }}>
+                                    Placeholder
+                                  </p>
                                 )}
                               </div>
                               <h3>{appointment.patient_name}</h3>
-
 
                               <input
                                 type="submit"
                                 value="Cancel"
                                 className="w-100"
-                                onClick={() => handleCancelClick(appointment.appointment_id)}
-                                disabled={isCancelDisabled(appointment.date, appointment.time)}
+                                onClick={() =>
+                                  handleCancelClick(appointment.appointment_id)
+                                }
+                                disabled={isCancelDisabled(
+                                  appointment.date,
+                                  appointment.time
+                                )}
                               />
-
-
-
-
-
                             </div>
                           </div>
                         </div>
@@ -404,9 +411,7 @@ const DoctorHome = () => {
                       <h2>Pending Prescriptions</h2>
                       <button
                         className="cmn-btn"
-                        onClick={() => navigate("/pendingprescription")
-
-                        }
+                        onClick={() => navigate("/pendingprescription")}
                       >
                         See all
                       </button>
@@ -422,27 +427,78 @@ const DoctorHome = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {visiblePrescriptions.length == 0 && <tr>
-                            <td colSpan="8" style={{ textAlign: "center" }}>{loading ? "Loading..." : "No data found"}</td>
-                          </tr>}
+                          {visiblePrescriptions.length == 0 && (
+                            <tr>
+                              <td colSpan="8" style={{ textAlign: "center" }}>
+                                {loading ? "Loading..." : "No data found"}
+                              </td>
+                            </tr>
+                          )}
                           {visiblePrescriptions.map((prescription, index) => (
                             <tr key={index}>
                               {/* <td>{index + 1}</td> */}
-                              <td>{String(index + 1).padStart(2, '0')}</td>
+                              <td>{String(index + 1).padStart(2, "0")}</td>
 
-                              <td style={{ textAlign: 'left', paddingLeft: '45px', width: '200px' }}><Link to="/patient-profile" state={{ patientId: prescription.patient_id }} className="no-underline-link" style={{ display: 'inline-block' }}>{prescription.patient_name}</Link>
-                                {(prescription?.ds_code &&
+                              <td
+                                style={{
+                                  textAlign: "left",
+                                  paddingLeft: "45px",
+                                  width: "200px",
+                                }}
+                              >
+                                <Link
+                                  to="/patient-profile"
+                                  state={{ patientId: prescription.patient_id }}
+                                  className="no-underline-link"
+                                  style={{ display: "inline-block" }}
+                                >
+                                  {prescription.patient_name}
+                                </Link>
+                                {/* {(prescription?.ds_code &&
                                   <div className="time" style={{ color: "#199FD9" }}>
+                                    (DS Code: {prescription.ds_code})
+                                  </div>
+                                )} */}
+                                {prescription?.referred == true ? (
+                                  <div
+                                    style={{
+                                      color: "#199fd9",
+                                      marginTop: "2px",
+                                    }}
+                                  >
+                                    (Referred by DS Code: {prescription.ds_code}
+                                    )
+                                  </div>
+                                ) : (
+                                  <div
+                                    style={{
+                                      color: "#199fd9",
+                                      marginTop: "2px",
+                                    }}
+                                  >
                                     (DS Code: {prescription.ds_code})
                                   </div>
                                 )}
                               </td>
                               <td>
                                 <div className="date">
-                                  {prescription.symptom_upload_date.split(" ")[0]}
+                                  {
+                                    prescription.symptom_upload_date.split(
+                                      " "
+                                    )[0]
+                                  }
                                 </div>
                                 <div className="time">
-                                  {prescription.symptom_upload_date.split(" ")[1]} {prescription.symptom_upload_date.split(" ")[2]}
+                                  {
+                                    prescription.symptom_upload_date.split(
+                                      " "
+                                    )[1]
+                                  }{" "}
+                                  {
+                                    prescription.symptom_upload_date.split(
+                                      " "
+                                    )[2]
+                                  }
                                   {/* {convertTo24HourTiming(prescription.symptom_upload_date)} */}
                                 </div>
                               </td>
@@ -468,7 +524,6 @@ const DoctorHome = () => {
 
               {/* Footer */}
               {/* <Footer /> */}
-
             </div>
           )}
           {!showAppointmentSection && showReminderModal && (
@@ -587,7 +642,6 @@ const DoctorHome = () => {
           onCancel={() => setShowSuccessModal(false)}
           actionType="success"
         />
-
       </main>
     </>
   );
