@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Video from "../../Video";
-import Header from "../doctorPanel/Header";
+import Header from '../doctorPanel/Header';
 
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import {
-  completePrescription,
-  medicineSearch,
-} from "../../redux/slices/userSlice";
+import { completePrescription, medicineSearch } from "../../redux/slices/userSlice";
 import { toast } from "react-toastify";
 import { getPatientProfileData } from "../../redux/slices/patientProfileSlice";
 import { videoCallSubmit } from "../../redux/slices/dataSlice";
@@ -19,7 +16,7 @@ const VideoCall = () => {
   const [isCameraOn, setIsCameraOn] = useState(true);
   const videoStreamRef = useRef(null);
   const location = useLocation();
-  const { id, patientId, name } = location.state || {};
+  const { id, patientId } = location.state || {};
   const suggestionsRefs = useRef([]);
   const dispatch = useDispatch();
 
@@ -27,7 +24,7 @@ const VideoCall = () => {
 
   useEffect(() => {
     if (patientId) {
-      dispatch(getPatientProfileData({ patientId: patientId }));
+      dispatch(getPatientProfileData({ "patientId": patientId }));
     }
   }, [dispatch, patientId]);
 
@@ -35,9 +32,9 @@ const VideoCall = () => {
   const {
     completeAssignedPrescription,
     loading,
+    loading2,
     error,
-    medicineSearch: medicineSearchResults,
-    user,
+    medicineSearch: medicineSearchResults, user
   } = useSelector((state) => state.user);
   // const [showModal, setShowModal] = useState(false);
   const [debouncedQueries, setDebouncedQueries] = useState([]);
@@ -64,9 +61,10 @@ const VideoCall = () => {
 
   const [seconds, setSeconds] = useState(0);
 
+
   useEffect(() => {
     const timer = setInterval(() => {
-      setSeconds((prev) => prev + 1);
+      setSeconds(prev => prev + 1);
     }, 1000);
     return () => clearInterval(timer);
   }, []);
@@ -137,9 +135,10 @@ const VideoCall = () => {
 
     setMedicines(updated);
 
+
     setMedicineErrors((prev) => {
       const newErrors = [...prev];
-      newErrors[index] = "";
+      newErrors[index] = '';
       return newErrors;
     });
     setServerSuggestions((prev) => ({
@@ -182,14 +181,10 @@ const VideoCall = () => {
   };
   const handleSubmit = async () => {
     // Validate required fields
-    if (
-      !diagnosis ||
-      medicines.some(
-        (med) =>
-          !med.medicineName || !med.dosage || !med.frequency || !med.duration
-      )
-    ) {
-      toast.error("All fields are required (marked with *)");
+    if (!diagnosis || medicines.some(med =>
+      !med.medicineName || !med.dosage || !med.frequency || !med.duration
+    )) {
+      toast.error('All fields are required (marked with *)');
       return;
     }
 
@@ -205,17 +200,17 @@ const VideoCall = () => {
         );
 
         if (!isValid) {
-          errors[i] = "Please select a valid medicine name from suggestions";
+          errors[i] = 'Please select a valid medicine name from suggestions';
           hasErrors = true;
         } else {
-          errors[i] = "";
+          errors[i] = '';
           // Update the isValid flag if it was valid but the flag wasn't set
           const updated = [...medicines];
           updated[i].isValid = true;
           setMedicines(updated);
         }
       } else {
-        errors[i] = "";
+        errors[i] = '';
       }
     });
 
@@ -229,25 +224,30 @@ const VideoCall = () => {
     //   return;
     // }
 
+
     const formData = {
       // symptom_id: id,
       appointment_id: id,
       diagnosis,
       notes,
-      medicines: medicines.map((med) => ({
+      medicines: medicines.map(med => ({
         name: med.medicineName,
         dosage: med.dosage,
         frequency: med.frequency,
-        duration: med.duration,
-      })),
+        duration: med.duration
+      }))
     };
-    console.log(formData, "ffff");
+    console.log(formData, 'ffff')
 
-    const res = dispatch(videoCallSubmit(formData));
-    if (res.payload && res.payload.status) {
-      // setShowModal(true);
-      // navigate("/doctor-home")
-    }
+    const res = await dispatch(videoCallSubmit(formData))
+    // if (res.payload && res.payload.status) {
+    //   // setShowModal(true);
+    //   navigate("/doctor-home")
+
+    // }
+
+
+
   };
 
   const handleToggleMute = () => setIsMuted((prev) => !prev);
@@ -268,22 +268,17 @@ const VideoCall = () => {
   // };
 
   const formatTime = (totalSeconds) => {
-    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
-    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
-      2,
-      "0"
-    );
-    const secs = String(totalSeconds % 60).padStart(2, "0");
+    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+    const secs = String(totalSeconds % 60).padStart(2, '0');
     return `${hours}:${minutes}:${secs}`;
   };
+
 
   return (
     <main className="doctor-panel video-call-pg">
       <div className="container-fluid">
-        <div className="doc-panel-inr">
-          {" "}
-          <Header />{" "}
-        </div>
+        <div className="doc-panel-inr"> <Header /> </div>
         {/* Header */}
         {/* <div className="doc-panel-header">
             <div className="logo">
@@ -305,9 +300,8 @@ const VideoCall = () => {
                       <h1>{user.name}</h1>
                       <div className="vdoscrn-status-time-wrp">
                         <span className="vdoscrn-status live">LIVE</span>
-                        <span className="vdoscrnduration-time">
-                          {formatTime(seconds)}
-                        </span>
+                        <span className="vdoscrnduration-time">{formatTime(seconds)}</span>
+
                       </div>
                     </div>
                     <div className="vdoscrn-controls-body">
@@ -381,302 +375,299 @@ const VideoCall = () => {
 
                   <div className="patient-vdo-screen">
                     {/* <img src="./images/patient-video-thumb.png" alt="Patient Video Thumbnail" /> */}
-                    <Video
-                      isCameraOn={isCameraOn}
-                      isMuted={isMuted}
-                      name={name}
-                    />
+                    <Video isCameraOn={isCameraOn} isMuted={isMuted} />
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Right side - Patient Details */}
+
             <div className="vdoclscrn-patient-details-wrp col-lg-6">
-              <form>
-                <div className="vdoclscrn-patient-details-wrp-inr">
-                  <div className="vdoclscrn-patient-details">
-                    <div className="vdoclscrnpd-wrp">
-                      <h2>Patient Details:</h2>
-                      <div className="vdoclscrnpd">
-                        {[
-                          {
-                            label: "Patient Name",
-                            value: patientInfo.name || "N/A",
-                          },
-                          { label: "Age", value: patientInfo.age || "N/A" },
-                          {
-                            label: "Gender",
-                            value: patientInfo.gender
-                              ? patientInfo.gender.charAt(0).toUpperCase() +
-                                patientInfo.gender.slice(1)
-                              : "N/A",
-                          },
-                          {
-                            label: "Height",
-                            value: patientInfo.height || "N/A",
-                          },
-                          {
-                            label: "Weight",
-                            value: patientInfo.weight || "N/A",
-                          },
-                          {
-                            label: "Contact No.",
-                            value: patientInfo.phone_no || "N/A",
-                          },
-                        ].map((item, index) => (
-                          <div className="vdoclscrnpd-grp" key={index}>
-                            <span className="vdoclscrnpd-label">
-                              {item.label}
-                            </span>
-                            <span className="vdoclscrnpd-val">
-                              {item.value}
-                            </span>
-                          </div>
-                        ))}
+              {loading ? (
+                <div className="loader-main">
+                  <span className="loader"></span>
+                </div>
+              ) : (
+                <form>
+                  <div className="vdoclscrn-patient-details-wrp-inr">
+                    <div className="vdoclscrn-patient-details">
+                      <div className="vdoclscrnpd-wrp">
+                        <h2>Patient Details:</h2>
+                        <div className="vdoclscrnpd">
+                          {[
+                            { label: "Patient Name", value: patientInfo.name || "N/A" },
+                            { label: "Age", value: patientInfo.age || "N/A" },
+                            { label: "Gender", value: patientInfo.gender ? patientInfo.gender.charAt(0).toUpperCase() + patientInfo.gender.slice(1) : "N/A" },
+                            { label: "Height", value: patientInfo.height || "N/A" },
+                            { label: "Weight", value: patientInfo.weight || "N/A" },
+                            { label: "Contact No.", value: patientInfo.phone_no || "N/A" },
+                          ].map((item, index) => (
+                            <div className="vdoclscrnpd-grp" key={index}>
+                              <span className="vdoclscrnpd-label">
+                                {item.label}
+                              </span>
+                              <span className="vdoclscrnpd-val">
+                                {item.value}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="vdoclscrnpd-wrp">
-                      <h2>Report:</h2>
+                      <div className="vdoclscrnpd-wrp">
+                        <h2>Report:</h2>
 
-                      {medicines.map((medicine, index) => (
-                        <div
-                          key={`medicine-${index}`}
-                          className=""
-                          ref={(el) => (suggestionsRefs.current[index] = el)}
-                        >
-                          <div className="vdoclscrnpd">
-                            <div className="formfield search-bar">
-                              <label>
-                                Medicine Name<span>*</span>
-                              </label>
-                              <div className="search-input">
-                                <input
-                                  type="text"
-                                  placeholder="Ibupro"
-                                  value={medicine.medicineName}
-                                  onChange={(e) =>
-                                    handleMedicineChange(
-                                      index,
-                                      "medicineName",
-                                      e.target.value
-                                    )
-                                  }
-                                  autoComplete="off"
-                                />
+                        {medicines.map((medicine, index) => (
+                          <div
+                            key={`medicine-${index}`}
+                            className=""
+                            ref={(el) => (suggestionsRefs.current[index] = el)}
+                          >
+                            <div className="vdoclscrnpd">
+                              <div className="formfield search-bar">
+                                <label>
+                                  Medicine Name<span>*</span>
+                                </label>
+                                <div className="search-input">
+                                  <input
+                                    type="text"
+                                    placeholder="Ibupro"
+                                    value={medicine.medicineName}
+                                    onChange={(e) =>
+                                      handleMedicineChange(
+                                        index,
+                                        "medicineName",
+                                        e.target.value
+                                      )
+                                    }
+                                    autoComplete="off"
+                                  />
 
-                                <input type="submit" value="search" />
-                                {medicineErrors[index] && (
-                                  <div
-                                    style={{
-                                      color: "red",
-                                      // marginTop: "5px",
-                                      fontSize: "12px",
-                                    }}
-                                  >
-                                    {medicineErrors[index]}
-                                  </div>
-                                )}
-                                {activeMedicineIndex === index &&
-                                  medicine.medicineName &&
-                                  !medicineErrors[index] && (
-                                    <ul
+
+                                  <input type="submit" value="search" />
+                                  {medicineErrors[index] && (
+                                    <div
                                       style={{
-                                        position: "absolute",
-                                        backgroundColor: "white",
-                                        border: "1px solid #ccc",
-                                        width: "100%",
-                                        maxHeight: "150px",
-                                        overflowY: "auto",
-                                        zIndex: 10,
-                                        marginTop: -5,
-
-                                        paddingLeft: "10px",
-                                        listStyle: "none",
+                                        color: "red",
+                                        // marginTop: "5px",
+                                        fontSize: "12px",
                                       }}
                                     >
-                                      {medicine.suggestions.length > 0
-                                        ? medicine.suggestions.map((sug, i) => (
-                                            <li
-                                              key={i}
-                                              onClick={() =>
-                                                handleSuggestionSelect(
-                                                  index,
-                                                  sug.product_name
-                                                )
-                                              }
-                                              style={{
-                                                cursor: "pointer",
-                                                padding: 5,
-                                              }}
-                                            >
-                                              {sug.product_name}
-                                            </li>
-                                          ))
-                                        : medicine.medicineName.trim().length >
-                                            0 &&
+                                      {medicineErrors[index]}
+                                    </div>
+                                  )}
+                                  {activeMedicineIndex === index &&
+                                    medicine.medicineName && !medicineErrors[index] && (
+                                      <ul
+                                        style={{
+                                          position: "absolute",
+                                          backgroundColor: "white",
+                                          border: "1px solid #ccc",
+                                          width: "100%",
+                                          maxHeight: "150px",
+                                          overflowY: "auto",
+                                          zIndex: 10,
+                                          marginTop: -5,
+
+                                          paddingLeft: "10px",
+                                          listStyle: "none",
+
+                                        }}
+                                      >
+                                        {medicine.suggestions.length > 0
+                                          ? medicine.suggestions.map(
+                                            (sug, i) => (
+                                              <li
+                                                key={i}
+                                                onClick={() =>
+                                                  handleSuggestionSelect(
+                                                    index,
+                                                    sug.product_name
+                                                  )
+                                                }
+                                                style={{
+                                                  cursor: "pointer",
+                                                  padding: 5,
+                                                }}
+                                              >
+                                                {sug.product_name}
+                                              </li>
+                                            )
+                                          )
+                                          : medicine.medicineName.trim()
+                                            .length > 0 &&
                                           !medicineErrors[index] && (
                                             <li
                                               style={{
                                                 padding: 5,
                                                 color: "#999",
+
                                               }}
                                             >
                                               No data found
                                             </li>
                                           )}
-                                    </ul>
-                                  )}
+                                      </ul>
+                                    )}
+                                </div>
                               </div>
-                            </div>
-                            <div className="formfield">
-                              <label>
-                                Dosage<span>*</span>
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="Dosage"
-                                value={medicine.dosage}
-                                onChange={(e) =>
-                                  handleMedicineChange(
-                                    index,
-                                    "dosage",
-                                    e.target.value
-                                  )
-                                }
-                                required
-                              />
-                            </div>
-                            <div className="formfield">
-                              <label>
-                                Frequency<span>*</span>
-                              </label>
-                              <select
-                                value={medicine.frequency}
-                                onChange={(e) =>
-                                  handleMedicineChange(
-                                    index,
-                                    "frequency",
-                                    e.target.value
-                                  )
-                                }
-                                required
-                                style={{
-                                  backgroundColor: "#F9F9F9",
+                              <div className="formfield">
+                                <label>
+                                  Dosage<span>*</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="Dosage"
+                                  value={medicine.dosage}
+                                  onChange={(e) =>
+                                    handleMedicineChange(
+                                      index,
+                                      "dosage",
+                                      e.target.value
+                                    )
+                                  }
+                                  required
+                                />
+                              </div>
+                              <div className="formfield">
+                                <label>Frequency<span>*</span></label>
+                                <select
+                                  value={medicine.frequency}
+                                  onChange={(e) => handleMedicineChange(index, 'frequency', e.target.value)}
+                                  required
+                                  style={{
+                                    backgroundColor: '#F9F9F9',
 
-                                  padding: "8px",
-                                  width: "100%",
-                                  borderRadius: "4px",
-                                  fontSize: "16px",
-                                }}
-                              >
-                                <option value="">Select Frequency</option>
-                                <option value="1 time (in a day)">
-                                  1 time (in a day)
-                                </option>
-                                <option value="2 times (in a day)">
-                                  2 times (in a day)
-                                </option>
-                                <option value="3 times (in a day)">
-                                  3 times (in a day)
-                                </option>
-                              </select>
+
+                                    padding: '8px',
+                                    width: '100%',
+                                    borderRadius: '4px',
+                                    fontSize: '16px'
+                                  }}
+                                >
+                                  <option value="">Select Frequency</option>
+                                  <option value="1 time (in a day)">1 time (in a day)</option>
+                                  <option value="2 times (in a day)">2 times (in a day)</option>
+                                  <option value="3 times (in a day)">3 times (in a day)</option>
+                                </select>
+                              </div>
+
+                              <div className="formfield">
+                                <label>
+                                  Duration<span>*</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="Duration"
+                                  value={medicine.duration}
+                                  onChange={(e) =>
+                                    handleMedicineChange(
+                                      index,
+                                      "duration",
+                                      e.target.value
+                                    )
+                                  }
+                                  required
+                                />
+
+                              </div>
+
+
                             </div>
 
-                            <div className="formfield">
-                              <label>
-                                Duration<span>*</span>
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="Duration"
-                                value={medicine.duration}
-                                onChange={(e) =>
-                                  handleMedicineChange(
-                                    index,
-                                    "duration",
-                                    e.target.value
-                                  )
-                                }
-                                required
-                              />
-                            </div>
+                            <hr
+                              style={{
+                                border: "none",
+                                height: "3px",
+                                backgroundColor: "#333",
+                                margin: "10px 0",
+                              }}
+                            />
                           </div>
+                        ))}
 
-                          <hr
+                        <button
+                          type="button"
+                          className="orange-btn"
+                          onClick={addMoreMedicine}
+                          style={{
+                            margin: "20px 0",
+                            padding: 0,
+                            minWidth: "150px",
+                          }}
+                        >
+                          <img src="./images/plus-icon-circle.svg" alt="Icon" />{" "}
+                          Add More
+                        </button>
+                      </div>
+
+                      <div className="add-notes-wrp ">
+                        <div className="formfield">
+                          <label>Notes:</label>
+                          {/* <input
+                            type="text"
+                            placeholder="Notes"
+                            value={notes}
+                            onChange={handleNotesChange}
+                          /> */}
+                          <textarea
+                            placeholder="Notes..."
+                            value={notes}
+                            onChange={handleNotesChange}
+                            rows={4}
                             style={{
-                              border: "none",
-                              height: "3px",
-                              backgroundColor: "#333",
-                              margin: "10px 0",
+                              width: '100%',
+                              resize: 'vertical',
+                              backgroundColor: '#fff',  // ✅ Fixes blue background
+                              color: '#000',            // ✅ Optional: ensure readable text
+                              border: '1px solid #ccc', // Optional: better border
+                              borderRadius: '4px',      // Optional: softer corners
+                              padding: '8px'            // Optional: internal spacing
                             }}
                           />
+
                         </div>
-                      ))}
+                      </div>
 
-                      <button
-                        type="button"
-                        className="orange-btn"
-                        onClick={addMoreMedicine}
-                        style={{
-                          margin: "20px 0",
-                          padding: 0,
-                          minWidth: "150px",
-                        }}
-                      >
-                        <img src="./images/plus-icon-circle.svg" alt="Icon" />{" "}
-                        Add More
-                      </button>
-                    </div>
-
-                    <div className="add-notes-wrp vdoclscrnpd">
-                      <div className="formfield">
-                        <label>Notes:</label>
-                        <input
-                          type="text"
-                          placeholder="Notes"
-                          value={notes}
-                          onChange={handleNotesChange}
-                        />
+                      <div className="add-notes-wrp vdoclscrnpd">
+                        <div className="formfield">
+                          <label>
+                            Disease <span>*</span>
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Parasitic disease"
+                            value={diagnosis}
+                            onChange={handleDiagnosisChange}
+                          />
+                        </div>
                       </div>
                     </div>
 
-                    <div className="add-notes-wrp vdoclscrnpd">
-                      <div className="formfield">
-                        <label>
-                          Disease <span>*</span>
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="Parasitic disease"
-                          value={diagnosis}
-                          onChange={handleDiagnosisChange}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    className="orange-btn"
-                    onClick={handleSubmit}
-                    disabled={loading}
-                  >
-                    {loading ? "Submitting..." : "Submit"}
-                  </button>
-                  {/* <button
+                    <button
+                      type="button"
+                      className="orange-btn"
+                      onClick={handleSubmit}
+                      disabled={loading}
+                    >
+                      {loading ? "Submitting..." : "Submit"}
+                    </button>
+                    {/* <button
                       type="submit"
                       className="orange-btn"
                       onClick={() => navigate("/doctor-home")}
                     >
                       Submit
                     </button> */}
-                </div>
-              </form>
+                  </div>
+                </form>
+              )}
             </div>
+
           </div>
         </div>
+
       </div>
     </main>
   );

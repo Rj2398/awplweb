@@ -394,20 +394,20 @@ const SetPassword = () => {
                                                             value={password}
                                                             onChange={(e) => {
                                                                 setPassword(e.target.value);
-                                                                if (e.target.value.length === 0) {
-                                                                    setShowPassword(false);
-                                                                }
+                                                                // if (e.target.value.length === 0) {
+                                                                //     setShowPassword(false);
+                                                                // }
                                                             }}
                                                         />
                                                         <span
                                                             className="eye-btn"
                                                             onClick={() => {
-                                                                if (password.length > 0) {
+                                                                // if (password.length > 0) {
                                                                     setShowPassword(!showPassword);
-                                                                }
+                                                                // }
                                                             }}
                                                             style={{
-                                                                cursor: password.length > 0 ? 'pointer' : 'not-allowed',
+                                                                cursor:'pointer',
                                                                 position: 'absolute',
                                                                 right: '10px',
                                                                 top: '50%',
@@ -415,10 +415,7 @@ const SetPassword = () => {
                                                             }}
                                                         >
                                                             <img
-                                                                src={
-                                                                    password.length > 0
-                                                                        ? (showPassword ? '/images/eye-open.svg' : '/images/eye-close.svg')
-                                                                        : '/images/eye-close.svg'
+                                                                src={(showPassword ? '/images/eye-open.svg' : '/images/eye-close.svg')
                                                                 }
                                                                 alt={showPassword ? 'Hide Password' : 'Show Password'}
                                                             />
@@ -437,20 +434,20 @@ const SetPassword = () => {
                                                             value={confirmPassword}
                                                             onChange={(e) => {
                                                                 setConfirmPassword(e.target.value);
-                                                                if (e.target.value.length === 0) {
-                                                                    setShowConfirmPassword(false);
-                                                                }
+                                                                // if (e.target.value.length === 0) {
+                                                                //     setShowConfirmPassword(false);
+                                                                // }
                                                             }}
                                                         />
                                                         <span
                                                             className="eye-btn"
                                                             onClick={() => {
-                                                                if (confirmPassword.length > 0) {
+                                                                // if (confirmPassword.length > 0) {
                                                                     setShowConfirmPassword(!showConfirmPassword);
-                                                                }
+                                                                // }
                                                             }}
                                                             style={{
-                                                                cursor: confirmPassword.length > 0 ? 'pointer' : 'not-allowed',
+                                                                cursor: 'pointer',
                                                                 position: 'absolute',
                                                                 right: '10px',
                                                                 top: '50%',
@@ -458,10 +455,7 @@ const SetPassword = () => {
                                                             }}
                                                         >
                                                             <img
-                                                                src={
-                                                                    confirmPassword.length > 0
-                                                                        ? (showConfirmPassword ? '/images/eye-open.svg' : '/images/eye-close.svg')
-                                                                        : '/images/eye-close.svg'
+                                                                src={(showConfirmPassword ? '/images/eye-open.svg' : '/images/eye-close.svg')
                                                                 }
                                                                 alt={showConfirmPassword ? 'Hide Password' : 'Show Password'}
                                                             />

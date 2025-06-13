@@ -470,7 +470,7 @@ const MyAppointments = () => {
 
                                                                 <div style={{ display: "flex", flexDirection: "column" }}>
                                                                     <Link to="/patient-profile" state={{ patientId: patient.patient_id }}>
-                                                                        <h3 style={{ margin: 0, textAlign: "left" }}>{patient.patient_name || "-"}</h3>
+                                                                        <h3 style={{ margin: 0, textAlign: "left",}}>{patient.patient_name || "-"}</h3>
                                                                     </Link>
                                                                     {(patient?.ds_code &&
                                                                         <div style={{ color: "#199fd9", marginTop: "2px" }}>
@@ -480,7 +480,7 @@ const MyAppointments = () => {
                                                                 </div>
                                                             </td>
 
-                                                            <td>{patient.patient_age || "-"}</td>
+                                                            <td style={{ margin: 0,padding:"0"}}>{patient.patient_age || "-"}</td>
                                                             {/* <td>{patient.patient_gender || "-"}</td> */}
                                                             <td>{patient.patient_gender?.charAt(0).toUpperCase() + patient.patient_gender?.slice(1).toLowerCase()}</td>
                                                             <td>{patient.patient_phone || "-"}</td>

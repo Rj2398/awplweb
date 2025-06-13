@@ -2,55 +2,57 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Modal, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import {useLocation} from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { firstLogin } from '../../redux/slices/userSlice';
 
 const CreatePassword = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     // const email = localStorage.getItem("email")
 
     const dispatch = useDispatch();
     const location = useLocation();
-    const {email} = location.state || {};
+    const { email } = location.state || {};
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-            // 1. Validate password strength
-            const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\d\W]).{8,}$/;
-            if (!passRegex.test(password)) {
-                toast.error("Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one number or special character.");
-                return;
+        // 1. Validate password strength
+        const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\d\W]).{8,}$/;
+        if (!passRegex.test(password)) {
+            toast.error("Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one number or special character.");
+            return;
+        }
+
+        // 2. Check if passwords match
+        if (password !== confirmPassword) {
+            toast.error("Passwords do not match");
+            return;
+        }
+
+        try {
+            const res = await dispatch(firstLogin({ "email": email, "password": password, "password_confirmation": confirmPassword }));
+            console.log(email);
+            console.log(password);
+            console.log(confirmPassword);
+            if (res.payload?.status) {
+                setShowModal(true);
+            }
+            else {
+                toast.error(res.payload?.message || "Password creation failed");
             }
 
-            // 2. Check if passwords match
-                if (password !== confirmPassword) {
-                    toast.error("Passwords do not match");
-                    return;
-                }
-
-                    try{
-                        const res = await dispatch(firstLogin({"email": email, "password": password, "password_confirmation": confirmPassword}));
-                        console.log(email);
-                        console.log(password);
-                        console.log(confirmPassword);
-                        if (res.payload?.status){
-                            setShowModal(true);
-                        }
-                        else{
-                            toast.error(res.payload?.message || "Password creation failed");
-                        } 
-                        
-                    }
-                    catch (error){
-                        console.log("Password creation error:", error);
-                        toast.error("An error occurred during password creation");
-                    }
+        }
+        catch (error) {
+            console.log("Password creation error:", error);
+            toast.error("An error occurred during password creation");
+        }
         // if (password === confirmPassword && password !== '') {
-            
+
         //     setShowModal(true);
         // }
     };
@@ -97,17 +99,42 @@ const CreatePassword = () => {
                                                     <label>Create Password</label>
                                                     <div className="input-pass-field">
                                                         <input
-                                                            type="password"
+                                                            type={showPassword ? "text" : "password"}
                                                             placeholder="Password"
                                                             required
                                                             value={password}
-                                                            onChange={(e) => setPassword(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setPassword(e.target.value);
+                                                                // if (e.target.value.length === 0) {
+                                                                //     setShowPassword(false);
+                                                                // }
+                                                            }}
                                                         />
-                                                        <span className="eye-btn eye-open">
+                                                        {/* <span className="eye-btn eye-open">
                                                             <img src="/images/eye-open.svg" alt="Icon" />
                                                         </span>
                                                         <span className="eye-btn eye-close">
                                                             <img src="/images/eye-close.svg" alt="Icon" />
+                                                        </span> */}
+                                                        <span
+                                                            className="eye-btn"
+                                                            onClick={() => {
+                                                                // if (password.length > 0) {
+                                                                    setShowPassword(!showPassword);
+                                                                // }
+                                                            }}
+                                                            style={{
+                                                                cursor:'pointer',
+                                                                position: 'absolute',
+                                                                right: '10px',
+                                                                top: '50%',
+                                                                transform: 'translateY(-50%)'
+                                                            }}
+                                                        >
+                                                            <img
+                                                                src={(showPassword ? '/images/eye-open.svg' : '/images/eye-close.svg')}
+                                                                alt={showPassword ? 'Hide Password' : 'Show Password'}
+                                                            />
                                                         </span>
                                                     </div>
                                                 </div>
@@ -116,17 +143,38 @@ const CreatePassword = () => {
                                                     <label>Confirm Password</label>
                                                     <div className="input-pass-field">
                                                         <input
-                                                            type="password"
+                                                            type={showConfirmPassword ? "text" : "password"}
                                                             placeholder="Password"
                                                             required
                                                             value={confirmPassword}
                                                             onChange={(e) => setConfirmPassword(e.target.value)}
                                                         />
-                                                        <span className="eye-btn eye-open">
+                                                        {/* <span className="eye-btn eye-open">
                                                             <img src="/images/eye-open.svg" alt="Icon" />
                                                         </span>
                                                         <span className="eye-btn eye-close">
                                                             <img src="/images/eye-close.svg" alt="Icon" />
+                                                        </span> */}
+                                                        <span
+                                                            className="eye-btn"
+                                                            onClick={() => {
+                                                                // if (confirmPassword.length > 0) {
+                                                                    setShowConfirmPassword(!showConfirmPassword);
+                                                                // }
+                                                            }}
+                                                            style={{
+                                                                cursor:'pointer',
+                                                                position: 'absolute',
+                                                                right: '10px',
+                                                                top: '50%',
+                                                                transform: 'translateY(-50%)'
+                                                            }}
+                                                        >
+                                                            <img
+                                                                src={(showConfirmPassword ? '/images/eye-open.svg' : '/images/eye-close.svg')
+                                                                }
+                                                                alt={showConfirmPassword ? 'Hide Password' : 'Show Password'}
+                                                            />
                                                         </span>
                                                     </div>
                                                 </div>
@@ -160,7 +208,7 @@ const CreatePassword = () => {
                 <div className="modal-icon text-center mt-4">
                     <img src="/images/check-icon.png" alt="Icon" />
                 </div>
-                <Modal.Header className="border-0 flex-column text-center">
+                <Modal.Header closeButton={false} className="border-0 flex-column text-center">
                     <Modal.Title className="w-100">
                         <h2>Congratulations</h2>
                     </Modal.Title>

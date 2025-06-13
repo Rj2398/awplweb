@@ -701,12 +701,12 @@ import { bookAppointment, getScheduleTime } from "../redux/slices/prescriptionSl
 
 const ScheduleAppointment = () => {
   const location = useLocation();
-  const { patientId, appointmentId,patientName } = location.state || {};
+  const { patientId, appointmentId, patientName } = location.state || {};
   const dispatch = useDispatch();
   const { scheduleTime, loading } = useSelector((state) => state.prescriptions);
   const { patientProfileData, } = useSelector((state) => state.patientProfile);
 
-// console.log("patient:",patientName);
+console.log("patient::::::::::::",patientName);
   // Initialize selectedDate with today
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState();
@@ -993,13 +993,13 @@ const ScheduleAppointment = () => {
                           <div className="calneder-body">
                             <div className="calender-body-inr">
                               <div className="week-days-wrp">
-                                <div>mon</div>
-                                <div>tue</div>
-                                <div>wed</div>
-                                <div>thu</div>
-                                <div>fri</div>
-                                <div>sat</div>
-                                <div>sun</div>
+                                <div>Mon</div>
+                                <div>Tue</div>
+                                <div>Wed</div>
+                                <div>Thu</div>
+                                <div>Fri</div>
+                                <div>Sat</div>
+                                <div>Sun</div>
                               </div>
 
                               <div className="moth-days-wrp">
@@ -1035,7 +1035,7 @@ const ScheduleAppointment = () => {
                                           ? "#999"
                                           : isSelected
                                           ? "#fff"
-                                          : "#000",
+                                          : "#356598",
                                         backgroundColor: isSelected
                                           ? "#199FD9"
                                           : isToday
@@ -1109,7 +1109,7 @@ const ScheduleAppointment = () => {
                                     margin: "4px",
                                     display: "inline-block",
                                     border: isSelected ? "2px solid #199FD9" : "1px solid #ccc",
-                                    backgroundColor: isSelected ? "#199FD9" : "#fff",
+                                    // backgroundColor: isSelected ? "#199FD9" : "#fff",
                                     fontWeight: isSelected ? "bold" : "normal",
                                   }}
                                 >

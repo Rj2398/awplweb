@@ -142,7 +142,9 @@ const PendingPrescription = () => {
                                                         {currentPatients.map((data, index) => (
                                                             <tr key={index}>
                                                                 {/* <td>{index + 1}</td> */}
-                                                                <td>{(currentPage - 1) * patientsPerPage + index + 1}</td>
+                                                                {/* <td>{(currentPage - 1) * patientsPerPage + index + 1}</td> */}
+                                                                <td>{String((currentPage -1) *patientsPerPage + index + 1).padStart(2, '0')}</td>
+                                                                
 
                                                                 {/* <td>{data.patient_name || `Unknown Patient ${data.id}`}</td> */}
                                                                 <td style={{ textAlign: 'left', paddingLeft: '45px', width: '200px' }}><Link to="/patient-profile" state={{ patientId: data.patient_id }} className="no-underline-link" style={{ display: 'inline-block' }}>{data.patient_name}</Link>
@@ -187,11 +189,15 @@ const PendingPrescription = () => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                    {currentPatients.length == 0 && <tr>
+                                                            <td colSpan="8" style={{ textAlign: "center" }}>{loading ? "Loading..." : "No data found"}</td>
+                                                        </tr>}
                                                         {currentPatients.map((data, index) => (
 
                                                             <tr key={index}>
                                                                 {/* <td>{index + 1}</td> */}
-                                                                <td>{indexOfFirstPatient + index + 1}</td>
+                                                                <td>{String(indexOfFirstPatient + index + 1).padStart(2, '0')}</td>
+                                                            
 
                                                                 {/* <td>{data.patient_name}</td> */}
                                                                 <td style={{ textAlign: 'left', paddingLeft: '45px', width: '200px' }}><Link to="/patient-profile" state={{ patientId: data.patient_id }} className="no-underline-link" style={{ display: 'inline-block' }}>{data.patient_name}</Link>

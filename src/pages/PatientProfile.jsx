@@ -437,7 +437,7 @@ const PatientProfile = () => {
                               referredPatients.map((patient, index) => (
                                 <tr key={patient.id || index}>
                                   <td>{String(index + 1).padStart(2, '0')}</td>
-                                  <td style={{ textAlign: 'left', paddingLeft: '35px', width: '200px' }}><Link to="/patient-profile" state={{ patientid: patientId }} className="no-underline-link" style={{ display: 'inline-block' }}>{patient.name}</Link></td>
+                                  <td style={{ textAlign: 'left', paddingLeft: '35px' }}><Link to="/patient-profile" state={{ patientid: patientId }} className="no-underline-link" style={{ display: 'inline-block' }}>{patient.name}</Link></td>
 
                                   {/* <td>{patient.name}</td> */}
                                   {/* <td>{patient.gender}</td> */}
@@ -473,7 +473,7 @@ const PatientProfile = () => {
                 {/* {!patientProfileData?.basic_information?.is_referred && !patientProfileData?.is_appointment_present && ( */}
                 {!patientProfileData?.is_appointment_present && !hideSchedule && (
                   <div className="schedule-appoinment-btn">
-                    <Link to="/schedule-appointment" state={{ patientId: patientId, appointmentId: appointmentId }} className="orange-btn">
+                    <Link to="/schedule-appointment" state={{ patientId: patientId, appointmentId: appointmentId, patientName: patientInfo.name }} className="orange-btn">
                       Schedule Appointment
                     </Link>
                   </div>

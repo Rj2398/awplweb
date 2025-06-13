@@ -348,7 +348,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
 
-        localStorage.setItem("doctor-app", JSON.stringify({ id: action.payload.data?.id, token: action.payload.data?.token }))
+        // localStorage.setItem("doctor-app", JSON.stringify({ id: action.payload.data?.id, token: action.payload.data?.token }))
         //we are saving token and id in localStorage after login successful. 
       })
       .addCase(resetPassword.rejected, (state, action) => {

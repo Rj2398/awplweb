@@ -149,14 +149,19 @@ const GlobalReminderModal = () => {
   const [reminderMessage, setReminderMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {reminderPopupData, loading} = useSelector((state) => state.notification);
+  // const {reminderPopupData, loading} = useSelector((state) => state.notification);
+
+  const nowIST = new Date();
+
+// Add 2 minutes to current IST time
+nowIST.setMinutes(nowIST.getSeconds() + 20);
 
               // FOR STATIC DATA TESTING 
-  // const reminderPopupData = {
-  //   appointment_datetime: "2025-05-28T10:19:00.000Z", // static ISO date-time string
-  //   patient_name: "Mock Patient"
-  // };
-  // const loading = false;
+  const reminderPopupData = {
+    appointment_datetime: nowIST.toISOString(), // static ISO date-time string
+    patient_name: "Mock Patient"
+  };
+  const loading = false;
 
   useEffect(() => {
     dispatch(reminderPopup());

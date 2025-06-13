@@ -3,7 +3,7 @@ import Header from '../component/doctorPanel/Header';
 import Footer from '../component/doctorPanel/Footer';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from "react-toastify";
-import { deleteNotification, getAllNotifications, markAllRead } from '../redux/slices/notificationSlice';
+import { deleteNotification, getAllNotifications, markAllRead, unreadCount } from '../redux/slices/notificationSlice';
 import sucessIcon from "/images/calendar-tick-success.svg"
 import CancelIcon from "/images/calendar-cancelled.svg"
 import ScheduleIcon from "/images/calendar-changes.svg"
