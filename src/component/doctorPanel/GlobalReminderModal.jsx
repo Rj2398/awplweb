@@ -21,10 +21,10 @@
 
 //     const now = new Date();
 //     const diffInMs = appointmentDateTime.getTime() - now.getTime();
-   
+
 //     const reminders = [
 //       { minutesBefore: 15 }, { minutesBefore: 5 }, { minutesBefore: 2 },
-//       // { minutesBefore: 14 }, { minutesBefore: 13 }, { minutesBefore: 12 }, { minutesBefore: 11 }, 
+//       // { minutesBefore: 14 }, { minutesBefore: 13 }, { minutesBefore: 12 }, { minutesBefore: 11 },
 //       // { minutesBefore: 10 }, { minutesBefore: 9 }, { minutesBefore: 8 }, { minutesBefore: 7 },
 //       // { minutesBefore: 6 }, { minutesBefore: 4 }, { minutesBefore: 3 }, { minutesBefore: 1 },
 //     ];
@@ -82,13 +82,13 @@
 //   return (
 //     <>
 //       {showReminderModal && (
-//         <div className="modal fade show" tabIndex="-1" 
+//         <div className="modal fade show" tabIndex="-1"
 //           style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }} >
 //           <div className="modal-dialog modal-dialog-centered" role="document">
 //             <div className="modal-content text-center position-relative shadow"
 //               style={{ width: "400px", minHeight: "280px", borderRadius: "20px", padding: "30px 20px", }} >
-              
-//               <button type="button" onClick={() => setShowReminderModal(false)} 
+
+//               <button type="button" onClick={() => setShowReminderModal(false)}
 //                 className="position-absolute top-0 end-0 m-3 border-0 bg-transparent" aria-label="Close" >
 //                 <img src="./images/cross-blue.png" alt="Close Icon" style={{ width: "24px", height: "24px" }} />
 //               </button>
@@ -132,13 +132,6 @@
 
 // export default GlobalReminderModal;
 
-
-
-
-
-
-
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -149,41 +142,50 @@ const GlobalReminderModal = () => {
   const [reminderMessage, setReminderMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const {reminderPopupData, loading} = useSelector((state) => state.notification);
+  const { reminderPopupData, loading } = useSelector(
+    (state) => state.notification
+  );
 
   const nowIST = new Date();
 
-// Add 2 minutes to current IST time
-nowIST.setMinutes(nowIST.getSeconds() + 20);
+  // Add 2 minutes to current IST time
+  // nowIST.setMinutes(nowIST.getSeconds() + 20);
 
-              // FOR STATIC DATA TESTING 
-  const reminderPopupData = {
-    appointment_datetime: nowIST.toISOString(), // static ISO date-time string
-    patient_name: "Mock Patient"
-  };
-  const loading = false;
+  // FOR STATIC DATA TESTING
+  // const reminderPopupData = {
+  //   appointment_datetime: nowIST.toISOString(), // static ISO date-time string
+  //   patient_name: "Mock Patient"
+  // };
+  // const loading = false;
 
   useEffect(() => {
     dispatch(reminderPopup());
-  }, [dispatch])
+  }, [dispatch]);
 
   useEffect(() => {
     // console.log("Reminder Popup Data from backend11111111:", reminderPopupData);
 
     if (!reminderPopupData?.appointment_datetime) return;
 
-    const appointmentDateTime = new Date(reminderPopupData.appointment_datetime);
+    const appointmentDateTime = new Date(
+      reminderPopupData.appointment_datetime
+    );
     if (isNaN(appointmentDateTime)) {
-      console.error("Invalid appointment datetime:", reminderPopupData.appointment_datetime);
+      console.error(
+        "Invalid appointment datetime:",
+        reminderPopupData.appointment_datetime
+      );
       return;
     }
 
     const now = new Date();
     const diffInMs = appointmentDateTime.getTime() - now.getTime();
-   
+
     const reminders = [
-      { minutesBefore: 15 }, { minutesBefore: 5 }, { minutesBefore: 2 },
-      // { minutesBefore: 14 }, { minutesBefore: 13 }, { minutesBefore: 12 }, { minutesBefore: 11 }, 
+      { minutesBefore: 15 },
+      { minutesBefore: 5 },
+      { minutesBefore: 2 },
+      // { minutesBefore: 14 }, { minutesBefore: 13 }, { minutesBefore: 12 }, { minutesBefore: 11 },
       // { minutesBefore: 10 }, { minutesBefore: 9 }, { minutesBefore: 8 }, { minutesBefore: 7 },
       // { minutesBefore: 6 }, { minutesBefore: 4 }, { minutesBefore: 3 }, { minutesBefore: 1 },
     ];
@@ -254,26 +256,53 @@ nowIST.setMinutes(nowIST.getSeconds() + 20);
   return (
     <>
       {showReminderModal && (
-        <div className="modal fade show" tabIndex="-1" 
-          style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }} >
+        <div
+          className="modal fade show"
+          tabIndex="-1"
+          style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+        >
           <div className="modal-dialog modal-dialog-centered" role="document">
-            <div className="modal-content text-center position-relative shadow"
-              style={{ width: "400px", minHeight: "280px", borderRadius: "20px", padding: "30px 20px", }} >
-              
-              <button type="button" onClick={() => setShowReminderModal(false)} 
-                className="position-absolute top-0 end-0 m-3 border-0 bg-transparent" aria-label="Close" >
-                <img src="./images/cross-blue.png" alt="Close Icon" style={{ width: "24px", height: "24px" }} />
+            <div
+              className="modal-content text-center position-relative shadow"
+              style={{
+                width: "400px",
+                minHeight: "280px",
+                borderRadius: "20px",
+                padding: "30px 20px",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setShowReminderModal(false)}
+                className="position-absolute top-0 end-0 m-3 border-0 bg-transparent"
+                aria-label="Close"
+              >
+                <img
+                  src="./images/cross-blue.png"
+                  alt="Close Icon"
+                  style={{ width: "24px", height: "24px" }}
+                />
               </button>
 
               <div className="modal-icon mb-3">
-                <img src="./images/bell-icon.svg" alt="Reminder Icon" style={{ width: "40px", height: "40px" }} />
+                <img
+                  src="./images/bell-icon.svg"
+                  alt="Reminder Icon"
+                  style={{ width: "40px", height: "40px" }}
+                />
               </div>
 
               <div className="modal-header border-0 flex-column align-items-center p-0">
-                <h2 className="fw-bold mb-2" style={{ fontSize: "22px", color: "#333" }}>
+                <h2
+                  className="fw-bold mb-2"
+                  style={{ fontSize: "22px", color: "#333" }}
+                >
                   Reminder:
                 </h2>
-                <p className="m-0" style={{ color: "#009CDE", fontWeight: "500" }}>
+                <p
+                  className="m-0"
+                  style={{ color: "#009CDE", fontWeight: "500" }}
+                >
                   {reminderMessage}
                 </p>
               </div>
@@ -282,7 +311,6 @@ nowIST.setMinutes(nowIST.getSeconds() + 20);
                 <div className="text-muted mb-2">
                   Patient's Name:{" "}
                   <span className="fw-medium" style={{ color: "#356598" }}>
-
                     {reminderPopupData?.patient_name || "Sunil"}
                   </span>
                 </div>
