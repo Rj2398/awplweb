@@ -875,7 +875,7 @@ const Video = ({ isCameraOn, isMuted, patientInfo }) => {
               width: "100%",
               aspectRatio: "4/3", // Maintain aspect ratio for video consistency
               position: "relative",
-              borderRadius: "8px",
+              // borderRadius: "8px",
               overflow: "hidden",
               display: "flex", // Use flex for centering placeholder content
               alignItems: "center",
