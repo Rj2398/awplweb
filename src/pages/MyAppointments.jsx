@@ -178,6 +178,7 @@ const MyAppointments = () => {
                     id: currentAppointment.appointment_id,
                     patientId: currentAppointment.patient_id,
                     name: currentAppointment?.patient_name,
+                    time_period: currentAppointment?.time,
                 },
             });
         }

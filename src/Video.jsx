@@ -547,6 +547,9 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import { useSelector } from "react-redux";
+
+import { CiMicrophoneOff } from "react-icons/ci";
+
 import { useLocation } from "react-router-dom";
 
 const Video = ({ isCameraOn, isMuted, patientInfo }) => {
@@ -872,7 +875,6 @@ const Video = ({ isCameraOn, isMuted, patientInfo }) => {
             // ID must be on the direct parent where Agora injects the video
             id={`remote-player-${user.uid}`}
             style={{
-              width: "100%",
               aspectRatio: "4/3", // Maintain aspect ratio for video consistency
               position: "relative",
               // borderRadius: "8px",
@@ -937,8 +939,8 @@ const Video = ({ isCameraOn, isMuted, patientInfo }) => {
               <div
                 style={{
                   position: "absolute",
-                  top: "10px",
-                  right: "10px",
+                  top: "20px",
+                  right: "240px",
                   backgroundColor: "rgba(255, 0, 0, 0.7)",
                   color: "#fff",
                   padding: "4px 8px",
@@ -947,7 +949,7 @@ const Video = ({ isCameraOn, isMuted, patientInfo }) => {
                   zIndex: 4, // Above video and video off overlay
                 }}
               >
-                Mic Off
+                <CiMicrophoneOff />
               </div>
             )}
           </div>
