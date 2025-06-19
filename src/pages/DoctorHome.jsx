@@ -140,7 +140,7 @@ const DoctorHome = () => {
     dispatch(
       sendPushNotification({
         // channelName: `JoinCall + ${DoctorLoginId?.id}`,
-        appointment_id: id,
+        appointmentId: id,
       })
     );
   };

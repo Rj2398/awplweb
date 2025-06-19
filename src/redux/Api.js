@@ -119,7 +119,7 @@ export const getVideoCall = (formData) =>
   });
 //code for push notification
 export const sendPush = (formData) =>
-  API.post("/call-notification", formData, {
+  API.post("/call-joined", formData, {
     headers: {
       Authorization: `Bearer ${
         JSON.parse(localStorage.getItem("doctor-app"))?.token
@@ -322,36 +322,34 @@ export const pastPatient = (formData) =>
     },
   });
 
-  export const reminderPopup = (formData) => 
-    API.post("/doctor/appointments/reminders", formData, {
-      headers:{
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("doctor-app"))?.token
-        }`,
-      },
-    });
+export const reminderPopup = (formData) =>
+  API.post("/doctor/appointments/reminders", formData, {
+    headers: {
+      Authorization: `Bearer ${
+        JSON.parse(localStorage.getItem("doctor-app"))?.token
+      }`,
+    },
+  });
 
-    export const bookAppointment = (formData) =>
-      API.post("/doctor/appointments/scheduleAppointmentByDoctor", formData, {
-        headers: {
-          Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("doctor-app"))?.token
-          }`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+export const bookAppointment = (formData) =>
+  API.post("/doctor/appointments/scheduleAppointmentByDoctor", formData, {
+    headers: {
+      Authorization: `Bearer ${
+        JSON.parse(localStorage.getItem("doctor-app"))?.token
+      }`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
 
-      export const videoCallSubmit = (formData) =>
-        API.post("/doctor/prescriptions/submit_appointment_prescription", formData, {
-          headers: {
-            Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("doctor-app"))?.token
-            }`,
-            "Content-Type": "application/json",
-          },
-        });
-
-
+export const videoCallSubmit = (formData) =>
+  API.post("/doctor/prescriptions/submit_appointment_prescription", formData, {
+    headers: {
+      Authorization: `Bearer ${
+        JSON.parse(localStorage.getItem("doctor-app"))?.token
+      }`,
+      "Content-Type": "application/json",
+    },
+  });
 
 // export const logout = (id) => API.post('/api/logout', id, {
 //   headers: {

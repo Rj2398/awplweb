@@ -54,6 +54,7 @@ export const sendPushNotification = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await api.sendPush(formData);
+      console.log(response, "sdfjlsjdfklasdfkjsdfjsklfjklsjfsfj");
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -178,8 +179,7 @@ const myAppointmentSlice = createSlice({
       })
       .addCase(getAllUpcomingAppointment.fulfilled, (state, action) => {
         state.upcomingLoading = false;
-        state.upcommingAppointment =
-          action.payload?.data?.upcomingAppointments;
+        state.upcommingAppointment = action.payload?.data?.upcomingAppointments;
       })
       .addCase(getAllUpcomingAppointment.rejected, (state, action) => {
         state.upcomingLoading = false;
