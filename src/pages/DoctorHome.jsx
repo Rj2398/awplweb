@@ -136,7 +136,8 @@ const DoctorHome = () => {
 
   // handle notification
 
-  const sendNotitficaion = () => {
+  const sendNotitficaion = (id) => {
+    console.log(id, "params of the id");
     dispatch(
       sendPushNotification({
         // channelName: `JoinCall + ${DoctorLoginId?.id}`,
@@ -162,7 +163,7 @@ const DoctorHome = () => {
           time_period: currentAppointment?.time,
         },
       });
-      sendNotitficaion();
+      sendNotitficaion(id);
     }
   };
 
