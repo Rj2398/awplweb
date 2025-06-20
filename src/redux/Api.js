@@ -351,6 +351,16 @@ export const videoCallSubmit = (formData) =>
     },
   });
 
+export const getPrscriveMedicine = (formData) =>
+  API.post("/doctor/treatments", formData, {
+    headers: {
+      Authorization: `Bearer ${
+        JSON.parse(localStorage.getItem("doctor-app"))?.token
+      }`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
 // export const logout = (id) => API.post('/api/logout', id, {
 //   headers: {
 //     'Authorization': `Bearer ${JSON.parse(localStorage.getItem("doctor-app"))?.token}`,

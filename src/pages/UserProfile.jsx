@@ -30,7 +30,27 @@ const UserProfile = () => {
     date: null,
     timeRange: [],
   })
-  
+
+  const handleDateChange = (value) => {
+    setUnavailability((prev) => ({
+      ...prev,
+      date: value,
+    }));
+  };
+
+  const handleTimeRangeChange = (value) => {
+    setUnavailability((prev) => ({
+      ...prev,
+      timeRange: value,
+    }));
+  };
+
+  const handleUnavailability = (e) => {
+    e.preventDefault();
+    console.log("Unavailability Date@@@@@:", unavailability.date);
+    console.log("Time Range Start@@@@@@:", unavailability.timeRange?.[0]);
+    console.log("Time Range End@@@@@:", unavailability.timeRange?.[1]);
+  }
 
   useEffect(() => {
     if (user) {
@@ -140,6 +160,8 @@ const UserProfile = () => {
 
   };
 
+
+
   const handleCancel = () => {
     setIsEditing(false); // Switch back to view mode without saving
   };
@@ -205,10 +227,10 @@ const UserProfile = () => {
                       </div>
                       <div className="input-grp">
                         <label>Doctor Unavailability</label>
-                        <div style={{display:"flex", gap:"10px"}}>
-                          <DatePicker format="MMM dd, yyyy" />
-                          <TimeRangePicker format="hh:mm aa" showMeridiem />
-                          <button className="orange-btn" style={{padding:"24px 0", fontSize:"20px", fontWeight:"500",}}> Save
+                        <div style={{ display: "flex", gap: "10px" }}>
+                          <DatePicker format="MMM dd, yyyy" value={unavailability.date} onChange={handleDateChange} />
+                          <TimeRangePicker format="hh:mm aa" showMeridiem value={unavailability.timeRange} onChange={handleTimeRangeChange} />
+                          <button className="orange-btn" style={{ padding: "24px 0", fontSize: "20px", fontWeight: "500", }} onClick={handleUnavailability}> Save
                           </button>
                         </div>
 

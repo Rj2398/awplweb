@@ -1014,3 +1014,13 @@ const Video = ({ isCameraOn, isMuted, patientInfo }) => {
 };
 
 export default Video;
+
+//
+
+// import React from "react";
+
+// function Video() {
+//   return <div>Video screen</div>;
+// }
+
+// export default Video;

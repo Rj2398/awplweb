@@ -8,7 +8,7 @@ import LoginPassword from "../pages/loginFlow/LoginPassword";
 import ForgotPassword from "../pages/loginFlow/ForgotPassword";
 import OtpVerification from "../pages/loginFlow/OtpVerification";
 import SetPassword from "../pages/loginFlow/SetPassword";
-
+import PrescriptiveDoctor from "../pages/prescriptiveDoctor";
 import DoctorHome from "../pages/DoctorHome";
 import StartAppointment from "../pages/StartAppointment";
 import PatientDetails from "../pages/PatientDetails";
@@ -231,6 +231,8 @@ function Routers() {
             </PrivateRoute>
           }
         />
+
+        <Route path="/PrescriptiveDoctor" element={<PrescriptiveDoctor />} />
         <Route path="*" element={<NotFoundRedirect />} />
       </Routes>
     </>

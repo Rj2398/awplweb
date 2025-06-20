@@ -134,14 +134,11 @@ const DoctorHome = () => {
 
   // handle create channel to join call
 
-  // handle notification
-
   const sendNotitficaion = (id) => {
-    console.log(id, "params of the id");
     dispatch(
       sendPushNotification({
         // channelName: `JoinCall + ${DoctorLoginId?.id}`,
-        appointmentId: id,
+        appointment_id: id,
       })
     );
   };
@@ -150,9 +147,17 @@ const DoctorHome = () => {
     console.log(id, `JoinCall + ${DoctorLoginId?.id}`, "params of the data");
     dispatch(
       getJoinVideoCall({
+        // channelName: `JoinCall + ${DoctorLoginId?.id}`,
         appointmentId: id,
       })
     );
+    //start video call button is not working at first time due to two dispatch
+    // dispatch(
+    //   sendPushNotification({
+    //     // channelName: `JoinCall + ${DoctorLoginId?.id}`,
+    //     appointment_id: id,
+    //   })
+    // );
 
     if (channelDetails) {
       navigate("/VideoCall", {
@@ -243,14 +248,33 @@ const DoctorHome = () => {
       const now = new Date();
 
       const diffInMs = appointmentDateTime - now;
-      const diffInHours = diffInMs / (1000 * 60 * 60);
+      // const diffInHours = diffInMs / (1000 * 60 * 60);
 
       // Disable if appointment has passed or is within 2 hours
-      return diffInHours <= 2;
+      // return diffInHours <= 2;
+      // Disable only if appointment time has already passed this new functionality added
+      return diffInMs <= 0;
     } catch (error) {
       console.error("Date parse error:", error);
       return false;
     }
+  };
+
+  const formatDate = (rawDateStr) => {
+    if (!rawDateStr) return "N/A";
+
+    // Append current year to complete the date
+    const currentYear = new Date().getFullYear();
+    const fullDateStr = `${rawDateStr} ${currentYear}`; // e.g., "Thu Jun 19 2025"
+
+    const date = new Date(fullDateStr);
+    if (isNaN(date)) return "Invalid Date";
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // JS months are 0-indexed
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
   };
 
   return (
@@ -263,7 +287,7 @@ const DoctorHome = () => {
             className="doc-panel-inr"
             style={{ display: "flex", gap: "20px" }}
           >
-            <div style={{ width: "95%" }}>
+            <div style={{ width: "100%" }}>
               <Header />
             </div>
             <div>
@@ -447,6 +471,20 @@ const DoctorHome = () => {
                                   appointment.date,
                                   appointment.time
                                 )}
+                                style={{
+                                  opacity: isCancelDisabled(
+                                    appointment.date,
+                                    appointment.time
+                                  )
+                                    ? 0.5
+                                    : 1,
+                                  cursor: isCancelDisabled(
+                                    appointment.date,
+                                    appointment.time
+                                  )
+                                    ? "not-allowed"
+                                    : "pointer",
+                                }}
                               />
                             </div>
                           </div>
@@ -508,8 +546,9 @@ const DoctorHome = () => {
                                     (DS Code: {prescription.ds_code})
                                   </div>
                                 )} */}
-                                {prescription?.referred == true ? (
+                                {prescription?.is_referred_patient == true ? (
                                   <div
+                                    className="time"
                                     style={{
                                       color: "#199fd9",
                                       marginTop: "2px",
@@ -520,6 +559,7 @@ const DoctorHome = () => {
                                   </div>
                                 ) : (
                                   <div
+                                    className="time"
                                     style={{
                                       color: "#199fd9",
                                       marginTop: "2px",
@@ -531,32 +571,21 @@ const DoctorHome = () => {
                               </td>
                               <td>
                                 <div className="date">
-                                  {
-                                    prescription.symptom_upload_date.split(
-                                      " "
-                                    )[0]
-                                  }
+                                  {/* {prescription.symptom_upload_date.split(" ")[0]} */}
+                                  {/* {prescription.date} */}
+                                  {formatDate(prescription.date)}
                                 </div>
-                                <div className="time">
-                                  {
-                                    prescription.symptom_upload_date.split(
-                                      " "
-                                    )[1]
-                                  }{" "}
-                                  {
-                                    prescription.symptom_upload_date.split(
-                                      " "
-                                    )[2]
-                                  }
-                                  {/* {convertTo24HourTiming(prescription.symptom_upload_date)} */}
-                                </div>
+                                <div className="time">{prescription.time}</div>
                               </td>
                               <td>
                                 <Link
-                                  to="/PendingAssignedPrescriptionDetails"
+                                  to="/patient-details"
                                   state={{
-                                    id: prescription.symptom_id,
+                                    id: prescription.appointment_id,
                                     patientId: prescription.patient_id,
+                                    referrerDscode: prescription.ds_code,
+                                    referrer:
+                                      prescription.referred_patient_name,
                                   }}
                                 >
                                   View

@@ -96,20 +96,23 @@ const VideoCall = () => {
         0
       );
 
+      if (parsedEndTime.getTime() == now.getTime()) {
+        toast.success("Your call will be end in 5 minitus.");
+      }
       // 3. Calculate the `navigationTargetTime`: 5 minutes after `parsedEndTime`
       const navigationTargetTime = new Date(
         parsedEndTime.getTime() + 5 * 60 * 1000
       );
 
       // --- Navigation Check ---
-      if (now.getTime() >= navigationTargetTime.getTime()) {
-        console.log(
-          "Navigating to /pendingprescription as 5 minutes passed after",
-          endTimeStr
-        );
-        window.location.href = "/doctor-home";
-        return; // Important: Stop further processing in this interval after navigation.
-      }
+      // if (now.getTime() >= navigationTargetTime.getTime()) {
+      //   console.log(
+      //     "Navigating to /pendingprescription as 5 minutes passed after",
+      //     endTimeStr
+      //   );
+      //   window.location.href = "/doctor-home";
+      //   return; // Important: Stop further processing in this interval after navigation.
+      // }
 
       // --- Continuous Timer Display Logic (Always running from actualStartTime) ---
       let timeDifferenceInMilliseconds =
@@ -412,17 +415,8 @@ const VideoCall = () => {
     <main className="doctor-panel video-call-pg">
       <div className="container-fluid">
         <div className="doc-panel-inr">
-          {" "}
-          <Header />{" "}
+          <Header />
         </div>
-        {/* Header */}
-        {/* <div className="doc-panel-header">
-            <div className="logo">
-              <a href="doctor-home.html">
-                <img src="./images/logo.png" alt="Logo" />
-              </a>
-            </div>
-          </div> */}
 
         {/* Video Call Screen */}
         <div className="video-call-screen">
@@ -569,259 +563,23 @@ const VideoCall = () => {
                           ))}
                         </div>
                       </div>
-
-                      <div className="vdoclscrnpd-wrp">
-                        <h2>Report:</h2>
-
-                        {medicines.map((medicine, index) => (
-                          <div
-                            key={`medicine-${index}`}
-                            className=""
-                            ref={(el) => (suggestionsRefs.current[index] = el)}
-                          >
-                            <div className="vdoclscrnpd">
-                              <div className="formfield search-bar">
-                                <label>
-                                  Medicine Name<span>*</span>
-                                </label>
-                                <div className="search-input">
-                                  <input
-                                    type="text"
-                                    placeholder="Ibupro"
-                                    value={medicine.medicineName}
-                                    onChange={(e) =>
-                                      handleMedicineChange(
-                                        index,
-                                        "medicineName",
-                                        e.target.value
-                                      )
-                                    }
-                                    autoComplete="off"
-                                  />
-
-                                  <input type="submit" value="search" />
-                                  {medicineErrors[index] && (
-                                    <div
-                                      style={{
-                                        color: "red",
-                                        // marginTop: "5px",
-                                        fontSize: "12px",
-                                      }}
-                                    >
-                                      {medicineErrors[index]}
-                                    </div>
-                                  )}
-                                  {activeMedicineIndex === index &&
-                                    medicine.medicineName &&
-                                    !medicineErrors[index] && (
-                                      <ul
-                                        style={{
-                                          position: "absolute",
-                                          backgroundColor: "white",
-                                          border: "1px solid #ccc",
-                                          width: "100%",
-                                          maxHeight: "150px",
-                                          overflowY: "auto",
-                                          zIndex: 10,
-                                          marginTop: -5,
-
-                                          paddingLeft: "10px",
-                                          listStyle: "none",
-                                        }}
-                                      >
-                                        {medicine.suggestions.length > 0
-                                          ? medicine.suggestions.map(
-                                              (sug, i) => (
-                                                <li
-                                                  key={i}
-                                                  onClick={() =>
-                                                    handleSuggestionSelect(
-                                                      index,
-                                                      sug.product_name
-                                                    )
-                                                  }
-                                                  style={{
-                                                    cursor: "pointer",
-                                                    padding: 5,
-                                                  }}
-                                                >
-                                                  {sug.product_name}
-                                                </li>
-                                              )
-                                            )
-                                          : medicine.medicineName.trim()
-                                              .length > 0 &&
-                                            !medicineErrors[index] && (
-                                              <li
-                                                style={{
-                                                  padding: 5,
-                                                  color: "#999",
-                                                }}
-                                              >
-                                                No data found
-                                              </li>
-                                            )}
-                                      </ul>
-                                    )}
-                                </div>
-                              </div>
-                              <div className="formfield">
-                                <label>
-                                  Dosage<span>*</span>
-                                </label>
-                                <input
-                                  type="text"
-                                  placeholder="Dosage"
-                                  value={medicine.dosage}
-                                  onChange={(e) =>
-                                    handleMedicineChange(
-                                      index,
-                                      "dosage",
-                                      e.target.value
-                                    )
-                                  }
-                                  required
-                                />
-                              </div>
-                              <div className="formfield">
-                                <label>
-                                  Frequency<span>*</span>
-                                </label>
-                                <select
-                                  value={medicine.frequency}
-                                  onChange={(e) =>
-                                    handleMedicineChange(
-                                      index,
-                                      "frequency",
-                                      e.target.value
-                                    )
-                                  }
-                                  required
-                                  style={{
-                                    backgroundColor: "#F9F9F9",
-
-                                    padding: "8px",
-                                    width: "100%",
-                                    borderRadius: "4px",
-                                    fontSize: "16px",
-                                  }}
-                                >
-                                  <option value="">Select Frequency</option>
-                                  <option value="1 time (in a day)">
-                                    1 time (in a day)
-                                  </option>
-                                  <option value="2 times (in a day)">
-                                    2 times (in a day)
-                                  </option>
-                                  <option value="3 times (in a day)">
-                                    3 times (in a day)
-                                  </option>
-                                </select>
-                              </div>
-
-                              <div className="formfield">
-                                <label>
-                                  Duration<span>*</span>
-                                </label>
-                                <input
-                                  type="text"
-                                  placeholder="Duration"
-                                  value={medicine.duration}
-                                  onChange={(e) =>
-                                    handleMedicineChange(
-                                      index,
-                                      "duration",
-                                      e.target.value
-                                    )
-                                  }
-                                  required
-                                />
-                              </div>
-                            </div>
-
-                            <hr
-                              style={{
-                                border: "none",
-                                height: "3px",
-                                backgroundColor: "#333",
-                                margin: "10px 0",
-                              }}
-                            />
-                          </div>
-                        ))}
-
+                      <div className="mt-4 text-right">
                         <button
                           type="button"
                           className="orange-btn"
-                          onClick={addMoreMedicine}
-                          style={{
-                            margin: "20px 0",
-                            padding: 0,
-                            minWidth: "150px",
-                          }}
+                          onClick={() =>
+                            navigate("/PrescriptiveDoctor", {
+                              state: {
+                                id: id, // or treatment.id if coming from a loop
+                                patientId: patientId,
+                              },
+                            })
+                          }
                         >
-                          <img src="./images/plus-icon-circle.svg" alt="Icon" />{" "}
-                          Add More
+                          Go for Prescription
                         </button>
                       </div>
-
-                      <div className="add-notes-wrp ">
-                        <div className="formfield">
-                          <label>Notes:</label>
-                          {/* <input
-                            type="text"
-                            placeholder="Notes"
-                            value={notes}
-                            onChange={handleNotesChange}
-                          /> */}
-                          <textarea
-                            placeholder="Notes..."
-                            value={notes}
-                            onChange={handleNotesChange}
-                            rows={4}
-                            style={{
-                              width: "100%",
-                              resize: "vertical",
-                              backgroundColor: "#fff", // ✅ Fixes blue background
-                              color: "#000", // ✅ Optional: ensure readable text
-                              border: "1px solid #ccc", // Optional: better border
-                              borderRadius: "4px", // Optional: softer corners
-                              padding: "8px", // Optional: internal spacing
-                            }}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="add-notes-wrp vdoclscrnpd">
-                        <div className="formfield">
-                          <label>
-                            Disease <span>*</span>
-                          </label>
-                          <input
-                            type="text"
-                            placeholder="Parasitic disease"
-                            value={diagnosis}
-                            onChange={handleDiagnosisChange}
-                          />
-                        </div>
-                      </div>
                     </div>
-
-                    <button
-                      type="button"
-                      className="orange-btn"
-                      onClick={handleSubmit}
-                      disabled={loading}
-                    >
-                      {loading ? "Submitting..." : "Submit"}
-                    </button>
-                    {/* <button
-                      type="submit"
-                      className="orange-btn"
-                      onClick={() => navigate("/doctor-home")}
-                    >
-                      Submit
-                    </button> */}
                   </div>
                 </form>
               )}

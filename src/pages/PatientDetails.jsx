@@ -15,7 +15,7 @@
 //   const location = useLocation();
 //   const { id, patientId, referrerDscode, referrer } = location.state || {};
 //   console.log(referrerDscode,"reffer");
- 
+
 
 //   const [showModal, setShowModal] = useState(false);
 //   const [showCancelReasonModal, setShowCancelReasonModal] = useState(false);
@@ -409,29 +409,29 @@ const PatientDetails = () => {
   const isCancelDisabled = () => {
     const dateStr = patientAppointmentsDetail?.patientData?.dayDate; // "Tue Jun 10"
     const timeStr = patientAppointmentsDetail?.patientData?.time;   // "03:00 - 03:15 PM"
-  
+
     if (!dateStr || !timeStr) return false;
-  
+
     try {
       // Parse the date parts
       const [, month, day] = dateStr.split(' '); // ["Tue", "Jun", "10"]
       const currentYear = new Date().getFullYear();
-      
+
       // Parse the time (take the start time)
       const [startTime, rest] = timeStr.split(' - '); // "03:00", "03:15 PM"
       const period = rest.split(' ')[1]; // "PM"
-      
+
       // Combine into a parseable date string
       const dateTimeStr = `${month} ${day} ${currentYear} ${startTime} ${period}`;
       // Example: "Jun 10 2023 03:00 PM"
-      
+
       const appointmentDate = new Date(dateTimeStr);
       const now = new Date();
-      
+
       // Calculate difference in hours
       const diffInMs = appointmentDate - now;
       const diffInHours = diffInMs / (1000 * 60 * 60);
-      
+
       return diffInHours <= 2;
     } catch (error) {
       console.error('Date parse error:', error);
@@ -583,31 +583,38 @@ const PatientDetails = () => {
                         </div>
                       )}
 
-                      <div className="btn-wrp">
-                      <button
-  type="button"
-  className="orange-btn"
-  onClick={() => {
-    if (!isCancelDisabled()) {
-      handleCancelClick(id);
-    }
-  }}
-  disabled={isCancelDisabled(
-    patientAppointmentsDetail?.patientData?.dayDate,
-    patientAppointmentsDetail?.patientData?.time
-  )}
-  style={
-    isCancelDisabled(
-      patientAppointmentsDetail?.patientData?.dayDate,
-      patientAppointmentsDetail?.patientData?.time
-    )
-      ? { opacity: 0.5, cursor: 'not-allowed' }
-      : {}
-  }
->
-  Cancel
-</button>
-                      </div>
+{(patientAppointmentsDetail?.patientData?.need_prescription == true) ?
+                        (<div className="btn-wrp">
+                          <Link to="/CompletedAssignedPrescription"
+                            state={{
+                              id: id,
+                              patientId: patientId,
+                             
+                            }}>
+                            <button type="button" className="orange-btn">Respond</button>
+                          </Link>
+                        </div>) : (<div className="btn-wrp">
+                          <button
+                            type="button"
+                            className="orange-btn"
+                            onClick={() => {
+                              if (!isCancelDisabled()) {
+                                handleCancelClick(id);
+                              }
+                            }}
+                            disabled={isCancelDisabled()}
+                            style={isCancelDisabled() ? {
+                              opacity: 0.5,
+                              cursor: 'not-allowed',
+                              pointerEvents: 'none'
+                            } : {}}
+                          >
+                            Cancel
+                          </button>
+
+
+                        </div>)
+                      }
 
                     </div>
                   </form>

@@ -387,13 +387,19 @@ const MyAppointments = () => {
             pageNumbers.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
         }
     }
-    const isWithinTwoHours = (dateTimeStr) => {
+    // const isWithinTwoHours = (dateTimeStr) => {
+    //     const appointmentDate = parseDDMMYYYYTime(dateTimeStr);
+    //     const now = new Date();
+    //     const twoHoursFromNow = new Date(now.getTime() + 1 * 60 * 60 * 1000);
+    //     console.log(appointmentDate);
+    //     return appointmentDate <= twoHoursFromNow;
+    // };
+
+    const isPastAppointment = (dateTimeStr) => {
         const appointmentDate = parseDDMMYYYYTime(dateTimeStr);
         const now = new Date();
-        const twoHoursFromNow = new Date(now.getTime() + 1 * 60 * 60 * 1000);
-        console.log(appointmentDate);
-        return appointmentDate <= twoHoursFromNow;
-    };
+        return appointmentDate < now;
+      };
 
 
     return (
@@ -500,7 +506,7 @@ const MyAppointments = () => {
                                                                 </div>
                                                             </td>
 
-                                                            <td style={{ margin: 0, padding: "0" }}>{patient.patient_age || "-"}</td>
+                                                            <td>{patient.patient_age || "-"}</td>
                                                             {/* <td>{patient.patient_gender || "-"}</td> */}
                                                             <td>{patient.patient_gender?.charAt(0).toUpperCase() + patient.patient_gender?.slice(1).toLowerCase()}</td>
                                                             <td>{patient.patient_phone || "-"}</td>
@@ -542,10 +548,10 @@ const MyAppointments = () => {
                                                                         type="button"
                                                                         className="cmn-btn blue-bg"
                                                                         onClick={() => handleCancelClick(patient.appointment_id)}
-                                                                        disabled={isWithinTwoHours(patient.datetime)} // disable if appointment time <= 2 hours
+                                                                        disabled={isPastAppointment(patient.datetime)} // disable only if appointment is already passed
                                                                         style={{
-                                                                            opacity: isWithinTwoHours(patient.datetime) ? 0.6 : 1,
-                                                                            cursor: isWithinTwoHours(patient.datetime) ? "not-allowed" : "pointer",
+                                                                            opacity: isPastAppointment(patient.datetime) ? 0.6 : 1,
+                                                                            cursor: isPastAppointment(patient.datetime) ? "not-allowed" : "pointer",
                                                                         }}
                                                                     >
                                                                         Cancel

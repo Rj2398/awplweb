@@ -83,8 +83,9 @@ const Notifications = () => {
 
   const handleMarkAllAsRead = () => {
 
-    dispatch(markAllRead({ "notification_ids": finalNotification }))
-    dispatch(getAllNotifications())
+    dispatch(markAllRead({ "notification_ids": finalNotification }));
+    dispatch(getAllNotifications());
+    dispatch(unreadCount());
 
 
   };
