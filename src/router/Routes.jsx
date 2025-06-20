@@ -203,6 +203,7 @@ function Routers() {
             </PrivateRoute>
           }
         />
+        <Route path="/PrescriptiveDoctor" element={<PrescriptiveDoctor />} />
         <Route path="/create-password" element={<CreatePassword />} />
         {/* <Route path="/startappointment" element={<StartAppointment />} /> */}
         {/* <Route path="/patientprofile" element={<PatientProfile />} /> */}
@@ -232,7 +233,6 @@ function Routers() {
           }
         />
 
-        <Route path="/PrescriptiveDoctor" element={<PrescriptiveDoctor />} />
         <Route path="*" element={<NotFoundRedirect />} />
       </Routes>
     </>
