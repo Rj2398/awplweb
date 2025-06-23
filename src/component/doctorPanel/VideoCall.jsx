@@ -520,7 +520,7 @@ const VideoCall = () => {
 
             {/* Right side - Patient Details */}
 
-            <div className="vdoclscrn-patient-details-wrp col-lg-6">
+            <div className=" col-lg-6">
               {loading ? (
                 <div className="loader-main">
                   <span className="loader"></span>
@@ -570,21 +570,6 @@ const VideoCall = () => {
                         </div>
                       </div>
                       <div className="mt-4 text-right">
-                        {/* <button
-                          type="button"
-                          className="orange-btn"
-                          onClick={() =>
-                            navigate("/PrescriptiveDoctor", {
-                              state: {
-                                id: id, // or treatment.id if coming from a loop
-                                patientId: patientId,
-                              },
-                            })
-                          }
-                        >
-                          Go for Prescription
-                        </button> */}
-
                         <a
                           href={`/PrescriptiveDoctor?id=${id}&patientId=${patientId}`} // Construct the URL with query parameters
                           target="_blank" // Opens the link in a new tab
