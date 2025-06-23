@@ -508,7 +508,11 @@ const VideoCall = () => {
 
                   <div className="patient-vdo-screen">
                     {/* <img src="./images/patient-video-thumb.png" alt="Patient Video Thumbnail" /> */}
-                    <Video isCameraOn={isCameraOn} isMuted={isMuted} />
+                    <Video
+                      isCameraOn={isCameraOn}
+                      isMuted={isMuted}
+                      patientInfo={patientInfo.name}
+                    />
                   </div>
                 </div>
               </div>
