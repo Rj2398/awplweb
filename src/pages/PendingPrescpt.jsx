@@ -4,16 +4,19 @@ import { FaPen, FaRegPlusSquare } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { presciveMedicine } from "../redux/slices/dataSlice";
+import { presciveMedicine, videoCallSubmit } from "../redux/slices/dataSlice";
 
 // Import React-Toastify
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
-const PendingPrescpt = () => {
+const PendingPrescpt = ({ id }) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { id, patientId } = location.state || {};
+
+  const [isloading, setIsLoading] = useState(false);
+  // const { id, patientId } = location.state || {};
 
   const { allMedicine, loading, error } = useSelector(
     (state) => state.userdata
@@ -22,8 +25,8 @@ const PendingPrescpt = () => {
   console.log(
     id,
     "is appointment id ",
-    patientId,
-    "is the patient id",
+    // patientId,
+
     allMedicine,
     "SELECTED DATA *******"
   );
@@ -320,10 +323,11 @@ const PendingPrescpt = () => {
       theme: "colored",
     });
   };
-
-  const handleSubmitToAPI = () => {
+  const handleSubmitToAPI = async () => {
+    setIsLoading(false);
+    // Corrected: Added 'async' keyword here
     if (
-      !data ||
+      !data || // 'data' needs to be defined in the component's scope
       !data.disease_name ||
       !data.treatments ||
       data.treatments.length === 0
@@ -341,17 +345,33 @@ const PendingPrescpt = () => {
       return;
     }
 
+    const doctorAppData = JSON.parse(localStorage.getItem("doctor-app"));
+    const authToken = doctorAppData?.token;
+    if (!authToken) {
+      toast.error("Authentication token not found. Please log in again.", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return; // Stop the function if no token is found
+    }
+
     const payload = {
-      appointment_id: id,
-      disease_name: data.disease_name,
+      appointment_id: id, // 'id' needs to be defined in the component's scope
+      diagnosis: data.disease_name,
       medicines: data.treatments.map((treatment) => ({
-        medicine_id: treatment.medicine_id,
+        // medicine_id: treatment.medicine_id,
         medicine_name: treatment.medicine_name,
         dosage: treatment.dosage,
         duration: treatment.duration,
         unit: treatment.unit,
         with_water: treatment.with_water,
-        dosage_frequency: treatment.dosage_frequency,
+        dosage_frequency: String(treatment.dosage_frequency),
         meal_timing: treatment.meal_timing,
         day_time: treatment.day_time,
         remarks: treatment.remarks,
@@ -359,27 +379,160 @@ const PendingPrescpt = () => {
     };
 
     console.log("Submitting data to API:", payload);
-    // In a real application, you would dispatch an async action here to send data to your backend
-    // dispatch(submitPrescription(payload));
 
-    toast.success("Prescription data submitted successfully!", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        // 'await' requires the function to be 'async'
+        "https://awplconnectadmin.tgastaging.com/api/doctor/prescriptions/submit_appointment_prescription",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.status) {
+        toast.success("Prescription data submitted successfully!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        setIsLoading(false);
+        // Optionally, you can perform other actions on success, like redirecting or clearing form
+      } else {
+        toast.error(response.data.message || "An error occurred.", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("API Call Error:", error);
+      if (error.response) {
+        console.error("Error response data:", error.response.data);
+        console.error("Error response status:", error.response.status);
+        toast.error(
+          error.response.data.message || "Server error. Please try again.",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+      } else if (error.request) {
+        toast.error(
+          "No response from server. Please check your internet connection.",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+      } else {
+        toast.error("An unexpected error occurred. Please try again.", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+      setIsLoading(false);
+    }
   };
+  // const handleSubmitToAPI = () => {
+  //   if (
+  //     !data ||
+  //     !data.disease_name ||
+  //     !data.treatments ||
+  //     data.treatments.length === 0
+  //   ) {
+  //     toast.warn("No data to submit! Please add at least one medicine.", {
+  //       position: "top-center",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //     return;
+  //   }
 
-  if (loading) {
+  //   const payload = {
+  //     appointment_id: id,
+  //     diagnosis: data.disease_name,
+  //     medicines: data.treatments.map((treatment) => ({
+  //       // medicine_id: treatment.medicine_id,
+  //       medicine_name: treatment.medicine_name,
+  //       dosage: treatment.dosage,
+  //       duration: treatment.duration,
+  //       unit: treatment.unit,
+  //       with_water: treatment.with_water,
+  //       dosage_frequency: String(treatment.dosage_frequency),
+  //       meal_timing: treatment.meal_timing,
+  //       day_time: treatment.day_time,
+  //       remarks: treatment.remarks,
+  //     })),
+  //   };
+
+  //   console.log("Submitting data to API:", payload);
+  //   // In a real application, you would dispatch an async action here to send data to your backend
+  //   dispatch(videoCallSubmit(payload));
+
+  //   toast.success("Prescription data submitted successfully!", {
+  //     position: "top-center",
+  //     autoClose: 5000,
+  //     hideProgressBar: false,
+  //     closeOnClick: true,
+  //     pauseOnHover: true,
+  //     draggable: true,
+  //     progress: undefined,
+  //     theme: "dark",
+  //   });
+  // };
+
+  // if (loading) {
+  //   return (
+  //     <div className="flex justify-center items-center h-screen">
+  //       <Spinner animation="border" role="status">
+  //         <span className="sr-only">Loading...</span>
+  //       </Spinner>
+  //     </div>
+  //   );
+  // }
+  if (isloading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
+      <div className="loader-main">
+        <span className="loader"></span>
       </div>
     );
   }
@@ -394,6 +547,13 @@ const PendingPrescpt = () => {
 
   const hasTreatments =
     data && Array.isArray(data.treatments) && data.treatments.length > 0;
+
+  if (loading)
+    return (
+      <div className="loader-main">
+        <span className="loader"></span>
+      </div>
+    );
 
   return (
     <div className="container p-4 mx-auto font-sans bg-white">

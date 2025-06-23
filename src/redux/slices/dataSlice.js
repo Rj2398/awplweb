@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../Api.js";
 import { toast } from "react-toastify";
- 
+
 // 16.Doctor Home Dashboard API
 export const doctorHomeDashboard = createAsyncThunk(
   "doctor/doctorHomeDashboard",
@@ -14,7 +14,7 @@ export const doctorHomeDashboard = createAsyncThunk(
     }
   }
 );
- 
+
 export const pastPatient = createAsyncThunk(
   "/doctor/patients/past",
   async (formData, { rejectWithValue }) => {
@@ -26,7 +26,7 @@ export const pastPatient = createAsyncThunk(
     }
   }
 );
- 
+
 export const presciveMedicine = createAsyncThunk(
   "/doctor/treatments",
   async (formData, { rejectWithValue }) => {
@@ -38,7 +38,7 @@ export const presciveMedicine = createAsyncThunk(
     }
   }
 );
- 
+
 // video Call submit API
 export const videoCallSubmit = createAsyncThunk(
   "doctor/videoCallSubmit",
@@ -51,20 +51,20 @@ export const videoCallSubmit = createAsyncThunk(
     }
   }
 );
- 
+
 // Slice
- 
+
 const dataSlice = createSlice({
   name: "dataSlice",
   initialState: {
     userdata: [],
     pastPatients: [],
-    videoSubmit: [],
+    videoSubmit: null,
     // data: null,  // Changed from userdata to data to match API response
     loading: false,
     error: null,
     message: null,
- 
+
     allMedicine: {},
   },
   reducers: {},
@@ -83,7 +83,7 @@ const dataSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
- 
+
       //
       .addCase(presciveMedicine.pending, (state) => {
         state.loading = true;
@@ -97,9 +97,9 @@ const dataSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
- 
+
       //presciveMedicine
- 
+
       .addCase(pastPatient.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -112,7 +112,7 @@ const dataSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
- 
+
       // video Call Submit API
       .addCase(videoCallSubmit.pending, (state) => {
         state.loading = true;
@@ -128,5 +128,5 @@ const dataSlice = createSlice({
       });
   },
 });
- 
+
 export default dataSlice.reducer;

@@ -591,6 +591,9 @@ import PendingPrescpt from "../../pages/PendingPrescpt";
 const CompletedAssignedPrescription = () => {
   const location = useLocation();
   const { id, patientId } = location.state || {};
+
+  console.log(id, "id **********************");
+
   const suggestionsRefs = useRef([]);
   const dispatch = useDispatch();
   const [choosenItem, setChoosenItem] = useState({});
@@ -904,7 +907,7 @@ const CompletedAssignedPrescription = () => {
                     <div className="vdoclscrnpd-wrp">
                       <div className="vdoclscrnpd-wrp">
                         <h2>Prescriptions:</h2>
-                        <PendingPrescpt />
+                        <PendingPrescpt id={id} />
                         {/* {medicines.map((medicine, index) => (
                           <div
                             key={`medicine-${index}`}

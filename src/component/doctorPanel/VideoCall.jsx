@@ -564,7 +564,7 @@ const VideoCall = () => {
                         </div>
                       </div>
                       <div className="mt-4 text-right">
-                        <button
+                        {/* <button
                           type="button"
                           className="orange-btn"
                           onClick={() =>
@@ -577,7 +577,17 @@ const VideoCall = () => {
                           }
                         >
                           Go for Prescription
-                        </button>
+                        </button> */}
+
+                        <a
+                          href={`/PrescriptiveDoctor?id=${id}&patientId=${patientId}`} // Construct the URL with query parameters
+                          target="_blank" // Opens the link in a new tab
+                          rel="noopener noreferrer" // Recommended for security when using target="_blank"
+                        >
+                          <button type="button" className="orange-btn">
+                            Go for Prescription
+                          </button>
+                        </a>
                       </div>
                     </div>
                   </div>
