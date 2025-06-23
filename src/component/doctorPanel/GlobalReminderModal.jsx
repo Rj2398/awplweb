@@ -21,10 +21,10 @@
 
 //     const now = new Date();
 //     const diffInMs = appointmentDateTime.getTime() - now.getTime();
-   
+
 //     const reminders = [
 //       { minutesBefore: 15 }, { minutesBefore: 5 }, { minutesBefore: 2 },
-//       // { minutesBefore: 14 }, { minutesBefore: 13 }, { minutesBefore: 12 }, { minutesBefore: 11 }, 
+//       // { minutesBefore: 14 }, { minutesBefore: 13 }, { minutesBefore: 12 }, { minutesBefore: 11 },
 //       // { minutesBefore: 10 }, { minutesBefore: 9 }, { minutesBefore: 8 }, { minutesBefore: 7 },
 //       // { minutesBefore: 6 }, { minutesBefore: 4 }, { minutesBefore: 3 }, { minutesBefore: 1 },
 //     ];
@@ -82,13 +82,13 @@
 //   return (
 //     <>
 //       {showReminderModal && (
-//         <div className="modal fade show" tabIndex="-1" 
+//         <div className="modal fade show" tabIndex="-1"
 //           style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }} >
 //           <div className="modal-dialog modal-dialog-centered" role="document">
 //             <div className="modal-content text-center position-relative shadow"
 //               style={{ width: "400px", minHeight: "280px", borderRadius: "20px", padding: "30px 20px", }} >
-              
-//               <button type="button" onClick={() => setShowReminderModal(false)} 
+
+//               <button type="button" onClick={() => setShowReminderModal(false)}
 //                 className="position-absolute top-0 end-0 m-3 border-0 bg-transparent" aria-label="Close" >
 //                 <img src="./images/cross-blue.png" alt="Close Icon" style={{ width: "24px", height: "24px" }} />
 //               </button>
@@ -132,15 +132,7 @@
 
 // export default GlobalReminderModal;
 
-
-
-
-
-
-
 // 2nd change
-
-
 
 // import { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
@@ -159,7 +151,7 @@
 // // Add 2 minutes to current IST time
 // // nowIST.setSeconds(nowIST.getSeconds() + 20);
 
-//               // FOR STATIC DATA TESTING 
+//               // FOR STATIC DATA TESTING
 //   // const reminderPopupData = {
 //   //   appointment_datetime: nowIST.toISOString(), // static ISO date-time string
 //   //   patient_name: "Mock Patient"
@@ -172,10 +164,9 @@
 
 //   // const reminderPopupData = {
 //   //   // appointment_datetime: "2025-06-13T13:00:00.000000Z", // 6:30 PM IST
-//   //   appointment_datetime: "2025-06-13T13:16:00.000Z", 
+//   //   appointment_datetime: "2025-06-13T13:16:00.000Z",
 //   //   patient_name: "Mock Patient"
 //   // };
-  
 
 //   useEffect(() => {
 //     // console.log("Reminder Popup Data from backend11111111:", reminderPopupData);
@@ -190,10 +181,10 @@
 
 //     const now = new Date();
 //     const diffInMs = appointmentDateTime.getTime() - now.getTime();
-   
+
 //     const reminders = [
 //       { minutesBefore: 15 }, { minutesBefore: 5 }, { minutesBefore: 2 },
-//       // { minutesBefore: 14 }, { minutesBefore: 13 }, { minutesBefore: 12 }, { minutesBefore: 11 }, 
+//       // { minutesBefore: 14 }, { minutesBefore: 13 }, { minutesBefore: 12 }, { minutesBefore: 11 },
 //       // { minutesBefore: 10 }, { minutesBefore: 9 }, { minutesBefore: 8 }, { minutesBefore: 7 },
 //       // { minutesBefore: 6 }, { minutesBefore: 4 }, { minutesBefore: 3 }, { minutesBefore: 1 },
 //     ];
@@ -264,13 +255,13 @@
 //   return (
 //     <>
 //       {showReminderModal && (
-//         <div className="modal fade show" tabIndex="-1" 
+//         <div className="modal fade show" tabIndex="-1"
 //           style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }} >
 //           <div className="modal-dialog modal-dialog-centered" role="document">
 //             <div className="modal-content text-center position-relative shadow"
 //               style={{ width: "400px", minHeight: "280px", borderRadius: "20px", padding: "30px 20px", }} >
-              
-//               <button type="button" onClick={() => setShowReminderModal(false)} 
+
+//               <button type="button" onClick={() => setShowReminderModal(false)}
 //                 className="position-absolute top-0 end-0 m-3 border-0 bg-transparent" aria-label="Close" >
 //                 <img src="./images/cross-blue.png" alt="Close Icon" style={{ width: "24px", height: "24px" }} />
 //               </button>
@@ -315,12 +306,6 @@
 
 // export default GlobalReminderModal;
 
-
-
-
-
-
-
 // 3rd change
 
 // import { useEffect, useState } from "react";
@@ -341,7 +326,7 @@
 
 //   const normalizeDateTimeString = (dateTimeStr) => {
 //     if (!dateTimeStr) return null;
-    
+
 //     // Convert from format "2025-06-13T13:00:00.000000Z" to "2025-06-13T13:00:00.000Z"
 //     return dateTimeStr.replace(/(\.\d{3})\d+/, '$1');
 //   };
@@ -352,7 +337,7 @@
 //     // Normalize the datetime string format
 //     const normalizedDateTime = normalizeDateTimeString(reminderPopupData.appointment_datetime);
 //     const appointmentDateTime = new Date(normalizedDateTime);
-    
+
 //     if (isNaN(appointmentDateTime)) {
 //       console.error("Invalid appointment datetime:", reminderPopupData.appointment_datetime);
 //       return;
@@ -360,7 +345,7 @@
 
 //     const now = new Date();
 //     const diffInMs = appointmentDateTime.getTime() - now.getTime();
-   
+
 //     const reminders = [
 //       { minutesBefore: 15 }, { minutesBefore: 5 }, { minutesBefore: 2 },
 //     ];
@@ -407,13 +392,13 @@
 //   return (
 //     <>
 //       {showReminderModal && (
-//         <div className="modal fade show" tabIndex="-1" 
+//         <div className="modal fade show" tabIndex="-1"
 //           style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }} >
 //           <div className="modal-dialog modal-dialog-centered" role="document">
 //             <div className="modal-content text-center position-relative shadow"
 //               style={{ width: "400px", minHeight: "280px", borderRadius: "20px", padding: "30px 20px", }} >
-              
-//               <button type="button" onClick={() => setShowReminderModal(false)} 
+
+//               <button type="button" onClick={() => setShowReminderModal(false)}
 //                 className="position-absolute top-0 end-0 m-3 border-0 bg-transparent" aria-label="Close" >
 //                 <img src="./images/cross-blue.png" alt="Close Icon" style={{ width: "24px", height: "24px" }} />
 //               </button>
@@ -456,11 +441,6 @@
 
 // export default GlobalReminderModal;
 
-
-
-
-
-
 // 4th change
 
 import { useEffect, useState } from "react";
@@ -473,11 +453,13 @@ const GlobalReminderModal = () => {
   const [reminderMessage, setReminderMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { reminderPopupData, loading } = useSelector((state) => state.notification);
-console.log(reminderPopupData,'123')
+  const { reminderPopupData, loading } = useSelector(
+    (state) => state.notification
+  );
+  console.log(reminderPopupData, "123");
   const normalizeISOString = (isoString) => {
     // Normalize to 3 fractional digits for compatibility
-    return isoString.replace(/(\.\d{3})\d*(Z)/, '$1$2');
+    return isoString.replace(/(\.\d{3})\d*(Z)/, "$1$2");
   };
 
   useEffect(() => {
@@ -493,20 +475,23 @@ console.log(reminderPopupData,'123')
   useEffect(() => {
     if (!reminderPopupData?.[0]?.appointment_datetime) return;
 
-    const normalizedDateTimeStr = normalizeISOString(reminderPopupData[0].appointment_datetime);
+    const normalizedDateTimeStr = normalizeISOString(
+      reminderPopupData[0].appointment_datetime
+    );
     const appointmentDateTime = new Date(normalizedDateTimeStr);
 
     if (isNaN(appointmentDateTime)) {
-      console.error("Invalid appointment datetime:", reminderPopupData[0].appointment_datetime);
+      console.error(
+        "Invalid appointment datetime:",
+        reminderPopupData[0].appointment_datetime
+      );
       return;
     }
 
     const now = new Date();
     const diffInMs = appointmentDateTime.getTime() - now.getTime();
 
-    const reminders = [
-      { minutesBefore: 15 }, { minutesBefore: 5 }, { minutesBefore: 2 },
-    ];
+    const reminders = [{ minutesBefore: 5 }, { minutesBefore: 2 }];
     const timers = [];
 
     reminders.forEach(({ minutesBefore }) => {
@@ -550,26 +535,53 @@ console.log(reminderPopupData,'123')
   return (
     <>
       {showReminderModal && (
-        <div className="modal fade show" tabIndex="-1"
-          style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }} >
+        <div
+          className="modal fade show"
+          tabIndex="-1"
+          style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+        >
           <div className="modal-dialog modal-dialog-centered" role="document">
-            <div className="modal-content text-center position-relative shadow"
-              style={{ width: "400px", minHeight: "280px", borderRadius: "20px", padding: "30px 20px" }} >
-
-              <button type="button" onClick={() => setShowReminderModal(false)}
-                className="position-absolute top-0 end-0 m-3 border-0 bg-transparent" aria-label="Close" >
-                <img src="./images/cross-blue.png" alt="Close Icon" style={{ width: "24px", height: "24px" }} />
+            <div
+              className="modal-content text-center position-relative shadow"
+              style={{
+                width: "400px",
+                minHeight: "280px",
+                borderRadius: "20px",
+                padding: "30px 20px",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setShowReminderModal(false)}
+                className="position-absolute top-0 end-0 m-3 border-0 bg-transparent"
+                aria-label="Close"
+              >
+                <img
+                  src="./images/cross-blue.png"
+                  alt="Close Icon"
+                  style={{ width: "24px", height: "24px" }}
+                />
               </button>
 
               <div className="modal-icon mb-3">
-                <img src="./images/bell-icon.svg" alt="Reminder Icon" style={{ width: "40px", height: "40px" }} />
+                <img
+                  src="./images/bell-icon.svg"
+                  alt="Reminder Icon"
+                  style={{ width: "40px", height: "40px" }}
+                />
               </div>
 
               <div className="modal-header border-0 flex-column align-items-center p-0">
-                <h2 className="fw-bold mb-2" style={{ fontSize: "22px", color: "#333" }}>
+                <h2
+                  className="fw-bold mb-2"
+                  style={{ fontSize: "22px", color: "#333" }}
+                >
                   Reminder:
                 </h2>
-                <p className="m-0" style={{ color: "#009CDE", fontWeight: "500" }}>
+                <p
+                  className="m-0"
+                  style={{ color: "#009CDE", fontWeight: "500" }}
+                >
                   {reminderMessage}
                 </p>
               </div>
@@ -585,7 +597,9 @@ console.log(reminderPopupData,'123')
                 <div className="text-muted">
                   Date and Time:{" "}
                   <span className="fw-medium" style={{ color: "#356598" }}>
-                    {formatDateTime(reminderPopupData?.[0]?.appointment_datetime)}
+                    {formatDateTime(
+                      reminderPopupData?.[0]?.appointment_datetime
+                    )}
                   </span>
                 </div>
               </div>

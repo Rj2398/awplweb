@@ -96,23 +96,25 @@ const VideoCall = () => {
         0
       );
 
-      if (parsedEndTime.getTime() == now.getTime()) {
-        toast.success("Your call will be end in 5 minitus.");
-      }
       // 3. Calculate the `navigationTargetTime`: 5 minutes after `parsedEndTime`
       const navigationTargetTime = new Date(
         parsedEndTime.getTime() + 5 * 60 * 1000
       );
+      const edtTimeTarge = new Date(parsedEndTime.getTime());
 
+      //
+      if (now.getTime() == edtTimeTarge.getTime()) {
+        toast.success("Appointment time finish , call will end in 5 minutes");
+      }
       // --- Navigation Check ---
-      // if (now.getTime() >= navigationTargetTime.getTime()) {
-      //   console.log(
-      //     "Navigating to /pendingprescription as 5 minutes passed after",
-      //     endTimeStr
-      //   );
-      //   window.location.href = "/doctor-home";
-      //   return; // Important: Stop further processing in this interval after navigation.
-      // }
+      if (now.getTime() >= navigationTargetTime.getTime()) {
+        console.log(
+          "Navigating to /pendingprescription as 5 minutes passed after",
+          endTimeStr
+        );
+        window.location.href = "/doctor-home";
+        return; // Important: Stop further processing in this interval after navigation.
+      }
 
       // --- Continuous Timer Display Logic (Always running from actualStartTime) ---
       let timeDifferenceInMilliseconds =
@@ -153,7 +155,7 @@ const VideoCall = () => {
     const intervalId = setInterval(updateTime, 1000); // Update every second
 
     return () => clearInterval(intervalId); // Cleanup on unmount
-  }, [time_period]); // Dependency array
+  }, [time_period]);
 
   // code tested
 
