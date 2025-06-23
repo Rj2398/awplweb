@@ -24,13 +24,16 @@ const Footer = () => {
   return (
     <div className="panel-footer">
       <div className="copyright">
-        <p>&copy; <span className="curryr">{new Date().getFullYear()}</span> . All rights reserved.</p>
+        <p>
+          &copy; <span className="curryr">{new Date().getFullYear()}</span> .
+          All rights reserved.
+        </p>
       </div>
       <div className="ftr-right">
-        <p>
+        {/* <p>
           Design & Developed with <i className="fa-solid fa-heart"></i> by{" "}
           <a href="https://yesitlabs.com" target="_blank" rel="noopener noreferrer">Yes IT Labs</a>
-        </p>
+        </p> */}
       </div>
     </div>
   );
