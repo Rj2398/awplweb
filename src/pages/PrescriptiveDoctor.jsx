@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 import { presciveMedicine, videoCallSubmit } from "../redux/slices/dataSlice";
 
 // Import React-Toastify
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
@@ -46,7 +46,7 @@ const PrescriptiveDoctor = () => {
   }, [allMedicine]);
 
   useEffect(() => {
-    dispatch(presciveMedicine({ appointment_id: id || "80" }));
+    dispatch(presciveMedicine({ appointment_id: id }));
   }, [dispatch, id]);
 
   const medicineSuggestions = useMemo(() => {
@@ -195,16 +195,7 @@ const PrescriptiveDoctor = () => {
     }));
     handleCloseEditModal();
 
-    toast.success("Medicine updated successfully!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
+    toast.success("Medicine updated successfully!");
   };
 
   const handleDelete = (treatmentId) => {
@@ -430,7 +421,7 @@ const PrescriptiveDoctor = () => {
     } catch (error) {
       console.error("API Call Error:", error);
       if (error.response) {
-        console.error("Error response data:", error.response.data);
+        console.error("Error response data:", error.response.data?.message);
         console.error("Error response status:", error.response.status);
         toast.error(
           error.response.data.message || "Server error. Please try again.",
@@ -512,8 +503,6 @@ const PrescriptiveDoctor = () => {
 
   return (
     <div className="container p-4 mx-auto font-sans bg-white">
-      <ToastContainer />
-
       <div
         style={{
           width: "200px",
