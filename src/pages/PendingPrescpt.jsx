@@ -3,7 +3,7 @@ import { Table, Button, Modal, Form, Spinner } from "react-bootstrap";
 import { FaPen, FaRegPlusSquare } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { presciveMedicine, videoCallSubmit } from "../redux/slices/dataSlice";
 
 // Import React-Toastify
@@ -13,6 +13,7 @@ import axios from "axios";
 
 const PendingPrescpt = ({ id }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const [isloading, setIsLoading] = useState(false);
@@ -365,7 +366,6 @@ const PendingPrescpt = ({ id }) => {
       appointment_id: id, // 'id' needs to be defined in the component's scope
       diagnosis: data.disease_name,
       medicines: data.treatments.map((treatment) => ({
-        // medicine_id: treatment.medicine_id,
         medicine_name: treatment.medicine_name,
         dosage: treatment.dosage,
         duration: treatment.duration,
@@ -406,6 +406,7 @@ const PendingPrescpt = ({ id }) => {
           theme: "dark",
         });
         setIsLoading(false);
+        navigate("/doctor-home");
         // Optionally, you can perform other actions on success, like redirecting or clearing form
       } else {
         toast.error(response.data.message || "An error occurred.", {

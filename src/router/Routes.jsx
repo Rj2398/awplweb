@@ -141,7 +141,9 @@ function Routers() {
           path="/videocall"
           element={
             <PrivateRoute>
-              <VideoCall />
+              <Layout>
+                <VideoCall />
+              </Layout>
             </PrivateRoute>
           }
         />

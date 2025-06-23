@@ -242,12 +242,6 @@
 
 // export default CompletedAppointment;
 
-
-
-
-
-
-
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../component/doctorPanel/Header";
@@ -260,7 +254,7 @@ import Chat from "../component/doctorPanel/Chat";
 import Config from "../config/Constant";
 const CompletedAppointment = () => {
   const location = useLocation();
-  const { id, patientId, appointmentId, chat_id, } = location.state || {};
+  const { id, patientId, appointmentId, chat_id } = location.state || {};
   console.log("id", id, chat_id, "Chat idddd***************");
 
   const { user } = useSelector(({ user }) => user);
@@ -337,6 +331,17 @@ const CompletedAppointment = () => {
                   </div>
                 </div>
 
+                <div className="chat-header">
+                  <a
+                    href="./images/file-icon.svg"
+                    className="orange-btn"
+                    download
+                    onClick={handleDownloadPrescription}
+                  >
+                    Download Prescription
+                  </a>
+                </div>
+
                 <div className="completed-appoint-scrn-inr row">
                   <div className="completed-appoint-scrn-left col-lg-6">
                     <div className="apointment-detail-card cmn-mb2">
@@ -373,7 +378,11 @@ const CompletedAppointment = () => {
                         <Link
                           // to="/completed-appointments-profile"
                           to="/patient-profile"
-                          state={{patientId:patientId, source:"completed", hideSchedule: false }}
+                          state={{
+                            patientId: patientId,
+                            source: "completed",
+                            hideSchedule: false,
+                          }}
                           className="cmn-btn"
                         >
                           View profile
@@ -443,9 +452,12 @@ const CompletedAppointment = () => {
                                   <input
                                     type="text"
                                     value={
-                                      completeAppointmentPatientDetail
-                                        ?.basicInformation?.Patient_gender.charAt(0).toUpperCase() + completeAppointmentPatientDetail
-                                        ?.basicInformation?.Patient_gender.slice(1) || ""
+                                      completeAppointmentPatientDetail?.basicInformation?.Patient_gender.charAt(
+                                        0
+                                      ).toUpperCase() +
+                                        completeAppointmentPatientDetail?.basicInformation?.Patient_gender.slice(
+                                          1
+                                        ) || ""
                                     }
                                     readOnly
                                   />
@@ -470,27 +482,6 @@ const CompletedAppointment = () => {
                       </form>
                     </div>
                   </div>
-
-                  {/* <div className="completed-appoint-scrn-right col-lg-6">
-                  <div className="completed-appoint-chat-scrn">
-                    <div className="chat-container">
-                      <div className="chat-footer">
-                        <div className="chat-input">
-                          <input type="text" placeholder="Type a message" />
-                          <div className="chat-file-upld">
-                            <input type="file" />
-                            <span className="attach-btn">
-                              <img src="./images/attach-icon.svg" alt="Icon" />
-                            </span>
-                          </div>
-                        </div>
-                        <button type="submit" className="send-btn">
-                          <img src="./images/send-icon.svg" alt="Icon" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
 
                   <Chat
                     chat_id={chat_id}

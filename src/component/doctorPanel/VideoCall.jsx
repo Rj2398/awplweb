@@ -70,7 +70,7 @@ const VideoCall = () => {
     } else if (amPmForEndTime === "AM" && endHours === 12) {
       endHours = 0;
     }
-
+    let hasAppointmentEndToastShown = false;
     const updateTime = () => {
       const now = new Date(); // Current date and time
 
@@ -100,12 +100,22 @@ const VideoCall = () => {
       const navigationTargetTime = new Date(
         parsedEndTime.getTime() + 5 * 60 * 1000
       );
-      const edtTimeTarge = new Date(parsedEndTime.getTime());
+      // const edtTimeTarge = new Date(parsedEndTime.getTime());
+      const edtTimeTarge = parsedEndTime;
 
+      console.log(edtTimeTarge.getTime(), "test phone **********");
       //
-      if (now.getTime() == edtTimeTarge.getTime()) {
-        toast.success("Appointment time finish , call will end in 5 minutes");
+      // if (now.getTime() == edtTimeTarge.getTime()) {
+      //   toast.success("Appointment time finish , call will end in 5 minutes");
+      // }
+      if (
+        !hasAppointmentEndToastShown &&
+        now.getTime() >= edtTimeTarge.getTime()
+      ) {
+        toast.success("Appointment time finish, call will end in 5 minutes");
+        hasAppointmentEndToastShown = true; // Set the flag to true so it doesn't show again
       }
+
       // --- Navigation Check ---
       if (now.getTime() >= navigationTargetTime.getTime()) {
         console.log(
