@@ -24,6 +24,18 @@ export const getAllUpcomingAppointment = createAsyncThunk(
   }
 );
 
+export const getAllIncompletedAppointment = createAsyncThunk(
+  "user/getAllIncompletedAppointment",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.getAllIncompletedAppointment();
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 //
 // export const getJoinVideoCall = createAsyncThunk(
 //   "doctor/appointments/upcoming",
@@ -158,6 +170,8 @@ const myAppointmentSlice = createSlice({
     completedLoading: false,
     cancelledAppointment: [],
     cancelledLoading: false,
+    incompletedAppointment: [],
+    incompletedLoading: false,
     doctorCancelledAppointment: [],
     doctorcancelledLoading: false,
     patientAppointmentsDetail: [],
@@ -178,8 +192,7 @@ const myAppointmentSlice = createSlice({
       })
       .addCase(getAllUpcomingAppointment.fulfilled, (state, action) => {
         state.upcomingLoading = false;
-        state.upcommingAppointment =
-          action.payload?.data?.upcomingAppointments;
+        state.upcommingAppointment = action.payload?.data?.upcomingAppointments;
       })
       .addCase(getAllUpcomingAppointment.rejected, (state, action) => {
         state.upcomingLoading = false;
@@ -213,6 +226,23 @@ const myAppointmentSlice = createSlice({
       })
       .addCase(getAllCanceledAppointment.rejected, (state, action) => {
         state.cancelledLoading = false;
+        state.error = action.payload || "Failed to fetch users";
+        if (action.payload.message == "Unauthenticated.") {
+          logouterror();
+        }
+      })
+
+      .addCase(getAllIncompletedAppointment.pending, (state) => {
+        state.incompletedLoading = true;
+        state.error = null;
+      })
+      .addCase(getAllIncompletedAppointment.fulfilled, (state, action) => {
+        state.incompletedLoading = false;
+        state.incompletedAppointment =
+          action.payload?.data?.incomplete_appointments;
+      })
+      .addCase(getAllIncompletedAppointment.rejected, (state, action) => {
+        state.incompletedLoading = false;
         state.error = action.payload || "Failed to fetch users";
         if (action.payload.message == "Unauthenticated.") {
           logouterror();

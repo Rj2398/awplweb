@@ -586,7 +586,7 @@ const VideoCall = () => {
                           rel="noopener noreferrer" // Recommended for security when using target="_blank"
                         >
                           <button type="button" className="orange-btn">
-                            Go for Prescription
+                            Go to Prescription
                           </button>
                         </a>
                       </div>

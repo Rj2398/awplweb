@@ -361,6 +361,20 @@ export const getPrscriveMedicine = (formData) =>
     },
   });
 
+//
+export const getAllIncompletedAppointment = () =>
+  API.post(
+    `/doctor/appointments/incomplete`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("doctor-app"))?.token
+        }`,
+      },
+    }
+  );
+
 // export const logout = (id) => API.post('/api/logout', id, {
 //   headers: {
 //     'Authorization': `Bearer ${JSON.parse(localStorage.getItem("doctor-app"))?.token}`,
