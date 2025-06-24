@@ -985,7 +985,7 @@ const PendingPrescpt = ({ id }) => {
         <Modal.Footer className="justify-content-center p-4 bg-gray-100 border-t-0 rounded-b-lg">
           <Button
             onClick={handleUpdate}
-            className="px-5 py-2 text-white bg-blue-500 orange-btn rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
+            className="orange-btn" style={{fontWeight:"600", padding:"0 42px"}}
           >
             Update Changes
           </Button>
@@ -1152,12 +1152,19 @@ const PendingPrescpt = ({ id }) => {
           </Form>
         </Modal.Body>
         <Modal.Footer className="justify-content-center p-4 bg-gray-100 border-t-0 rounded-b-lg">
-          <Button
+        
+        <Button
+            onClick={handleAddNew}
+            className="orange-btn" style={{fontWeight:"600", padding:"0 42px"}}
+          >
+            Add Medicine
+          </Button>
+          {/* <Button
             onClick={handleAddNew}
             className="px-5 py-2 text-white bg-green-500 orange-btn rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75"
           >
             Add Medicine
-          </Button>
+          </Button> */}
         </Modal.Footer>
       </Modal>
     </div>

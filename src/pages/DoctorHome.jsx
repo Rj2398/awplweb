@@ -107,7 +107,7 @@ const DoctorHome = () => {
   };
 
   useEffect(() => {
-    const reminderTimer = setTimeout(() => {}, 1000);
+    const reminderTimer = setTimeout(() => { }, 1000);
 
     const appointmentTimer = setTimeout(() => {
       setShowAppointmentSection(true); // Show the appointment section after the reminder
@@ -229,36 +229,62 @@ const DoctorHome = () => {
 
   //   return `${String(hours).padStart(2, '0')}:${minutes}`;
   // };
-  const isCancelDisabled = (dateStr, timeStr) => {
-    if (!dateStr || !timeStr) return false;
 
+  //cancel disable function 
+
+  // const isCancelDisabled = (dateStr, timeStr) => {
+  //   if (!dateStr || !timeStr) return false;
+
+  //   try {
+  //     // Extract parts from the date (e.g., "Tue Jun 10")
+  //     const [weekday, month, day] = dateStr.split(" ");
+  //     const year = new Date().getFullYear(); // current year
+
+  //     // Extract start time and AM/PM (e.g., "07:30 - 07:45 PM")
+  //     const [startTime, endTimeWithPeriod] = timeStr.split(" - ");
+  //     const period = endTimeWithPeriod.trim().slice(-2); // "AM" or "PM"
+  //     const startTimeWithPeriod = `${startTime.trim()} ${period}`;
+
+  //     // Combine date and time into a full string like: "Jun 10, 2025 07:30 PM"
+  //     const dateTimeStr = `${month} ${day}, ${year} ${startTimeWithPeriod}`;
+  //     const appointmentDateTime = new Date(dateTimeStr);
+  //     const now = new Date();
+
+  //     const diffInMs = appointmentDateTime - now;
+  //     // const diffInHours = diffInMs / (1000 * 60 * 60);
+
+  //     // Disable if appointment has passed or is within 2 hours
+  //     // return diffInHours <= 2;
+  //     // Disable only if appointment time has already passed this new functionality added
+  //     return diffInMs <= 0;
+  //   } catch (error) {
+  //     console.error("Date parse error:", error);
+  //     return false;
+  //   }
+  // };
+
+  const isAppointmentOngoing = (dateStr, timeStr) => {
     try {
-      // Extract parts from the date (e.g., "Tue Jun 10")
       const [weekday, month, day] = dateStr.split(" ");
-      const year = new Date().getFullYear(); // current year
+      const year = new Date().getFullYear();
 
-      // Extract start time and AM/PM (e.g., "07:30 - 07:45 PM")
-      const [startTime, endTimeWithPeriod] = timeStr.split(" - ");
-      const period = endTimeWithPeriod.trim().slice(-2); // "AM" or "PM"
-      const startTimeWithPeriod = `${startTime.trim()} ${period}`;
+      const [startTimeStr, endTimeStrWithPeriod] = timeStr.split(" - ");
+      const period = endTimeStrWithPeriod.trim().slice(-2); // AM/PM
 
-      // Combine date and time into a full string like: "Jun 10, 2025 07:30 PM"
-      const dateTimeStr = `${month} ${day}, ${year} ${startTimeWithPeriod}`;
-      const appointmentDateTime = new Date(dateTimeStr);
+      const startTimeWithPeriod = `${startTimeStr.trim()} ${period}`;
+      const endTimeWithPeriod = endTimeStrWithPeriod.trim();
+
+      const startDateTime = new Date(`${month} ${day}, ${year} ${startTimeWithPeriod}`);
+      const endDateTime = new Date(`${month} ${day}, ${year} ${endTimeWithPeriod}`);
+
       const now = new Date();
-
-      const diffInMs = appointmentDateTime - now;
-      // const diffInHours = diffInMs / (1000 * 60 * 60);
-
-      // Disable if appointment has passed or is within 2 hours
-      // return diffInHours <= 2;
-      // Disable only if appointment time has already passed this new functionality added
-      return diffInMs <= 0;
+      return now >= startDateTime && now <= endDateTime;
     } catch (error) {
-      console.error("Date parse error:", error);
+      console.error("Error parsing appointment time:", error);
       return false;
     }
   };
+
 
   const formatDate = (rawDateStr) => {
     if (!rawDateStr) return "N/A";
@@ -460,7 +486,37 @@ const DoctorHome = () => {
                               </div>
                               <h3>{appointment.patient_name}</h3>
 
-                              <input
+                              {isAppointmentOngoing(appointment.date, appointment.time) ? (
+                                // <a
+                                //   className="orange-btn w-100 d-block text-center"
+                                //   style={{ cursor: "pointer" }}
+                                //   onClick={() => handleCreateChannel(String(appointment.appointment_id))}
+                                // >
+                                //   Start now
+                                // </a>
+                                <input
+                                type="submit"
+                                value="Start now"
+                                className="w-100"
+                                onClick={() => handleCreateChannel(String(appointment.appointment_id))}
+                                style={{
+                                  cursor: "pointer",
+                                }}
+                              />
+                              ) : (
+                                <input
+                                  type="submit"
+                                  value="Cancel"
+                                  className="w-100"
+                                  onClick={() => handleCancelClick(appointment.appointment_id)}
+                                  style={{
+                                    cursor: "pointer",
+                                  }}
+                                />
+                              )}
+
+
+                              {/* <input
                                 type="submit"
                                 value="Cancel"
                                 className="w-100"
@@ -485,7 +541,7 @@ const DoctorHome = () => {
                                     ? "not-allowed"
                                     : "pointer",
                                 }}
-                              />
+                              /> */}
                             </div>
                           </div>
                         </div>

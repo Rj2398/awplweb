@@ -407,38 +407,63 @@ const PatientDetails = () => {
     setSelectedImage(image);
     setShowImageModal(true);
   };
-  const isCancelDisabled = () => {
-    const dateStr = patientAppointmentsDetail?.patientData?.dayDate; // "Tue Jun 10"
-    const timeStr = patientAppointmentsDetail?.patientData?.time; // "03:00 - 03:15 PM"
+  // const isCancelDisabled = () => {
+  //   const dateStr = patientAppointmentsDetail?.patientData?.dayDate; // "Tue Jun 10"
+  //   const timeStr = patientAppointmentsDetail?.patientData?.time; // "03:00 - 03:15 PM"
 
+  //   if (!dateStr || !timeStr) return false;
+
+  //   try {
+  //     // Parse the date parts
+  //     const [, month, day] = dateStr.split(" "); // ["Tue", "Jun", "10"]
+  //     const currentYear = new Date().getFullYear();
+
+  //     // Parse the time (take the start time)
+  //     const [startTime, rest] = timeStr.split(" - "); // "03:00", "03:15 PM"
+  //     const period = rest.split(" ")[1]; // "PM"
+
+  //     // Combine into a parseable date string
+  //     const dateTimeStr = `${month} ${day} ${currentYear} ${startTime} ${period}`;
+  //     // Example: "Jun 10 2023 03:00 PM"
+
+  //     const appointmentDate = new Date(dateTimeStr);
+  //     const now = new Date();
+
+  //     // Calculate difference in hours
+  //     const diffInMs = appointmentDate - now;
+  //     const diffInHours = diffInMs / (1000 * 60 * 60);
+
+  //     return diffInHours <= 2;
+  //   } catch (error) {
+  //     console.error("Date parse error:", error);
+  //     return false;
+  //   }
+  // };
+
+  const hasAppointmentStarted = () => {
+    const dateStr = patientAppointmentsDetail?.patientData?.dayDate; // "Tue Jun 24"
+    const timeStr = patientAppointmentsDetail?.patientData?.time;    // "07:00 - 07:15 PM"
+  
     if (!dateStr || !timeStr) return false;
-
+  
     try {
-      // Parse the date parts
-      const [, month, day] = dateStr.split(" "); // ["Tue", "Jun", "10"]
-      const currentYear = new Date().getFullYear();
-
-      // Parse the time (take the start time)
-      const [startTime, rest] = timeStr.split(" - "); // "03:00", "03:15 PM"
-      const period = rest.split(" ")[1]; // "PM"
-
-      // Combine into a parseable date string
-      const dateTimeStr = `${month} ${day} ${currentYear} ${startTime} ${period}`;
-      // Example: "Jun 10 2023 03:00 PM"
-
-      const appointmentDate = new Date(dateTimeStr);
+      const [, month, day] = dateStr.split(" "); // ["Tue", "Jun", "24"]
+      const year = new Date().getFullYear();
+  
+      const [startTime, endTimeWithPeriod] = timeStr.split(" - "); // "07:00", "07:15 PM"
+      const period = endTimeWithPeriod.trim().slice(-2); // AM or PM
+      const startTimeWithPeriod = `${startTime.trim()} ${period}`; // "07:00 PM"
+  
+      const startDateTime = new Date(`${month} ${day} ${year} ${startTimeWithPeriod}`);
       const now = new Date();
-
-      // Calculate difference in hours
-      const diffInMs = appointmentDate - now;
-      const diffInHours = diffInMs / (1000 * 60 * 60);
-
-      return diffInHours <= 2;
+  
+      return now >= startDateTime; // Appointment already started
     } catch (error) {
-      console.error("Date parse error:", error);
+      console.error("Time parse error:", error);
       return false;
     }
   };
+  
 
   return (
     <>
@@ -589,7 +614,9 @@ const PatientDetails = () => {
                                 placeholder="Male"
                                 value={
                                   patientAppointmentsDetail?.basicInformation
-                                    ?.gender
+                                    ?.gender?.charAt(0).toUpperCase() + patientAppointmentsDetail?.basicInformation
+                                    ?.gender?.slice(1).toLowerCase()
+
                                 }
                                 readOnly
                               />
@@ -732,31 +759,43 @@ const PatientDetails = () => {
                             </button>
                           </Link>
                         </div>
-                      ) : (
+                      ) : !hasAppointmentStarted() ? (   // ✅ CONDITION OUTSIDE
                         <div className="btn-wrp">
                           <button
                             type="button"
                             className="orange-btn"
-                            onClick={() => {
-                              if (!isCancelDisabled()) {
-                                handleCancelClick(id);
-                              }
-                            }}
-                            disabled={isCancelDisabled()}
-                            style={
-                              isCancelDisabled()
-                                ? {
-                                    opacity: 0.5,
-                                    cursor: "not-allowed",
-                                    pointerEvents: "none",
-                                  }
-                                : {}
-                            }
+                            onClick={() => handleCancelClick(id)}
                           >
                             Cancel
                           </button>
                         </div>
-                      )}
+                      ) : null
+
+                        
+                        // <div className="btn-wrp">
+                        //   <button
+                        //     type="button"
+                        //     className="orange-btn"
+                        //     onClick={() => {
+                        //       if (!isCancelDisabled()) {
+                        //         handleCancelClick(id);
+                        //       }
+                        //     }}
+                        //     disabled={isCancelDisabled()}
+                        //     style={
+                        //       isCancelDisabled()
+                        //         ? {
+                        //             opacity: 0.5,
+                        //             cursor: "not-allowed",
+                        //             pointerEvents: "none",
+                        //           }
+                        //         : {}
+                        //     }
+                        //   >
+                        //     Cancel
+                        //   </button>
+                        // </div>
+                      }
                     </div>
                   </form>
                 </div>

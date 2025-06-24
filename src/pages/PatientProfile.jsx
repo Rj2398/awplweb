@@ -437,7 +437,7 @@ const PatientProfile = () => {
                               referredPatients.map((patient, index) => (
                                 <tr key={patient.id || index}>
                                   <td>{String(index + 1).padStart(2, '0')}</td>
-                                  <td style={{ textAlign: 'left', paddingLeft: '35px' }}><Link to="/patient-profile" state={{ patientid: patientId }} className="no-underline-link" style={{ display: 'inline-block' }}>{patient.name}</Link></td>
+                                  <td style={{ textAlign: 'left', paddingLeft: '60px' }}><Link to="/patient-profile" state={{ patientid: patientId }} className="no-underline-link" style={{ display: 'inline-block' }}>{patient.name.charAt(0).toUpperCase() + patient.name.slice(1).toLowerCase()}</Link></td>
 
                                   {/* <td>{patient.name}</td> */}
                                   {/* <td>{patient.gender}</td> */}

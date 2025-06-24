@@ -293,8 +293,8 @@ const PrescriptiveDoctor = () => {
     const newMedicineId = selectedMedicine
       ? selectedMedicine.medicine_id
       : data.treatments && data.treatments.length > 0
-      ? Math.max(...data.treatments.map((t) => t.medicine_id)) + 1
-      : 1000; // Start new dynamic IDs from a high number or use UUID library
+        ? Math.max(...data.treatments.map((t) => t.medicine_id)) + 1
+        : 1000; // Start new dynamic IDs from a high number or use UUID library
 
     const updatedNewTreatment = {
       ...newTreatment,
@@ -926,12 +926,13 @@ const PrescriptiveDoctor = () => {
           )}
         </Modal.Body>
         <Modal.Footer className="justify-content-center p-4 bg-gray-100 border-t-0 rounded-b-lg">
+          
           <Button
-            onClick={handleUpdate}
-            className="px-5 py-2 text-white bg-blue-500 orange-btn rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
-          >
-            Update Changes
-          </Button>
+                      onClick={handleUpdate}
+                      className="orange-btn" style={{fontWeight:"600", padding:"0 42px"}}
+                    >
+                      Update Changes
+                    </Button>
         </Modal.Footer>
       </Modal>
 
@@ -1097,10 +1098,16 @@ const PrescriptiveDoctor = () => {
         <Modal.Footer className="justify-content-center p-4 bg-gray-100 border-t-0 rounded-b-lg">
           <Button
             onClick={handleAddNew}
-            className="px-5 py-2 text-white bg-green-500 orange-btn rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75"
+            className="orange-btn" style={{ fontWeight: "600", padding: "0 42px" }}
           >
             Add Medicine
           </Button>
+          {/* <Button
+            onClick={handleAddNew}
+            className="px-5 py-2 text-white bg-green-500 orange-btn rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75"
+          >
+            Add Medicine
+          </Button> */}
         </Modal.Footer>
       </Modal>
     </div>

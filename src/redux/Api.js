@@ -194,6 +194,15 @@ export const getAllCanceledAppointment = () =>
     }
   );
 
+export const getAllIncompletedAppointment = () =>
+  API.post(`/doctor/appointments/incomplete`, {}, {
+    headers: {
+      Authorization: `Bearer ${
+        JSON.parse(localStorage.getItem("doctor-app"))?.token
+      }`,
+    },
+  });
+
 export const doctorCanceledAppointment = (formData) =>
   API.post("/doctor/appointments/cancel", formData, {
     headers: {
@@ -360,20 +369,6 @@ export const getPrscriveMedicine = (formData) =>
       "Content-Type": "multipart/form-data",
     },
   });
-
-//
-export const getAllIncompletedAppointment = () =>
-  API.post(
-    `/doctor/appointments/incomplete`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("doctor-app"))?.token
-        }`,
-      },
-    }
-  );
 
 // export const logout = (id) => API.post('/api/logout', id, {
 //   headers: {
