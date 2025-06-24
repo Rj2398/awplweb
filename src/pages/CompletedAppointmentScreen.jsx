@@ -298,6 +298,7 @@ const CompletedAppointment = () => {
         // Clean up
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
+        console.log(url, "ashfdkjashdfkjhsdfhsfd");
       }
     });
   };
@@ -335,8 +336,8 @@ const CompletedAppointment = () => {
                   <a
                     href="./images/file-icon.svg"
                     className="orange-btn"
-                    download
-                    onClick={handleDownloadPrescription}
+                    // download
+                    onClick={() => handleDownloadPrescription()}
                   >
                     Download Prescription
                   </a>
