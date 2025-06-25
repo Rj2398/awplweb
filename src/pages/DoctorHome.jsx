@@ -107,7 +107,7 @@ const DoctorHome = () => {
   };
 
   useEffect(() => {
-    const reminderTimer = setTimeout(() => { }, 1000);
+    const reminderTimer = setTimeout(() => {}, 1000);
 
     const appointmentTimer = setTimeout(() => {
       setShowAppointmentSection(true); // Show the appointment section after the reminder
@@ -230,7 +230,7 @@ const DoctorHome = () => {
   //   return `${String(hours).padStart(2, '0')}:${minutes}`;
   // };
 
-  //cancel disable function 
+  //cancel disable function
 
   // const isCancelDisabled = (dateStr, timeStr) => {
   //   if (!dateStr || !timeStr) return false;
@@ -274,8 +274,12 @@ const DoctorHome = () => {
       const startTimeWithPeriod = `${startTimeStr.trim()} ${period}`;
       const endTimeWithPeriod = endTimeStrWithPeriod.trim();
 
-      const startDateTime = new Date(`${month} ${day}, ${year} ${startTimeWithPeriod}`);
-      const endDateTime = new Date(`${month} ${day}, ${year} ${endTimeWithPeriod}`);
+      const startDateTime = new Date(
+        `${month} ${day}, ${year} ${startTimeWithPeriod}`
+      );
+      const endDateTime = new Date(
+        `${month} ${day}, ${year} ${endTimeWithPeriod}`
+      );
 
       const now = new Date();
       return now >= startDateTime && now <= endDateTime;
@@ -284,7 +288,6 @@ const DoctorHome = () => {
       return false;
     }
   };
-
 
   const formatDate = (rawDateStr) => {
     if (!rawDateStr) return "N/A";
@@ -349,6 +352,7 @@ const DoctorHome = () => {
                         <img
                           src={`${baseUrl}/${currentAppointment.patient_profile}`}
                           alt={currentAppointment.patient_name}
+                          style={{ height: 200, resize: "contain" }}
                         />
                       </div>
                       <div className="appoint-dtl-content">
@@ -486,7 +490,10 @@ const DoctorHome = () => {
                               </div>
                               <h3>{appointment.patient_name}</h3>
 
-                              {isAppointmentOngoing(appointment.date, appointment.time) ? (
+                              {isAppointmentOngoing(
+                                appointment.date,
+                                appointment.time
+                              ) ? (
                                 // <a
                                 //   className="orange-btn w-100 d-block text-center"
                                 //   style={{ cursor: "pointer" }}
@@ -495,26 +502,33 @@ const DoctorHome = () => {
                                 //   Start now
                                 // </a>
                                 <input
-                                type="submit"
-                                value="Start now"
-                                className="w-100"
-                                onClick={() => handleCreateChannel(String(appointment.appointment_id))}
-                                style={{
-                                  cursor: "pointer",
-                                }}
-                              />
+                                  type="submit"
+                                  value="Start now"
+                                  className="w-100"
+                                  onClick={() =>
+                                    handleCreateChannel(
+                                      String(appointment.appointment_id)
+                                    )
+                                  }
+                                  style={{
+                                    cursor: "pointer",
+                                  }}
+                                />
                               ) : (
                                 <input
                                   type="submit"
                                   value="Cancel"
                                   className="w-100"
-                                  onClick={() => handleCancelClick(appointment.appointment_id)}
+                                  onClick={() =>
+                                    handleCancelClick(
+                                      appointment.appointment_id
+                                    )
+                                  }
                                   style={{
                                     cursor: "pointer",
                                   }}
                                 />
                               )}
-
 
                               {/* <input
                                 type="submit"
