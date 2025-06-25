@@ -3330,7 +3330,8 @@ input[type="range"]::-moz-range-progress {
   border-radius: 10px;
 }
 .chat-footer {
-  background: var(--theme-clr-1);
+  /* background: var(--theme-clr-1); */
+  background: #199fd9;
   padding: 25px 20px;
   display: flex;
   align-items: center;
