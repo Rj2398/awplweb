@@ -134,8 +134,8 @@ const DoctorHome = () => {
 
   // handle create channel to join call
 
-  const sendNotitficaion = (id) => {
-    dispatch(
+  const sendNotitficaion = async (id) => {
+    await dispatch(
       sendPushNotification({
         // channelName: `JoinCall + ${DoctorLoginId?.id}`,
         appointmentId: id,
@@ -145,20 +145,12 @@ const DoctorHome = () => {
 
   const handleCreateChannel = async (id) => {
     console.log(id, `JoinCall + ${DoctorLoginId?.id}`, "params of the data");
-    dispatch(
+    await dispatch(
       getJoinVideoCall({
         // channelName: `JoinCall + ${DoctorLoginId?.id}`,
         appointmentId: id,
       })
     );
-    //start video call button is not working at first time due to two dispatch
-    // dispatch(
-    //   sendPushNotification({
-    //     // channelName: `JoinCall + ${DoctorLoginId?.id}`,
-    //     appointment_id: id,
-    //   })
-    // );
-
     if (channelDetails) {
       navigate("/VideoCall", {
         state: {

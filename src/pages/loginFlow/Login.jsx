@@ -228,25 +228,26 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const emailRegex = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/;
+    // const emailRegex = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     if (!emailRegex.test(email)) {
       setEmailError("Please enter a valid email address");
       return;
     }
-    const domain = email.split("@")[1];
-    const allowedDomains = [
-      "gmail.com",
-      "yahoo.com",
-      "yopmail.com",
-      "hotmail.com",
-      "example.com",
-    ];
+    // const domain = email.split("@")[1];
+    // const allowedDomains = [
+    //   "gmail.com",
+    //   "yahoo.com",
+    //   "yopmail.com",
+    //   "hotmail.com",
+    //   "example.com",
+    // ];
 
-    if (!allowedDomains.includes(domain)) {
-      setEmailError("Please enter a valid and supported email address");
-      return;
-    }
+    // if (!allowedDomains.includes(domain)) {
+    //   setEmailError("Please enter a valid and supported email address");
+    //   return;
+    // }
     setEmailError("");
 
     const res = await dispatch(emailCheck({ email: email }));
