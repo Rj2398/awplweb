@@ -27,7 +27,7 @@
 //     //     "02:30pm", "03:00pm", "03:30pm", "04:00pm",
 //     //     "04:30pm", "05:00pm", "05:30pm", "07:00pm"
 //     // ];
-    
+
 //     // const availableTimes = [
 //     //     "10:30am", "11:00am", "11:30am", "12:00pm",
 //     //     "12:30pm", "01:00pm", "01:30pm", "02:00pm",
@@ -53,7 +53,6 @@
 //         fetchSchedule();
 //     }, []);
 
-
 //     const handleDateSelect = async (day) => {
 //         setSelectedDate(day);
 //         await dispatch(getScheduleTime({date : formatDateToYYYYMMDD(day)}));
@@ -64,7 +63,6 @@
 //     }
 //     };
 
-    
 //     const handleTimeSelect = (time, isBooked) => {
 //         // const isBooked = scheduleTime.is_available.includes(time);
 //         console.log("scheduleTime.is_available123",scheduleTime);
@@ -75,7 +73,7 @@
 //             // console.log("Selected time:", time);
 //         }
 //         // else {
-//         //     console.log("Time not selectable:", time); 
+//         //     console.log("Time not selectable:", time);
 //         // }
 //     };
 
@@ -118,7 +116,7 @@
 //     // //     setSelectedTime(undefined); // Clear invalid selection
 //     // //     return;
 //     // // }
-        
+
 //     // //     if (selectedDate && selectedTime) {
 //     // //         setShowSuccessModal(true);
 //     // //         console.log("Selected Date and time:", formatDateToYYYYMMDD(selectedDate) + " " + selectedTime);
@@ -142,11 +140,11 @@
 //     //         //     }
 //     //         //     return slot;
 //     //         // });
-            
+
 //     //         // // You might need to update how you set scheduleTime based on your Redux setup
 //     //         // // This assumes scheduleTime is managed locally - adjust if it's from Redux
 //     //         // setScheduleTime(updatedSchedule);
-            
+
 //     //         setShowSuccessModal(true);
 //     //     } else {
 //     //         toast.error(result.payload?.message || "Failed to book appointment");
@@ -157,23 +155,23 @@
 //     // };
 //     const isWithinTwoHours = (time, date = selectedDate) => {
 //         if (!time || !date) return false;
-    
+
 //         const match = time.match(/(\d{1,2}:\d{2})\s*(AM|PM)/i);
 //         if (!match) return false;
-    
+
 //         const [, rawTime, modifier] = match;
 //         let [hours, minutes] = rawTime.split(":").map(Number);
-    
+
 //         if (modifier.toLowerCase() === "pm" && hours !== 12) hours += 12;
 //         if (modifier.toLowerCase() === "am" && hours === 12) hours = 0;
-    
+
 //         const now = new Date();
 //         const selected = new Date(date);
 //         selected.setHours(hours, minutes, 0, 0);
-    
+
 //         // Calculate difference in hours
 //         const diffInHours = (selected - now) / (1000 * 60 * 60);
-        
+
 //         return diffInHours >= 2;
 //     };
 
@@ -182,13 +180,13 @@
 //             toast.error("Please select a time");
 //             return;
 //         }
-    
+
 //         // Check if time is at least 2 hours in advance
 //         if (!isWithinTwoHours(selectedTime)) {
 //             toast.error("Appointments must be booked at least 2 hours in advance");
 //             return;
 //         }
-    
+
 //         try {
 //             const result = await dispatch(bookAppointment({
 //                 date: formatDateToYYYYMMDD(selectedDate),
@@ -203,7 +201,7 @@
 //            console.log("patientId", patientId);
 //            console.log("appointmentId", appointmentId);
 //         }
-    
+
 //             if (result.payload?.status) {
 //                 setShowSuccessModal(true);
 //             } else {
@@ -234,7 +232,6 @@
 //           </div>
 //         ) : (
 
-              
 //                 <div className="doc-panel-body has-texture">
 //                     <div className="start-appointment cmn-mb">
 //                         <div className="docpnl-sec-head text-center">
@@ -265,7 +262,7 @@
 
 //                                             <div className="calender">
 //                                                 <Calendar bordered disabledDate={disablePastDates} onSelect={handleDateSelect} />
-                                               
+
 //                                                 {selectedDate && (
 //                                                     <div className="selected-date">
 //                                                         {/* Selected: December {selectedDate}, 2024 */}
@@ -288,9 +285,9 @@
 //                                                         return (
 //                                                             <div
 //                                                                 key={slot?.value}
-//                                                                 className={`available-time 
-//                                                                     ${isBooked ? 'booked-time' : ''} 
-//                                                                     ${isPast ? 'disabled-time' : ''} 
+//                                                                 className={`available-time
+//                                                                     ${isBooked ? 'booked-time' : ''}
+//                                                                     ${isPast ? 'disabled-time' : ''}
 //                                                                     ${isSelected ? 'selected' : ''}`}
 //                                                                 onClick={() => handleTimeSelect(slot?.display_time, slot?.is_available )}
 //                                                                 style={{ pointerEvents: isBooked || isPast ? 'none' : 'auto', opacity: isBooked || isPast ? 0.5 : 1 }}
@@ -304,7 +301,7 @@
 //                                                 <button
 //                                                     type="button"
 //                                                     className="orange-btn book-btn"
-//                                                     // data-bs-toggle="modal" 
+//                                                     // data-bs-toggle="modal"
 //                                                     // data-bs-target="#appointBooked"
 //                                                     onClick={handleBookNow}
 //                                                     // disabled={!selectedDate || !selectedTime}
@@ -338,7 +335,7 @@
 //                         padding:30px 0 50px 0;
 //                         margin:0;
 //                       }
-            
+
 //                     `}</style>
 //                     <button
 //                 type="button"
@@ -389,7 +386,6 @@
 // import { Calendar } from 'rsuite';
 // import 'rsuite/Calendar/styles/index.css';
 
-
 // const ScheduleAppointment = () => {
 //     // const [currentDate, setCurrentDate] = useState(new Date());
 //     // const [selectedDate, setSelectedDate] = useState(null);
@@ -408,8 +404,6 @@
 //     //     "July", "August", "September", "October", "November", "December"
 //     // ];
 //     // const currentMonthYear = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
-
-
 
 //     const availableTimes = [
 //         "10:30am", "11:00am", "11:30am", "12:00pm",
@@ -431,7 +425,6 @@
 //     //     console.log(selected);
 //     // };
 
-
 //     // const handleTimeSelect = (time) => {
 //     //     if (!bookedTimes.includes(time)) {
 //     //         setSelectedTime(time);
@@ -446,7 +439,7 @@
 //             // console.log("Selected time:", time);
 //         }
 //         // else {
-//         //     console.log("Time not selectable:", time); 
+//         //     console.log("Time not selectable:", time);
 //         // }
 //     };
 
@@ -473,14 +466,13 @@
 //         return timeSlotDate <= now;
 //     };
 
-
 //     const handleBookNow = () => {
 //         if(!selectedTime){
 //             console.log("Please select time");
 //             toast.error("Please select a time");
 //             return;
 //         }
-        
+
 //         if (selectedDate && selectedTime) {
 //             setShowSuccessModal(true);
 //             console.log("Selected Date:", selectedDate);
@@ -604,9 +596,9 @@
 //                                                         return (
 //                                                             <div
 //                                                                 key={time}
-//                                                                 className={`available-time 
-//                     ${isBooked ? 'booked-time' : ''} 
-//                     ${isPast ? 'disabled-time' : ''} 
+//                                                                 className={`available-time
+//                     ${isBooked ? 'booked-time' : ''}
+//                     ${isPast ? 'disabled-time' : ''}
 //                     ${isSelected ? 'selected' : ''}`}
 //                                                                 onClick={() => handleTimeSelect(time)}
 //                                                                 style={{ pointerEvents: isBooked || isPast ? 'none' : 'auto', opacity: isBooked || isPast ? 0.5 : 1 }}
@@ -620,7 +612,7 @@
 //                                                 <button
 //                                                     type="button"
 //                                                     className="orange-btn book-btn"
-//                                                     // data-bs-toggle="modal" 
+//                                                     // data-bs-toggle="modal"
 //                                                     // data-bs-target="#appointBooked"
 //                                                     onClick={handleBookNow}
 //                                                     // disabled={!selectedDate || !selectedTime}
@@ -644,7 +636,6 @@
 
 //             {/* Booked Modal */}
 
-
 //             <Modal
 //                 show={showSuccessModal}
 //                 onHide={handleCloseSuccessModal}
@@ -658,7 +649,7 @@
 //                         padding:30px 0 50px 0;
 //                         margin:0;
 //                       }
-            
+
 //                     `}</style>
 //                 <div className="modal-icon text-center mt-4">
 //                     <img src="./images/check-icon.png" alt="Icon" />
@@ -689,7 +680,6 @@
 
 // export default ScheduleAppointment;
 
-
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Modal } from "react-bootstrap";
@@ -697,16 +687,19 @@ import Header from "../component/doctorPanel/Header";
 import Footer from "../component/doctorPanel/Footer";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { bookAppointment, getScheduleTime } from "../redux/slices/prescriptionSlice";
+import {
+  bookAppointment,
+  getScheduleTime,
+} from "../redux/slices/prescriptionSlice";
 
 const ScheduleAppointment = () => {
   const location = useLocation();
   const { patientId, appointmentId, patientName } = location.state || {};
   const dispatch = useDispatch();
   const { scheduleTime, loading } = useSelector((state) => state.prescriptions);
-  const { patientProfileData, } = useSelector((state) => state.patientProfile);
+  const { patientProfileData } = useSelector((state) => state.patientProfile);
 
-console.log("patient::::::::::::",patientName);
+  console.log("patient::::::::::::", patientName);
   // Initialize selectedDate with today
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState();
@@ -851,26 +844,26 @@ console.log("patient::::::::::::",patientName);
     return timeSlotDate <= now;
   };
 
-  const isWithinTwoHours = (time, date = selectedDate) => {
-    if (!time || !date) return false;
+  // const isWithinTwoHours = (time, date = selectedDate) => {
+  //   if (!time || !date) return false;
 
-    const match = time.match(/(\d{1,2}:\d{2})\s*(AM|PM)/i);
-    if (!match) return false;
+  //   const match = time.match(/(\d{1,2}:\d{2})\s*(AM|PM)/i);
+  //   if (!match) return false;
 
-    const [, rawTime, modifier] = match;
-    let [hours, minutes] = rawTime.split(":").map(Number);
+  //   const [, rawTime, modifier] = match;
+  //   let [hours, minutes] = rawTime.split(":").map(Number);
 
-    if (modifier.toLowerCase() === "pm" && hours !== 12) hours += 12;
-    if (modifier.toLowerCase() === "am" && hours === 12) hours = 0;
+  //   if (modifier.toLowerCase() === "pm" && hours !== 12) hours += 12;
+  //   if (modifier.toLowerCase() === "am" && hours === 12) hours = 0;
 
-    const now = new Date();
-    const selected = new Date(date);
-    selected.setHours(hours, minutes, 0, 0);
+  //   const now = new Date();
+  //   const selected = new Date(date);
+  //   selected.setHours(hours, minutes, 0, 0);
 
-    const diffInHours = (selected - now) / (1000 * 60 * 60);
+  //   const diffInHours = (selected - now) / (1000 * 60 * 60);
 
-    return diffInHours >= 2;
-  };
+  //   return diffInHours >= 2;
+  // };
 
   const handleTimeSelect = (time, isAvailable) => {
     if (!isAvailable) return;
@@ -884,10 +877,10 @@ console.log("patient::::::::::::",patientName);
       return;
     }
 
-    if (!isWithinTwoHours(selectedTime)) {
-      toast.error("Appointments must be booked at least 2 hours in advance");
-      return;
-    }
+    // if (!isWithinTwoHours(selectedTime)) {
+    //   toast.error("Appointments must be booked at least 2 hours in advance");
+    //   return;
+    // }
 
     try {
       const result = await dispatch(
@@ -976,17 +969,23 @@ console.log("patient::::::::::::",patientName);
                               <img src="./images/chevron-left.svg" alt="Icon" />
                             </button>
                             <h2 className="h3-title">
-                              {new Date(calendarYear, calendarMonth).toLocaleString(
-                                "default",
-                                { month: "long", year: "numeric" }
-                              )}
+                              {new Date(
+                                calendarYear,
+                                calendarMonth
+                              ).toLocaleString("default", {
+                                month: "long",
+                                year: "numeric",
+                              })}
                             </h2>
                             <button
                               className="next-month"
                               onClick={handleNextMonth}
                               type="button"
                             >
-                              <img src="./images/chevron-right.svg" alt="Icon" />
+                              <img
+                                src="./images/chevron-right.svg"
+                                alt="Icon"
+                              />
                             </button>
                           </div>
 
@@ -1023,12 +1022,16 @@ console.log("patient::::::::::::",patientName);
                                           : isToday
                                           ? "today"
                                           : ""
-                                      } ${!dayObj.currentMonth ? "not-current-month" : ""} ${
-                                        isDisabled ? "disabled-day" : ""
-                                      }`}
+                                      } ${
+                                        !dayObj.currentMonth
+                                          ? "not-current-month"
+                                          : ""
+                                      } ${isDisabled ? "disabled-day" : ""}`}
                                       onClick={() => handleDayClick(dayObj)}
                                       style={{
-                                        cursor: isDisabled ? "default" : "pointer",
+                                        cursor: isDisabled
+                                          ? "default"
+                                          : "pointer",
                                         color: !dayObj.currentMonth
                                           ? "#ccc"
                                           : isDisabled
@@ -1049,7 +1052,9 @@ console.log("patient::::::::::::",patientName);
                                         alignItems: "center",
                                         justifyContent: "center",
                                         margin: "2px",
-                                        fontWeight: isSelected ? "bold" : "normal",
+                                        fontWeight: isSelected
+                                          ? "bold"
+                                          : "normal",
                                       }}
                                     >
                                       {dayObj.day}
@@ -1060,7 +1065,10 @@ console.log("patient::::::::::::",patientName);
                             </div>
                           </div>
 
-                          <div className="selected-date" style={{ marginTop: "15px", fontWeight: "bold" }}>
+                          <div
+                            className="selected-date"
+                            style={{ marginTop: "15px", fontWeight: "bold" }}
+                          >
                             Selected:{" "}
                             {selectedDate.toLocaleString("default", {
                               month: "long",
@@ -1069,7 +1077,10 @@ console.log("patient::::::::::::",patientName);
                             })}
                           </div>
 
-                          <div className="select-time-wrp" style={{ marginTop: "15px" }}>
+                          <div
+                            className="select-time-wrp"
+                            style={{ marginTop: "15px" }}
+                          >
                             {loading && (
                               <div
                                 style={{
@@ -1087,7 +1098,8 @@ console.log("patient::::::::::::",patientName);
                             {scheduleTime.map((slot) => {
                               const isBooked = !slot?.is_available;
                               const isPast = isPastTimeSlot(slot?.display_time);
-                              const isSelected = selectedTime === slot?.display_time;
+                              const isSelected =
+                                selectedTime === slot?.display_time;
 
                               return (
                                 <div
@@ -1097,18 +1109,27 @@ console.log("patient::::::::::::",patientName);
                                       ${isPast ? "disabled-time" : ""}
                                       ${isSelected ? "selected" : ""}`}
                                   onClick={() =>
-                                    handleTimeSelect(slot?.display_time, slot?.is_available)
+                                    handleTimeSelect(
+                                      slot?.display_time,
+                                      slot?.is_available
+                                    )
                                   }
                                   style={{
-                                    pointerEvents: isBooked || isPast ? "none" : "auto",
+                                    pointerEvents:
+                                      isBooked || isPast ? "none" : "auto",
                                     opacity: isBooked || isPast ? 0.5 : 1,
-                                    cursor: isBooked || isPast ? "default" : "pointer",
+                                    cursor:
+                                      isBooked || isPast
+                                        ? "default"
+                                        : "pointer",
                                     userSelect: "none",
                                     padding: "8px 12px",
                                     borderRadius: "4px",
                                     margin: "4px",
                                     display: "inline-block",
-                                    border: isSelected ? "2px solid #199FD9" : "1px solid #ccc",
+                                    border: isSelected
+                                      ? "2px solid #199FD9"
+                                      : "1px solid #ccc",
                                     // backgroundColor: isSelected ? "#199FD9" : "#fff",
                                     fontWeight: isSelected ? "bold" : "normal",
                                   }}
@@ -1175,8 +1196,9 @@ console.log("patient::::::::::::",patientName);
           <Modal.Title id="exampleModalLongTitle" className="w-100">
             <h2>Congratulations</h2>
           </Modal.Title>
-          <p style={{ padding: "20px",  fontSize:"25px", color:"#858484"}}>
-            Your appointment with<br/> {patientName} is confirmed for{" "}<br/>
+          <p style={{ padding: "20px", fontSize: "25px", color: "#858484" }}>
+            Your appointment with
+            <br /> {patientName} is confirmed for <br />
             <span className="bookingDateTime">
               {selectedDate && selectedTime
                 ? `${selectedDate.toLocaleString("default", {

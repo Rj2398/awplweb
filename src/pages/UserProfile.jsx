@@ -1,35 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import Header from '../component/doctorPanel/Header';
-import Footer from '../component/doctorPanel/Footer';
-import { FaPlus } from 'react-icons/fa';
-import { useDispatch, useSelector } from 'react-redux';
-import { DatePicker } from 'rsuite';
-import { TimeRangePicker } from 'rsuite';
-import { deleteDoctorPhoto, doctorPhotoUpdate, doctorProfileUpdate, getDoctorProfile } from '../redux/slices/userSlice';
+import React, { useState, useEffect } from "react";
+import Header from "../component/doctorPanel/Header";
+import Footer from "../component/doctorPanel/Footer";
+import { FaPlus } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { DatePicker } from "rsuite";
+import { TimeRangePicker } from "rsuite";
+import {
+  deleteDoctorPhoto,
+  doctorPhotoUpdate,
+  doctorProfileUpdate,
+  getDoctorProfile,
+} from "../redux/slices/userSlice";
 
 const UserProfile = () => {
   const dispatch = useDispatch();
-  const { user, loading } = useSelector((state) => state.user)
-  const baseUrl = import.meta.env.VITE_BACKEND_URL
+  const { user, loading } = useSelector((state) => state.user);
+  const baseUrl = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
-    dispatch(getDoctorProfile())
-  }, [dispatch])
+    dispatch(getDoctorProfile());
+  }, [dispatch]);
 
   // console.log(data)
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    experience: '',
-    profilePic: '',
+    fullName: "",
+    email: "",
+    phone: "",
+    experience: "",
+    profilePic: "",
     // profilePic: '/images/my-profile-img.png',
   });
 
   const [unavailability, setUnavailability] = useState({
     date: null,
     timeRange: [],
-  })
+  });
 
   const handleDateChange = (value) => {
     setUnavailability((prev) => ({
@@ -50,17 +55,17 @@ const UserProfile = () => {
     console.log("Unavailability Date@@@@@:", unavailability.date);
     console.log("Time Range Start@@@@@@:", unavailability.timeRange?.[0]);
     console.log("Time Range End@@@@@:", unavailability.timeRange?.[1]);
-  }
+  };
 
   useEffect(() => {
     if (user) {
       setProfile((prev) => ({
         ...prev,
-        fullName: user.name || '',
-        email: user.email || '',
-        phone: user.contact_no || '',
-        experience: user.experience || '',
-        profilePic: (baseUrl + "/" + user.profile_path) || '', // updated here
+        fullName: user.name || "",
+        email: user.email || "",
+        phone: user.contact_no || "",
+        experience: user.experience || "",
+        profilePic: baseUrl + "/" + user.profile_path || "", // updated here
       }));
     }
   }, [user]);
@@ -107,7 +112,7 @@ const UserProfile = () => {
 
     // Create FormData to send the actual file
     const formData = new FormData();
-    formData.append('profileImage', file); // Make sure this matches what your backend expects
+    formData.append("profileImage", file); // Make sure this matches what your backend expects
 
     try {
       const res = await dispatch(doctorPhotoUpdate(formData));
@@ -117,11 +122,17 @@ const UserProfile = () => {
         await dispatch(getDoctorProfile());
       } else {
         // If upload fails, revert to previous image
-        setProfile((prev) => ({ ...prev, profilePic: user.profile_path || '/images/my-profile-img.png' }));
+        setProfile((prev) => ({
+          ...prev,
+          profilePic: user.profile_path || "/images/my-profile-img.png",
+        }));
       }
     } catch (error) {
       console.error("Error uploading image:", error);
-      setProfile((prev) => ({ ...prev, profilePic: user.profile_path || '/images/my-profile-img.png' }));
+      setProfile((prev) => ({
+        ...prev,
+        profilePic: user.profile_path || "/images/my-profile-img.png",
+      }));
     }
   };
 
@@ -148,25 +159,32 @@ const UserProfile = () => {
   };
 
   const handleSave = async () => {
-
-    const res = await dispatch(doctorProfileUpdate({ "name": profile.fullName, "contact_no": profile.phone, "experience": profile.experience, }))
-    console.log(res)
+    const res = await dispatch(
+      doctorProfileUpdate({
+        name: profile.fullName,
+        contact_no: profile.phone,
+        experience: profile.experience,
+      })
+    );
+    console.log(res);
     // console.log(res.payload.data)
     if (res.payload && res.payload.status) {
       await dispatch(getDoctorProfile());
       setIsEditing(false); // Switch back to view mode
-
     }
-
   };
-
-
 
   const handleCancel = () => {
     setIsEditing(false); // Switch back to view mode without saving
   };
 
-  if (loading) return (<div className='loader-main'> <span class="loader"></span> </div>)
+  if (loading)
+    return (
+      <div className="loader-main">
+        {" "}
+        <span class="loader"></span>{" "}
+      </div>
+    );
   return (
     <main className="doctor-panel my-profile-pg">
       <div className="container-fluid">
@@ -184,7 +202,7 @@ const UserProfile = () => {
               <div className="my-profile-img">
                 {profile.profilePic && (
                   <img
-                    src={profile.profilePic || '/images/my-profile-img.png'}
+                    src={profile.profilePic || "/images/my-profile-img.png"}
                     alt="My Profile"
                   />
                 )}
@@ -192,12 +210,20 @@ const UserProfile = () => {
 
               {isEditing && (
                 <>
-                  <label className="orange-btn" style={{ marginTop: '10px' }}>
-                    <FaPlus style={{ marginRight: '6px' }} />
+                  <label className="orange-btn" style={{ marginTop: "10px" }}>
+                    <FaPlus style={{ marginRight: "6px" }} />
                     Upload New Picture
-                    <input type="file" onChange={handleUpload} style={{ display: 'none' }} />
+                    <input
+                      type="file"
+                      onChange={handleUpload}
+                      style={{ display: "none" }}
+                    />
                   </label>
-                  <button className="cmn-btn" onClick={handleRemoveImage} style={{ marginTop: '10px' }}>
+                  <button
+                    className="cmn-btn"
+                    onClick={handleRemoveImage}
+                    style={{ marginTop: "10px" }}
+                  >
                     Remove
                   </button>
                 </>
@@ -223,24 +249,22 @@ const UserProfile = () => {
                       </div>
                       <div className="input-grp">
                         <label>Experience</label>
-                        <input type="text" value={profile.experience} readOnly />
-                      </div>
-                      <div className="input-grp">
-                        <label>Doctor Unavailability</label>
-                        <div style={{ display: "flex", gap: "10px" }}>
-                          <DatePicker format="MMM dd, yyyy" value={unavailability.date} onChange={handleDateChange} />
-                          <TimeRangePicker format="hh:mm aa" showMeridiem value={unavailability.timeRange} onChange={handleTimeRangeChange} />
-                          <button className="orange-btn" style={{ padding: "24px 0", fontSize: "20px", fontWeight: "500", }} onClick={handleUnavailability}> Save
-                          </button>
-                        </div>
-
+                        <input
+                          type="text"
+                          value={profile.experience}
+                          readOnly
+                        />
                       </div>
                     </div>
                   </form>
 
                   <div className="btn-wrp">
-                    <button className="orange-btn" onClick={() => setIsEditing(true)}>
-                      <img src="./images/pencil-icon.svg" alt="Edit" /> Edit profile
+                    <button
+                      className="orange-btn"
+                      onClick={() => setIsEditing(true)}
+                    >
+                      <img src="./images/pencil-icon.svg" alt="Edit" /> Edit
+                      profile
                     </button>
                   </div>
                 </>
@@ -289,7 +313,10 @@ const UserProfile = () => {
                     </div>
                   </div>
 
-                  <div className="btn-wrp" style={{ display: 'flex', gap: '15px' }}>
+                  <div
+                    className="btn-wrp"
+                    style={{ display: "flex", gap: "15px" }}
+                  >
                     <button className="orange-btn" onClick={handleSave}>
                       Save Changes
                     </button>
