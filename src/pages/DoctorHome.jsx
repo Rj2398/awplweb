@@ -341,11 +341,23 @@ const DoctorHome = () => {
                     </div>
                     <div className="apointment-detail-card">
                       <div className="apoint-dtl-img">
-                        <img
+                        {/* <img
                           src={`${baseUrl}/${currentAppointment.patient_profile}`}
                           alt={currentAppointment.patient_name}
                           style={{ height: 200, resize: "contain" }}
-                        />
+                        /> */}
+                        {currentAppointment.is_referred_patient == true ? (
+                          <img
+                            src="./images/referredProfile.png"
+                            alt="referred patient"
+                          />
+                        ) : (
+                          <img
+                            src={`${baseUrl}/${currentAppointment.patient_profile}`}
+                            alt={currentAppointment.patient_name}
+                            style={{ height: 200, resize: "contain" }}
+                          />
+                        )}
                       </div>
                       <div className="appoint-dtl-content">
                         <div className="appoint-dtl-left">
@@ -353,10 +365,18 @@ const DoctorHome = () => {
                             <h2 className="h3-title">
                               {currentAppointment.patient_name}
                             </h2>
-                            {currentAppointment.is_referred_patient && (
+                            {/* {currentAppointment.is_referred_patient && (
                               <p>
                                 Referred by DS: {currentAppointment.ds_code}
                               </p>
+                            )} */}
+                            {currentAppointment.is_referred_patient == true ? (
+                              <p>
+                                Referred by DS Code:{" "}
+                                {currentAppointment.ds_code}
+                              </p>
+                            ) : (
+                              <p>DS Code: {currentAppointment.ds_code}</p>
                             )}
                           </div>
                           <div className="appoint-btm">
@@ -431,13 +451,25 @@ const DoctorHome = () => {
                         >
                           <div className="appointment-card">
                             <div className="card-img">
-                              <img
+                              {/* <img
                                 src={
                                   `${baseUrl}/${appointment.patient_profile}` ||
                                   ""
                                 }
                                 alt={appointment.patient_name}
-                              />
+                              /> */}
+
+                              {appointment.is_referred_patient == true ? (
+                                <img
+                                  src="./images/referredProfile.png"
+                                  alt="referred patient"
+                                />
+                              ) : (
+                                <img
+                                  src={`${baseUrl}/${appointment.patient_profile}`}
+                                  alt={appointment.patient_name}
+                                />
+                              )}
                             </div>
                             <div className="card-body">
                               <Link

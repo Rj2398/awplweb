@@ -940,7 +940,7 @@ const MyAppointments = () => {
                                       chat_id: patient.chat_id,
                                     }}
                                     style={{
-                                      color: "#199FD9",
+                                      color: "#356598",
                                       textDecoration: "underline !important",
                                     }}
                                     className="text-primary text-decoration-underline"

@@ -628,7 +628,7 @@ const MyAppointmentsSearch = ({
       <div
         className="formfield"
         style={
-          activeTab == "completed" || activeTab === "incompleted"
+          activeTab == "completed"
             ? { display: "none" }
             : activeTab === "cancelled"
             ? { width: "50%" }
@@ -662,6 +662,19 @@ const MyAppointmentsSearch = ({
         <div className={`filter-options-drpdn ${showFilter ? "active" : ""}`}>
           <form>
             <div className="filter-form">
+              {/* <div className="filter-grp">
+                <label>Patient Name</label>
+                
+                <input
+                  type="text"
+                  name="name"
+                  value={filters.name}
+                  onChange={handleInputChange}
+                  placeholder="Patient Name"
+                  pattern="[A-Za-z\s]+"  // HTML5 validation (optional)
+                  title="Only letters and spaces allowed"  // Error message (optional)
+                />
+              </div> */}
               <div className="filter-grp">
                 <label>Patient Name</label>
                 <div
