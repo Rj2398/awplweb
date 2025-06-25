@@ -334,7 +334,7 @@ const CompletedAppointment = () => {
 
                 <div className="chat-header">
                   <a
-                    href="./images/file-icon.svg"
+                    // href="./images/file-icon.svg"
                     className="orange-btn"
                     // download
                     onClick={() => handleDownloadPrescription()}

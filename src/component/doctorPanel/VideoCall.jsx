@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Video from "../../Video";
 import Header from "../doctorPanel/Header";
@@ -12,11 +12,17 @@ import {
 import { toast } from "react-toastify";
 import { getPatientProfileData } from "../../redux/slices/patientProfileSlice";
 import { videoCallSubmit } from "../../redux/slices/dataSlice";
+import axios from "axios";
 
 const VideoCall = () => {
   const navigate = useNavigate();
   const [isMuted, setIsMuted] = useState(false);
   const [isCameraOn, setIsCameraOn] = useState(true);
+
+  //
+
+  const [isPrescriptionDone, setIsPrescriptionDone] = useState(false);
+
   //
 
   //
@@ -423,6 +429,71 @@ const VideoCall = () => {
   //   return `${hours}:${minutes}:${secs}`;
   // };
 
+  const checkPrescriptionStatus = useCallback(async () => {
+    // If we're already checking, or if 'id' isn't available, don't proceed
+    if (!id) {
+      return;
+    }
+
+    const doctorAppData = JSON.parse(localStorage.getItem("doctor-app"));
+    const authToken = doctorAppData?.token;
+
+    const payload = {
+      appointment_id: id, // Use the appointment ID
+    };
+
+    try {
+      const response = await axios.get(
+        "https://awplconnectadmin.tgastaging.com/api/doctor/prescriptions/is-completed",
+        {
+          params: payload,
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data && response.data.data) {
+        setIsPrescriptionDone(response.data.data.is_done);
+        console.log(response.data.data.is_done, "check is don or noe");
+      } else {
+        setIsPrescriptionDone(false);
+        console.warn("API response.data.data is missing or unexpected.");
+      }
+    } catch (err) {
+      console.error("Error checking prescription status on focus:", err);
+
+      setIsPrescriptionDone(false);
+    }
+  }, [id]); // Dependency array: recreate if 'id' changes
+
+  // Effect to call API on initial mount and when 'id' changes
+  useEffect(() => {
+    checkPrescriptionStatus();
+  }, [checkPrescriptionStatus]); // Dependency on the memoized function
+
+  // Effect for window focus event
+  useEffect(() => {
+    const handleFocus = () => {
+      console.log("Window gained focus, re-checking prescription status...");
+      checkPrescriptionStatus(); // Re-fetch data when window gets focus
+    };
+
+    window.addEventListener("focus", handleFocus);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+    };
+  }, [checkPrescriptionStatus]);
+  //
+
+  const buttonStyle = {
+    opacity: isPrescriptionDone ? 0.5 : 1, // Reduce opacity if done
+    cursor: isPrescriptionDone ? "not-allowed" : "pointer", // Change cursor
+  };
+
   return (
     <main className="doctor-panel video-call-pg">
       <div className="container-fluid">
@@ -584,8 +655,18 @@ const VideoCall = () => {
                           href={`/PrescriptiveDoctor?id=${id}&patientId=${patientId}`} // Construct the URL with query parameters
                           target="_blank" // Opens the link in a new tab
                           rel="noopener noreferrer" // Recommended for security when using target="_blank"
+                          onClick={(e) => {
+                            if (isPrescriptionDone) {
+                              e.preventDefault(); // Prevent navigation if done
+                            }
+                          }}
                         >
-                          <button type="button" className="orange-btn">
+                          <button
+                            type="button"
+                            className="orange-btn"
+                            style={buttonStyle}
+                            disabled={isPrescriptionDone}
+                          >
                             Go for Prescription
                           </button>
                         </a>
