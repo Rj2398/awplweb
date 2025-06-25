@@ -483,8 +483,13 @@ const DoctorHome = () => {
                                     }
                                   </p>
                                 ) : (
-                                  <p style={{ visibility: "hidden" }}>
-                                    Placeholder
+                                  <p style={{ fontWeight: "bold" }}>
+                                    DS Code:{" "}
+                                    {
+                                      <span style={{ color: "#199FD9" }}>
+                                        {appointment.ds_code}
+                                      </span>
+                                    }
                                   </p>
                                 )}
                               </div>

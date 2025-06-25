@@ -775,14 +775,15 @@ const GlobalReminderModal = () => {
                 </div>
 
                 <button
+                  // className="orange-btn"
                   style={{
-                    backgroundColor: "#009CDE",
+                    backgroundColor: "#F47820",
                     color: "white",
                     border: "none",
                     padding: "10px 20px",
                     borderRadius: "5px",
                     cursor: "pointer",
-                    marginTop: 10,
+                    marginTop: 20,
                   }}
                   onClick={() => setShowReminderModal(false)} // Assuming you want to close the modal on "Okay"
                 >

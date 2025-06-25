@@ -510,7 +510,7 @@ const VideoCall = () => {
                 <div className="vdo-screen">
                   <div className="vdo-screen-controls">
                     <div className="vdoscrn-controls-head">
-                      <h1>{user.name}</h1>
+                      <h1>{patientInfo?.name}</h1>
                       <div className="vdoscrn-status-time-wrp">
                         <span className="vdoscrn-status live">LIVE</span>
                         <span className="vdoscrnduration-time">

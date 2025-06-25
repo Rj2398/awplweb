@@ -1539,6 +1539,10 @@ const PrescriptiveDoctor = () => {
         setIsLoading(false);
         // navigate("/videocall");
 
+        window.opener = null;
+        window.open("", "_self");
+        window.close();
+
         // Optionally, you can perform other actions on success, like redirecting or clearing form
       } else {
         toast.error(response.data.message || "An error occurred.", {
@@ -2243,45 +2247,101 @@ const PrescriptiveDoctor = () => {
         </Modal.Footer>
       </Modal>
 
-      {/* Submit Confirmation Modal */}
       <Modal
         show={showSubmitConfirmModal}
         onHide={() => setShowSubmitConfirmModal(false)}
         centered
+        dialogClassName="custom-modal-dialog" // Add a custom class for styling the modal container
       >
-        <Modal.Header
-          closeButton
-          style={{ backgroundColor: "#199FD9", color: "white" }}
-          className="border-b-0 rounded-t-lg"
+        <div
+          className="modal-content text-center position-relative shadow" // Added shadow and position-relative for close button
+          style={{
+            width: "auto", // Adjust width as needed or let it be responsive
+            minHeight: "280px", // Adjust height as needed
+            // borderRadius: "20px", // More rounded corners
+            padding: "30px 20px", // Overall padding inside the modal content
+            backgroundColor: "white", // Ensure white background for the whole content area
+            overflow: "hidden", // To ensure border-radius clips content
+          }}
         >
-          <Modal.Title className="text-xl font-bold">
-            Confirm Submission
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="p-6 bg-gray-50">
-          <p className="text-lg text-center text-gray-800">
-            You cannot add more medicine after submission.
-          </p>
-          <p className="text-md text-center text-gray-600 mt-2">
-            Are you sure you want to submit the prescription?
-          </p>
-        </Modal.Body>
-        <Modal.Footer className="d-flex justify-content-between p-4 bg-gray-100 border-t-0 rounded-b-lg">
-          <Button
-            variant="secondary"
+          {/* Close Button (like in the reminder modal) */}
+          <button
+            type="button"
             onClick={() => setShowSubmitConfirmModal(false)}
-            className="px-4 py-2 rounded-md font-semibold"
+            className="position-absolute top-0 end-0 m-3 border-0 bg-transparent"
+            aria-label="Close"
           >
-            Cancel
-          </Button>
-          <Button
-            variant="primary"
-            onClick={handleConfirmSubmit}
-            className="orange-btn px-4 py-2 rounded-md font-semibold"
-          >
-            Confirm
-          </Button>
-        </Modal.Footer>
+            <img
+              src="./images/cross-blue.png" // Assuming you have a blue cross icon like in the reminder modal
+              alt="Close Icon"
+              style={{ width: "24px", height: "24px" }}
+            />
+          </button>
+
+          {/* Exclamation Icon */}
+          <div className="modal-icon mb-3 mt-4">
+            <img
+              src="/images/logout-icon.svg" // Placeholder: You'll need to provide your exact icon path
+              alt="Info Icon"
+              style={{ width: "60px", height: "60px", color: "#199FD9" }} // Adjust size and color as per screenshot
+            />
+          </div>
+
+          {/* Title and Messages */}
+          <div className="modal-header border-0 flex-column align-items-center p-0">
+            {" "}
+            {/* No border, centered */}
+            <h2
+              className="fw-bold mb-2"
+              style={{ fontSize: "22px", color: "#333" }}
+            >
+              Confirm Submission
+            </h2>
+            <p className="m-0" style={{ color: "black", fontSize: "16px" }}>
+              You cannot add more medicine after submission.
+            </p>
+            <p
+              className="m-0"
+              style={{ color: "black", fontSize: "16px", marginTop: "5px" }}
+            >
+              Are you sure you want to submit the prescription?
+            </p>
+          </div>
+
+          {/* Buttons */}
+          <div className="modal-body p-0 mt-5 d-flex justify-content-center gap-3">
+            {" "}
+            {/* Centered buttons with gap */}
+            <Button
+              variant="outline-primary" // Use outline variant for border and text color
+              onClick={() => setShowSubmitConfirmModal(false)}
+              className="px-4 py-2 rounded-md font-semibold"
+              style={{
+                borderColor: "#199FD9", // Custom blue border color
+                color: "#199FD9", // Custom blue text color
+                backgroundColor: "white", // Ensure white background
+                minWidth: "120px", // Give a minimum width for consistent button size
+                fontSize: "16px",
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              onClick={handleConfirmSubmit}
+              className="orange-btn px-4 py-2 rounded-md font-semibold"
+              style={{
+                backgroundColor: "#FF8C00", // Bright orange from screenshot
+                borderColor: "#FF8C00", // Same color for border
+                color: "white",
+                minWidth: "120px", // Give a minimum width for consistent button size
+                fontSize: "16px",
+              }}
+            >
+              Confirm
+            </Button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

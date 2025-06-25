@@ -9,7 +9,7 @@
 //   const [showUnrecognizedEmailModal, setShowUnrecognizedEmailModal] = useState(false);
 //    const dispatch = useDispatch();
 //    const { loading } = useSelector((state) => state.user)
-   
+
 //   const [email, setEmail] = useState('');
 //   // const [password, setPassword] = useState('');
 //   // const [confirmPassword, setConfirmPassword] = useState('');
@@ -36,17 +36,17 @@
 //     console.log(res)
 //     if(res.payload.data?.verified == 1 && res.payload.data?.new_user == 1) {
 //       navigate("/create-password", { state: { email} });    //doctor is login ist time
-    
-//     } 
+
+//     }
 //     else if(res.payload.data?.verified == 1 && res.payload.data?.new_user == 0) {
 //       navigate("/login-password", { state: { email } });    //doctor is login 2nd time
-    
-//     } 
+
+//     }
 //     else{
 //       // toast.error("Invalid email. Please try again.");
 //       setShowUnrecognizedEmailModal(true);
 //     }
-    
+
 //     // dispatch(emailCheck())
 
 //     // Dummy user database
@@ -130,8 +130,6 @@
 //                       </div>
 //                     </form>
 
-                    
-
 //                   </div>
 //                 </div>
 //               </div>
@@ -204,67 +202,67 @@
 
 // export default Login;
 
-
-
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { emailCheck } from '../../redux/slices/userSlice';
-import { toast } from 'react-toastify';
-import { Modal, Button } from 'react-bootstrap';
+import { emailCheck } from "../../redux/slices/userSlice";
+import { toast } from "react-toastify";
+import { Modal, Button } from "react-bootstrap";
 
 const Login = () => {
-  const [showUnrecognizedEmailModal, setShowUnrecognizedEmailModal] = useState(false);
-   const dispatch = useDispatch();
-   const { loading } = useSelector((state) => state.user)
-   
-  const [email, setEmail] = useState('');
-  const [emailError,setEmailError] = useState('');
+  const [showUnrecognizedEmailModal, setShowUnrecognizedEmailModal] =
+    useState(false);
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.user);
+
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem("doctor-app")
-    if(isLoggedIn){
-      navigate("/doctor-home")
+    const isLoggedIn = localStorage.getItem("doctor-app");
+    if (isLoggedIn) {
+      navigate("/doctor-home");
     }
-  },[]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   const emailRegex = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/;
+    const emailRegex = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/;
 
     if (!emailRegex.test(email)) {
       setEmailError("Please enter a valid email address");
       return;
     }
-    const domain = email.split('@')[1];
-    const allowedDomains = ['gmail.com', 'yahoo.com', 'yopmail.com', 'hotmail.com'];
-       
-    if(!allowedDomains.includes(domain)){
+    const domain = email.split("@")[1];
+    const allowedDomains = [
+      "gmail.com",
+      "yahoo.com",
+      "yopmail.com",
+      "hotmail.com",
+      "example.com",
+    ];
+
+    if (!allowedDomains.includes(domain)) {
       setEmailError("Please enter a valid and supported email address");
       return;
     }
-    setEmailError('');
+    setEmailError("");
 
-    const res = await dispatch(emailCheck({"email": email}))
-    console.log(res)
-    if(res.payload.data?.verified == 1 && res.payload.data?.new_user == 1) {
-      navigate("/create-password", { state: { email} });    //doctor is login ist time
-    
-    } 
-    else if(res.payload.data?.verified == 1 && res.payload.data?.new_user == 0) {
-      navigate("/login-password", { state: { email } });    //doctor is login 2nd time
-    
-    } 
-    else{
+    const res = await dispatch(emailCheck({ email: email }));
+    console.log(res);
+    if (res.payload.data?.verified == 1 && res.payload.data?.new_user == 1) {
+      navigate("/create-password", { state: { email } }); //doctor is login ist time
+    } else if (
+      res.payload.data?.verified == 1 &&
+      res.payload.data?.new_user == 0
+    ) {
+      navigate("/login-password", { state: { email } }); //doctor is login 2nd time
+    } else {
       // toast.error("Invalid email. Please try again.");
       setShowUnrecognizedEmailModal(true);
     }
-    
-    
   };
-
- 
 
   return (
     <>
@@ -278,7 +276,10 @@ const Login = () => {
                     <img src="./images/doctor-symbol.png" alt="Doctor Symbol" />
                   </div>
                   <div className="sign-left-img">
-                    <img src="./images/login-left-img.png" alt="Login Left Image" />
+                    <img
+                      src="./images/login-left-img.png"
+                      alt="Login Left Image"
+                    />
                   </div>
                 </div>
               </div>
@@ -306,26 +307,24 @@ const Login = () => {
                               placeholder="Enter Your Email Id"
                               required
                               value={email}
-                              onChange={(e) => {setEmail(e.target.value);
-                                if(emailError)
-                                  setEmailError('');
+                              onChange={(e) => {
+                                setEmail(e.target.value);
+                                if (emailError) setEmailError("");
                               }}
-                              
                             />
                             {emailError && (
-                               <div className="text-danger mt-1" style={{ fontSize: '0.9rem' }}>
+                              <div
+                                className="text-danger mt-1"
+                                style={{ fontSize: "0.9rem" }}
+                              >
                                 {emailError}
                               </div>
-                              
                             )}
                           </div>
                           <input type="submit" value="Next" />
                         </div>
                       </div>
                     </form>
-
-                    
-
                   </div>
                 </div>
               </div>
@@ -334,8 +333,7 @@ const Login = () => {
         </div>
       </div>
 
-      
-            <Modal
+      <Modal
         show={showUnrecognizedEmailModal}
         onHide={() => setShowUnrecognizedEmailModal(false)}
         centered
@@ -359,7 +357,6 @@ const Login = () => {
           </Modal.Footer>
         </Modal.Body>
       </Modal>
-
     </>
   );
 };
