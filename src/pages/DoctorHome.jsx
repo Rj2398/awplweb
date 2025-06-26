@@ -430,12 +430,14 @@ const DoctorHome = () => {
                               </p>
                             )} */}
                             {currentAppointment.is_referred_patient == true ? (
-                              <p>
+                              <p style={{ color: "#199fd9" }}>
                                 Referred by DS Code:{" "}
                                 {currentAppointment.ds_code}
                               </p>
                             ) : (
-                              <p>DS Code: {currentAppointment.ds_code}</p>
+                              <p style={{ color: "#199fd9" }}>
+                                DS Code: {currentAppointment.ds_code}
+                              </p>
                             )}
                           </div>
                           <div className="appoint-btm">

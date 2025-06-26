@@ -486,10 +486,16 @@ const PatientProfile = () => {
                           {appointmentHistory.length > 0 ? (
                             appointmentHistory.map((appointment, index) => (
                               <tr key={appointment.id || index}>
-                                <td>{String(index + 1).padStart(2, "0")}</td>
-                                <td>{appointment.appointment_date}</td>
-                                <td>{appointment.diagnosis}</td>
-                                <td>
+                                <td style={{ fontSize: 22 }}>
+                                  {String(index + 1).padStart(2, "0")}
+                                </td>
+                                <td style={{ fontSize: 22 }}>
+                                  {appointment.appointment_date}
+                                </td>
+                                <td style={{ fontSize: 22 }}>
+                                  {appointment.diagnosis}
+                                </td>
+                                <td style={{ fontSize: 22 }}>
                                   <Link
                                     to="/completed-appointment-screen"
                                     state={{
@@ -540,11 +546,14 @@ const PatientProfile = () => {
                             {referredPatients.length > 0 ? (
                               referredPatients.map((patient, index) => (
                                 <tr key={patient.id || index}>
-                                  <td>{String(index + 1).padStart(2, "0")}</td>
+                                  <td style={{ fontSize: 22 }}>
+                                    {String(index + 1).padStart(2, "0")}
+                                  </td>
                                   <td
                                     style={{
                                       textAlign: "left",
                                       paddingLeft: "60px",
+                                      fontSize: 22,
                                     }}
                                   >
                                     <Link
@@ -569,10 +578,17 @@ const PatientProfile = () => {
                                         .toLowerCase()}
                                   </td>
 
-                                  <td>{patient.age}</td>
-                                  <td>{patient.weight}</td>
-                                  <td>{patient.height}</td>
-                                  <td>
+                                  <td style={{ fontSize: 22 }}>
+                                    {patient.age}
+                                  </td>
+                                  <td style={{ fontSize: 22 }}>
+                                    {" "}
+                                    {patient.weight}
+                                  </td>
+                                  <td style={{ fontSize: 22 }}>
+                                    {patient.height}
+                                  </td>
+                                  <td style={{ fontSize: 22 }}>
                                     <Link
                                       to="/patient-profile"
                                       state={{
