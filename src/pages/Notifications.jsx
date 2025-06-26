@@ -164,7 +164,14 @@ const Notifications = () => {
                 </div>
               </div>
               {/* <div className="notif-time">{n.created_at}</div> */}
-              <div className="notif-time">
+              <div
+                className="notif-time"
+                style={
+                  formatNotificationTime(n.created_at) === "Just now"
+                    ? { width: "69px" }
+                    : {}
+                }
+              >
                 {formatNotificationTime(n.created_at)}
               </div>
             </li>
@@ -180,8 +187,14 @@ const Notifications = () => {
     const notificationDate = new Date(timestamp);
     const diffInSeconds = Math.floor((now - notificationDate) / 1000);
 
+    if (diffInSeconds < 60) {
+      return "Just now";
+    } else if (diffInSeconds < 3600) {
+      const minutes = Math.floor(diffInSeconds / 60);
+      return `${minutes}m`;
+    }
     // For today's notifications (less than 24 hours)
-    if (diffInSeconds < 86400) {
+    else if (diffInSeconds < 86400) {
       const hours = Math.floor(diffInSeconds / 3600);
       return `${hours}h`;
     }
