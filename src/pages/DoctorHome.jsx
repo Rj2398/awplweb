@@ -706,7 +706,10 @@ const DoctorHome = () => {
                                   to="/patient-profile"
                                   state={{ patientId: prescription.patient_id }}
                                   className="no-underline-link"
-                                  style={{ display: "inline-block" }}
+                                  style={{
+                                    display: "inline-block",
+                                    fontSize: 21,
+                                  }}
                                 >
                                   {prescription.patient_name}
                                 </Link>
@@ -721,6 +724,7 @@ const DoctorHome = () => {
                                     style={{
                                       color: "#199fd9",
                                       marginTop: "2px",
+                                      fontSize: 16,
                                     }}
                                   >
                                     (Referred by DS Code: {prescription.ds_code}
@@ -732,6 +736,7 @@ const DoctorHome = () => {
                                     style={{
                                       color: "#199fd9",
                                       marginTop: "2px",
+                                      fontSize: 16,
                                     }}
                                   >
                                     (DS Code: {prescription.ds_code})
@@ -739,12 +744,14 @@ const DoctorHome = () => {
                                 )}
                               </td>
                               <td>
-                                <div className="date">
+                                <div className="date" style={{ fontSize: 21 }}>
                                   {/* {prescription.symptom_upload_date.split(" ")[0]} */}
                                   {/* {prescription.date} */}
                                   {formatDate(prescription.date)}
                                 </div>
-                                <div className="time">{prescription.time}</div>
+                                <div className="time" style={{ fontSize: 16 }}>
+                                  {prescription.time}
+                                </div>
                               </td>
                               <td>
                                 <Link
@@ -756,6 +763,7 @@ const DoctorHome = () => {
                                     referrer:
                                       prescription.referred_patient_name,
                                   }}
+                                  style={{ fontSize: 21 }}
                                 >
                                   View
                                 </Link>
