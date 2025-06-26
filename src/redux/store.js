@@ -7,7 +7,7 @@ import myAppointmentSlice from "./slices/myAppointmentSlice.js";
 import prescriptionSlice from "./slices/prescriptionSlice.js";
 import patientProfileSlice from "./slices/patientProfileSlice.js";
 import notificationSlice from "./slices/notificationSlice.js";
-import infoSlice from "./slices/InfoSlice.js";
+import infoSlice from "./slices/infoSlice.js";
 
 const store = configureStore({
   reducer: {
