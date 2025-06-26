@@ -195,13 +195,17 @@ export const getAllCanceledAppointment = () =>
   );
 
 export const getAllIncompletedAppointment = () =>
-  API.post(`/doctor/appointments/incomplete`, {}, {
-    headers: {
-      Authorization: `Bearer ${
-        JSON.parse(localStorage.getItem("doctor-app"))?.token
-      }`,
-    },
-  });
+  API.post(
+    `/doctor/appointments/incomplete`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("doctor-app"))?.token
+        }`,
+      },
+    }
+  );
 
 export const doctorCanceledAppointment = (formData) =>
   API.post("/doctor/appointments/cancel", formData, {
