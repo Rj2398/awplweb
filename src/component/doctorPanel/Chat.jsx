@@ -219,8 +219,8 @@ function Chat({ chat_id, senderImg, receiverImg }) {
             {messages.map((msg, index) => {
               const isMyMessage = msg.senderId === myUserId;
               const messageBackgroundColor = isMyMessage
-                ? "#d2f1ff"
-                : "#eeeeee";
+                ? "#DAEFF9"
+                : "#DAEFF9";
               const messageJustifyContent = isMyMessage
                 ? "flex-end"
                 : "flex-start";
