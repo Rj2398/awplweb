@@ -12,6 +12,7 @@ import {
   sendPushNotification,
 } from "../redux/slices/myAppointmentSlice";
 import { getDoctorProfile } from "../redux/slices/userSlice";
+import axios from "axios";
 
 const DoctorHome = () => {
   const navigate = useNavigate();
@@ -52,6 +53,7 @@ const DoctorHome = () => {
   const [showReminderModal, setShowReminderModal] = useState(false);
   const [canOpenModal, setCanOpenModal] = useState(true);
   const handleCloseModal = () => setModalOpen(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   //for StartAppointment
   // State to track if we should show the start appointment section
@@ -135,6 +137,7 @@ const DoctorHome = () => {
   // handle create channel to join call
 
   const sendNotitficaion = async (id) => {
+    console.log("call 222");
     await dispatch(
       sendPushNotification({
         // channelName: `JoinCall + ${DoctorLoginId?.id}`,
@@ -143,24 +146,65 @@ const DoctorHome = () => {
     );
   };
 
+  // const handleCreateChannel = async (id) => {
+  // console.log(id, `JoinCall + ${DoctorLoginId?.id}`, "params of the data");
+  // await dispatch(
+  //   getJoinVideoCall({
+  //     // channelName: `JoinCall + ${DoctorLoginId?.id}`,
+  //     appointmentId: id,
+  //   })
+  // );
+  // if (channelDetails) {
+  //   navigate("/VideoCall", {
+  //     state: {
+  //       id: currentAppointment.appointment_id,
+  //       patientId: currentAppointment.patient_id,
+  //       name: currentAppointment?.patient_name,
+  //       time_period: currentAppointment?.time,
+  //     },
+  //   });
+  //   sendNotitficaion(id);
+  // }
+
+  // };
+
+  //
+
   const handleCreateChannel = async (id) => {
-    console.log(id, `JoinCall + ${DoctorLoginId?.id}`, "params of the data");
-    await dispatch(
-      getJoinVideoCall({
-        // channelName: `JoinCall + ${DoctorLoginId?.id}`,
-        appointmentId: id,
-      })
-    );
-    if (channelDetails) {
-      navigate("/VideoCall", {
-        state: {
-          id: currentAppointment.appointment_id,
-          patientId: currentAppointment.patient_id,
-          name: currentAppointment?.patient_name,
-          time_period: currentAppointment?.time,
-        },
-      });
-      sendNotitficaion(id);
+    console.log("call 11");
+    setIsLoading(true); // Start loader
+    try {
+      const token = JSON.parse(localStorage.getItem("doctor-app"))?.token;
+
+      const response = await axios.post(
+        "https://awplconnectadmin.tgastaging.com/api/create-channel",
+        { appointmentId: id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data) {
+        navigate("/VideoCall", {
+          state: {
+            id: currentAppointment.appointment_id,
+            patientId: currentAppointment.patient_id,
+            name: currentAppointment?.patient_name,
+            time_period: currentAppointment?.time,
+          },
+        });
+
+        sendNotitficaion(id);
+      } else {
+        console.error("Channel creation failed:", response.data?.message);
+      }
+    } catch (error) {
+      console.error("Error creating channel:", error);
+    } finally {
+      setIsLoading(false); // Stop loader
     }
   };
 
@@ -355,7 +399,7 @@ const DoctorHome = () => {
                           <img
                             src={`${baseUrl}/${currentAppointment.patient_profile}`}
                             alt={currentAppointment.patient_name}
-                            style={{ height: 200, resize: "contain" }}
+                            style={{ height: 180, resize: "contain" }}
                           />
                         )}
                       </div>
@@ -389,7 +433,7 @@ const DoctorHome = () => {
                             </p>
                             {/* <p className="appoint-time">{convertTimeRangeTo24Hour(currentAppointment.time)}</p> */}
 
-                            <a
+                            {/* <a
                               className="orange-btn"
                               onClick={() =>
                                 handleCreateChannel(
@@ -399,12 +443,21 @@ const DoctorHome = () => {
                               style={{ cursor: "pointer" }}
                             >
                               Start now
+                            </a> */}
+                            <a
+                              className="orange-btn"
+                              onClick={() =>
+                                handleCreateChannel(
+                                  String(currentAppointment.appointment_id)
+                                )
+                              }
+                              style={{
+                                cursor: isLoading ? "not-allowed" : "pointer",
+                                pointerEvents: isLoading ? "none" : "auto",
+                              }}
+                            >
+                              {isLoading ? "Loading..." : "Start now"}
                             </a>
-
-                            {console.log(
-                              "patientId123:",
-                              currentAppointment.patient_id
-                            )}
                           </div>
                         </div>
                         <Link
