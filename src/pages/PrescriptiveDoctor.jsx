@@ -1147,7 +1147,7 @@ const PrescriptiveDoctor = () => {
   const id = params.get("id");
   const patientId = params.get("patientId");
 
-  console.log("ID:!!!!!!!!!!!!!!!!!!!!!!!", id);
+  // console.log("ID:!!!!!!!!!!!!!!!!!!!!!!!", id);
   console.log("Patient ID:", patientId);
   // const { id, patientId } = location.state || {};
 
