@@ -13,7 +13,7 @@ import {
 } from "../redux/slices/myAppointmentSlice";
 import { getDoctorProfile } from "../redux/slices/userSlice";
 import axios from "axios";
-import { setVideoData } from "../redux/slices/InfoSlice";
+import { setVideoData } from "../redux/slices/infoSlice";
 
 const DoctorHome = () => {
   const navigate = useNavigate();

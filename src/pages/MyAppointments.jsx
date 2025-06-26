@@ -18,7 +18,7 @@ import {
   sendPushNotification,
 } from "../redux/slices/myAppointmentSlice";
 import axios from "axios";
-import { setVideoData } from "../redux/slices/InfoSlice";
+import { setVideoData } from "../redux/slices/infoSlice";
 
 const MyAppointments = () => {
   const navigate = useNavigate();
