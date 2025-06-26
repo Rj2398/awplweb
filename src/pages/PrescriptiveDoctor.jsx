@@ -1147,6 +1147,12 @@ const PrescriptiveDoctor = () => {
   const id = params.get("id");
   const patientId = params.get("patientId");
 
+  useEffect(() => {
+    if (!id || !patientId) {
+      navigate("/doctor-home");
+    }
+  }, []);
+
   // console.log("ID:!!!!!!!!!!!!!!!!!!!!!!!", id);
   console.log("Patient ID:", patientId);
   // const { id, patientId } = location.state || {};

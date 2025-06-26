@@ -1,6 +1,6 @@
 import Header from "../component/doctorPanel/Header";
 import Footer from "../component/doctorPanel/Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
@@ -9,6 +9,7 @@ import { getPatientProfileData } from "../redux/slices/patientProfileSlice";
 const PatientProfile = () => {
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
   const location = useLocation();
+  const navigate = useNavigate();
   const { patientId, appointmentId, hideSchedule, source } =
     location.state || {};
   console.log("patientIdPPPPPP", patientId);
@@ -19,6 +20,12 @@ const PatientProfile = () => {
   const { patientProfileData, loading } = useSelector(
     (state) => state.patientProfile
   );
+
+  // useEffect(() => {
+  //   if (!appointmentId || !patientId) {
+  //     navigate("/doctor-home");
+  //   }
+  // }, [location]);
 
   const [showModal, setShowModal] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);

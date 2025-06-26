@@ -1021,9 +1021,10 @@ import { useSelector } from "react-redux";
 
 import { CiMicrophoneOff } from "react-icons/ci";
 
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Video = ({ isCameraOn, isMuted, patientInfo }) => {
+  const navigate = useNavigate();
   const location = useLocation();
   const localUserInitial = patientInfo
     ? patientInfo.charAt(0).toUpperCase()
@@ -1070,6 +1071,7 @@ const Video = ({ isCameraOn, isMuted, patientInfo }) => {
         console.error(
           "Agora Error: Missing APP_ID, CHANNEL, or TOKEN. Cannot join."
         );
+        navigate("/doctor-home");
         return;
       }
 

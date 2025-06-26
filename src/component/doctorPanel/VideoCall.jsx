@@ -36,6 +36,11 @@ const VideoCall = () => {
   // const time_period11 = "12:45 - 01:00 PM";
   // console.log(time_period, "time period*****");
 
+  useEffect(() => {
+    if (!id || !patientId || !time_period) {
+      navigate("/doctor-home");
+    }
+  }, [location]);
   // code testted
 
   // const time_period11 = "03:30 - 03:36 PM";
@@ -45,12 +50,14 @@ const VideoCall = () => {
 
   useEffect(() => {
     // Parse start and end times from the string
-    const parts = time_period.split(" - ");
-    const startTimeStr = parts[0]; // e.g., "03:30"
-    const endTimeStr = parts[1]; // e.g., "03:36 PM"
+    const parts = time_period?.split(" - ");
+    const startTimeStr = parts?.[0]; // e.g., "03:30"
+    const endTimeStr = parts?.[1]; // e.g., "03:36 PM"
 
     // --- Prepare Start Time (for the continuous counter) ---
-    const [startHoursStr, startMinutesStr] = startTimeStr.split(":");
+
+    if (!startTimeStr) return;
+    const [startHoursStr, startMinutesStr] = startTimeStr?.split(":");
     let startHours = parseInt(startHoursStr, 10);
     const startMinutes = parseInt(startMinutesStr, 10);
 

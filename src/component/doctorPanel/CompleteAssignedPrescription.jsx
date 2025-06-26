@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Footer from "../doctorPanel/Footer";
 import Header from "./Header";
 import PrescriptionModal from "./PrescriptionModal";
@@ -16,6 +16,7 @@ import PendingPrescpt from "../../pages/PendingPrescpt";
 
 const CompletedAssignedPrescription = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { id, patientId } = location.state || {};
 
   console.log(id, "id **********************");
@@ -24,6 +25,12 @@ const CompletedAssignedPrescription = () => {
   const dispatch = useDispatch();
   const [choosenItem, setChoosenItem] = useState({});
   console.log(choosenItem, "choosen item get from **********");
+
+  useEffect(() => {
+    if (!id || !patientId) {
+      navigate("/doctor-home");
+    }
+  }, [location]);
 
   const { patientProfileData } = useSelector((state) => state.patientProfile);
   useEffect(() => {
