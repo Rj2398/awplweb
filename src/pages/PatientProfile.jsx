@@ -181,6 +181,7 @@ const PatientProfile = () => {
                                       patientProfileData?.basic_information
                                         ?.referred_by
                                     }
+                                    (DS Code:{patientInfo.ds_code})
                                   </Link>
                                 </>
                               ) : (
@@ -255,7 +256,7 @@ const PatientProfile = () => {
                               </div>
                               <div
                                 className="patient-info-card"
-                                style={{ marginLeft: -30 }}
+                                style={{ marginLeft: -50 }}
                               >
                                 <h3>Email ID</h3>
                                 {/* <a href="mailto:patientname@gmail.com">{patientInfo.email}</a> */}

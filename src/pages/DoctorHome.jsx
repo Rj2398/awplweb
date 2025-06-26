@@ -399,10 +399,17 @@ const DoctorHome = () => {
                           style={{ height: 200, resize: "contain" }}
                         /> */}
                         {currentAppointment.is_referred_patient == true ? (
-                          <img
-                            src="./images/referredProfile.png"
-                            alt="referred patient"
-                          />
+                          <div
+                            style={{
+                              border: "2px solid #199FD9",
+                              borderRadius: 8,
+                            }}
+                          >
+                            <img
+                              src="./images/referredProfile.png"
+                              alt="referred patient"
+                            />
+                          </div>
                         ) : (
                           <img
                             src={`${baseUrl}/${currentAppointment.patient_profile}`}
@@ -568,7 +575,7 @@ const DoctorHome = () => {
                                     }
                                   </p>
                                 ) : (
-                                  <p style={{ fontWeight: "bold" }}>
+                                  <p style={{}}>
                                     DS Code:{" "}
                                     {
                                       <span style={{ color: "#199FD9" }}>
