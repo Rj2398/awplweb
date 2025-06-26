@@ -1009,7 +1009,7 @@ const MyAppointments = () => {
                                       color: "#199FD9",
                                       textDecoration: "underline !important",
                                     }}
-                                    className="text-primary text-decoration-underline"
+                                    className=" text-decoration-underline"
                                   >
                                     View
                                   </Link>

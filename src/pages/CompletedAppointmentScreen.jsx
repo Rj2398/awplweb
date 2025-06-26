@@ -14,11 +14,11 @@ const CompletedAppointment = () => {
   const { id, patientId, appointmentId, chat_id } = location.state || {};
   console.log("id", id, chat_id, "Chat idddd***************");
 
-  useEffect(() => {
-    if (!id || !patientId || !chat_id) {
-      navigate("/doctor-home");
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   if (!id || !patientId || !chat_id) {
+  //     navigate("/doctor-home");
+  //   }
+  // }, [location]);
 
   const { user } = useSelector(({ user }) => user);
 

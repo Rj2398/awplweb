@@ -560,7 +560,10 @@ const PatientProfile = () => {
                                       to="/patient-profile"
                                       state={{ patientid: patientId }}
                                       className="no-underline-link"
-                                      style={{ display: "inline-block" }}
+                                      style={{
+                                        color: "#199FD9",
+                                        display: "inline-block",
+                                      }}
                                     >
                                       {patient.name.charAt(0).toUpperCase() +
                                         patient.name.slice(1).toLowerCase()}
@@ -597,6 +600,11 @@ const PatientProfile = () => {
                                         id: patient.id,
                                         patientId: patient.id,
                                       }}
+                                      style={{
+                                        color: "#199FD9",
+                                        textDecoration: "underline !important",
+                                      }}
+                                      className="text-decoration-underline"
                                     >
                                       View Profile
                                     </Link>
