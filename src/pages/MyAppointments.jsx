@@ -17,11 +17,14 @@ import {
   getJoinVideoCall,
   sendPushNotification,
 } from "../redux/slices/myAppointmentSlice";
+import axios from "axios";
+import { setVideoData } from "../redux/slices/InfoSlice";
 
 const MyAppointments = () => {
   const navigate = useNavigate();
   const { channelDetails } = useSelector((state) => state.appointments);
   console.log(channelDetails, "jfaklshfsahdfks");
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const {
     upcommingAppointment,
@@ -204,32 +207,88 @@ const MyAppointments = () => {
 
   // handle create channel to join call
 
+  // const handleCreateChannel = async (id) => {
+  //   console.log(id, `JoinCall + ${DoctorLoginId?.id}`, "params of the data");
+  //   dispatch(
+  //     getJoinVideoCall({
+
+  //       appointmentId: id,
+  //     })
+  //   );
+
+  //   dispatch(
+  //     sendPushNotification({
+  //       // channelName: `JoinCall + ${DoctorLoginId?.id}`,
+  //       appointment_id: id,
+  //     })
+  //   );
+
+  //   if (channelDetails) {
+  //     navigate("/VideoCall", {
+  //       state: {
+  //         id: currentAppointment.appointment_id,
+  //         patientId: currentAppointment.patient_id,
+  //         name: currentAppointment?.patient_name,
+  //         time_period: currentAppointment?.time,
+  //       },
+  //     });
+  //   }
+  // };
+
   const handleCreateChannel = async (id) => {
-    console.log(id, `JoinCall + ${DoctorLoginId?.id}`, "params of the data");
-    dispatch(
-      getJoinVideoCall({
-        channelName: `JoinCall + ${DoctorLoginId?.id}`,
+    console.log("call 11");
+    setIsLoading(true); // Start loader
+    try {
+      const token = JSON.parse(localStorage.getItem("doctor-app"))?.token;
+
+      const response = await axios.post(
+        "https://awplconnectadmin.tgastaging.com/api/create-channel",
+        { appointmentId: id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data) {
+        console.log(response?.data?.data, "sdhfkjasfhjksjf");
+        dispatch(setVideoData(response?.data?.data));
+        navigate("/VideoCall", {
+          state: {
+            id: currentAppointment.appointment_id,
+            patientId: currentAppointment.patient_id,
+            name: currentAppointment?.patient_name,
+            time_period: currentAppointment?.time,
+            // channelDetails: {
+            //   appId: response?.data?.data?.appId,
+            //   token: response?.data?.data?.channelName,
+            //   channelName: response?.data?.data?.token,
+            //   uid: response?.data?.data?.uid,
+            // },
+          },
+        });
+
+        sendNotitficaion(id);
+      } else {
+        console.error("Channel creation failed:", response.data?.message);
+      }
+    } catch (error) {
+      console.error("Error creating channel:", error);
+    } finally {
+      setIsLoading(false); // Stop loader
+    }
+  };
+
+  const sendNotitficaion = async (id) => {
+    console.log("call 222");
+    await dispatch(
+      sendPushNotification({
+        // channelName: `JoinCall + ${DoctorLoginId?.id}`,
         appointmentId: id,
       })
     );
-
-    dispatch(
-      sendPushNotification({
-        // channelName: `JoinCall + ${DoctorLoginId?.id}`,
-        appointment_id: id,
-      })
-    );
-
-    if (channelDetails) {
-      navigate("/VideoCall", {
-        state: {
-          id: currentAppointment.appointment_id,
-          patientId: currentAppointment.patient_id,
-          name: currentAppointment?.patient_name,
-          time_period: currentAppointment?.time,
-        },
-      });
-    }
   };
 
   const handleSearch = (query) => {
@@ -731,14 +790,21 @@ const MyAppointments = () => {
                                   {patient.status === 1 ? (
                                     <a
                                       className="orange-btn"
-                                      style={{ cursor: "pointer" }}
+                                      style={{
+                                        cursor: isLoading
+                                          ? "not-allowed"
+                                          : "pointer",
+                                        pointerEvents: isLoading
+                                          ? "none"
+                                          : "auto",
+                                      }}
                                       onClick={() =>
                                         handleCreateChannel(
                                           patient.appointment_id
                                         )
                                       }
                                     >
-                                      Start now
+                                      {isLoading ? "Loading..." : "Start now"}
                                     </a>
                                   ) : (
                                     <button

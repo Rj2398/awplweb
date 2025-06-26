@@ -13,6 +13,7 @@ import {
 } from "../redux/slices/myAppointmentSlice";
 import { getDoctorProfile } from "../redux/slices/userSlice";
 import axios from "axios";
+import { setVideoData } from "../redux/slices/InfoSlice";
 
 const DoctorHome = () => {
   const navigate = useNavigate();
@@ -146,73 +147,74 @@ const DoctorHome = () => {
     );
   };
 
-  const handleCreateChannel = async (id) => {
-    console.log(id, `JoinCall + ${DoctorLoginId?.id}`, "params of the data");
-    await dispatch(
-      getJoinVideoCall({
-        // channelName: `JoinCall + ${DoctorLoginId?.id}`,
-        appointmentId: id,
-      })
-    );
-    if (channelDetails) {
-      navigate("/VideoCall", {
-        state: {
-          id: currentAppointment.appointment_id,
-          patientId: currentAppointment.patient_id,
-          name: currentAppointment?.patient_name,
-          time_period: currentAppointment?.time,
-        },
-      });
-      sendNotitficaion(id);
-    }
-  };
+  // const handleCreateChannel = async (id) => {
+  //   console.log(id, `JoinCall + ${DoctorLoginId?.id}`, "params of the data");
+  //   await dispatch(
+  //     getJoinVideoCall({
+  //       // channelName: `JoinCall + ${DoctorLoginId?.id}`,
+  //       appointmentId: id,
+  //     })
+  //   );
+  //   if (channelDetails) {
+  //     navigate("/VideoCall", {
+  //       state: {
+  //         id: currentAppointment.appointment_id,
+  //         patientId: currentAppointment.patient_id,
+  //         name: currentAppointment?.patient_name,
+  //         time_period: currentAppointment?.time,
+  //       },
+  //     });
+  //     sendNotitficaion(id);
+  //   }
+  // };
 
   //
 
-  // const handleCreateChannel = async (id) => {
-  //   console.log("call 11");
-  //   setIsLoading(true); // Start loader
-  //   try {
-  //     const token = JSON.parse(localStorage.getItem("doctor-app"))?.token;
+  const handleCreateChannel = async (id) => {
+    console.log("call 11");
+    setIsLoading(true); // Start loader
+    try {
+      const token = JSON.parse(localStorage.getItem("doctor-app"))?.token;
 
-  //     const response = await axios.post(
-  //       "https://awplconnectadmin.tgastaging.com/api/create-channel",
-  //       { appointmentId: id },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
+      const response = await axios.post(
+        "https://awplconnectadmin.tgastaging.com/api/create-channel",
+        { appointmentId: id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-  //     if (response.data) {
-  //       console.log(response?.data?.data, "sdhfkjasfhjksjf");
-  //       navigate("/VideoCall", {
-  //         state: {
-  //           id: currentAppointment.appointment_id,
-  //           patientId: currentAppointment.patient_id,
-  //           name: currentAppointment?.patient_name,
-  //           time_period: currentAppointment?.time,
-  //           channelDetails: {
-  //             appId: response?.data?.data?.appId,
-  //             token: response?.data?.data?.channelName,
-  //             channelName: response?.data?.data?.token,
-  //             uid: response?.data?.data?.uid,
-  //           },
-  //         },
-  //       });
+      if (response.data) {
+        console.log(response?.data?.data, "sdhfkjasfhjksjf");
+        dispatch(setVideoData(response?.data?.data));
+        navigate("/VideoCall", {
+          state: {
+            id: currentAppointment.appointment_id,
+            patientId: currentAppointment.patient_id,
+            name: currentAppointment?.patient_name,
+            time_period: currentAppointment?.time,
+            // channelDetails: {
+            //   appId: response?.data?.data?.appId,
+            //   token: response?.data?.data?.channelName,
+            //   channelName: response?.data?.data?.token,
+            //   uid: response?.data?.data?.uid,
+            // },
+          },
+        });
 
-  //       sendNotitficaion(id);
-  //     } else {
-  //       console.error("Channel creation failed:", response.data?.message);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error creating channel:", error);
-  //   } finally {
-  //     setIsLoading(false); // Stop loader
-  //   }
-  // };
+        sendNotitficaion(id);
+      } else {
+        console.error("Channel creation failed:", response.data?.message);
+      }
+    } catch (error) {
+      console.error("Error creating channel:", error);
+    } finally {
+      setIsLoading(false); // Stop loader
+    }
+  };
 
   // useEffect(() => {
   //   if (channelDetails) {

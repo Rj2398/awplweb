@@ -1032,7 +1032,8 @@ const Video = ({ isCameraOn, isMuted, patientInfo }) => {
     localUserInitial,
     "localUserInitiallocalUserInitiallocalUserInitial"
   );
-  const { channelDetails } = useSelector((state) => state.appointments);
+  // const { channelDetails } = useSelector((state) => state.appointments);
+  const { channelDetails } = useSelector((state) => state.info);
 
   const APP_ID = channelDetails?.appId || null;
   const TOKEN = channelDetails?.token || null;

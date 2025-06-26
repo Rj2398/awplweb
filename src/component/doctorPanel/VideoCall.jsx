@@ -41,7 +41,7 @@ const VideoCall = () => {
   // const time_period11 = "03:30 - 03:36 PM";
   const [displayTime, setDisplayTime] = useState(""); // State for displaying HH:MM:SS or MM:SS elapsed
 
-  console.log(time_period, "ksahfasdfjksdfsdfls");
+  console.log(time_period, id, patientId, "ksahfasdfjksdfsdfls");
 
   useEffect(() => {
     // Parse start and end times from the string
