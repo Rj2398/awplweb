@@ -188,7 +188,6 @@ const PendingPrescription = () => {
                                     style={{
                                       color: "#199FD9",
                                       marginLeft: 10,
-                                      color: "#199FD9",
                                       fontWeight: "bold",
                                     }}
                                   >

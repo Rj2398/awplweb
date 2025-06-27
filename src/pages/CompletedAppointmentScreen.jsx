@@ -115,6 +115,7 @@ const CompletedAppointment = () => {
                         <img
                           src={`${baseUrl}/${completeAppointmentPatientDetail?.patientData?.patient_image}`}
                           alt="Client"
+                          style={{ height: 120 }}
                         />
                       </div>
                       <div className="appoint-dtl-content">
