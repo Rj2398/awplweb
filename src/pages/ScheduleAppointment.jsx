@@ -844,26 +844,26 @@ const ScheduleAppointment = () => {
     return timeSlotDate <= now;
   };
 
-  const isWithinTwoHours = (time, date = selectedDate) => {
-    if (!time || !date) return false;
+  // const isWithinTwoHours = (time, date = selectedDate) => {
+  //   if (!time || !date) return false;
 
-    const match = time.match(/(\d{1,2}:\d{2})\s*(AM|PM)/i);
-    if (!match) return false;
+  //   const match = time.match(/(\d{1,2}:\d{2})\s*(AM|PM)/i);
+  //   if (!match) return false;
 
-    const [, rawTime, modifier] = match;
-    let [hours, minutes] = rawTime.split(":").map(Number);
+  //   const [, rawTime, modifier] = match;
+  //   let [hours, minutes] = rawTime.split(":").map(Number);
 
-    if (modifier.toLowerCase() === "pm" && hours !== 12) hours += 12;
-    if (modifier.toLowerCase() === "am" && hours === 12) hours = 0;
+  //   if (modifier.toLowerCase() === "pm" && hours !== 12) hours += 12;
+  //   if (modifier.toLowerCase() === "am" && hours === 12) hours = 0;
 
-    const now = new Date();
-    const selected = new Date(date);
-    selected.setHours(hours, minutes, 0, 0);
+  //   const now = new Date();
+  //   const selected = new Date(date);
+  //   selected.setHours(hours, minutes, 0, 0);
 
-    const diffInHours = (selected - now) / (1000 * 60 * 60);
+  //   const diffInHours = (selected - now) / (1000 * 60 * 60);
 
-    return diffInHours >= 2;
-  };
+  //   return diffInHours >= 2;
+  // };
 
   const handleTimeSelect = (time, isAvailable) => {
     if (!isAvailable) return;
@@ -877,10 +877,10 @@ const ScheduleAppointment = () => {
       return;
     }
 
-    if (!isWithinTwoHours(selectedTime)) {
-      toast.error("Appointments must be booked at least 2 hours in advance");
-      return;
-    }
+    // if (!isWithinTwoHours(selectedTime)) {
+    //   toast.error("Appointments must be booked at least 2 hours in advance");
+    //   return;
+    // }
 
     try {
       const result = await dispatch(
