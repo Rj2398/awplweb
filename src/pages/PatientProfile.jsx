@@ -159,6 +159,34 @@ const PatientProfile = () => {
                             <p className="dscode">
                               {patientProfileData?.basic_information
                                 ?.is_referred ? (
+                                // <>
+                                //   <span style={{ color: "black" }}>
+                                //     Referred by
+                                //   </span>
+                                //   <Link
+                                //     to="/patient-profile"
+                                //     state={{
+                                //       patientId:
+                                //         patientProfileData?.basic_information
+                                //           ?.referred_id,
+                                //     }}
+                                //     style={{
+                                //       color: "#199fd9",
+                                //       textDecoration: "none",
+                                //       marginLeft: 5,
+                                //       display: "inline",
+                                //     }}
+                                //   >
+                                //     {
+                                //       patientProfileData?.basic_information
+                                //         ?.referred_by
+                                //     }
+                                //     <span style={{ color: "black" }}>
+                                //       DS Code:
+                                //     </span>
+                                //     {patientInfo.ds_code}
+                                //   </Link>
+                                // </>
                                 <>
                                   <span style={{ color: "black" }}>
                                     Referred by
@@ -177,15 +205,16 @@ const PatientProfile = () => {
                                       display: "inline",
                                     }}
                                   >
-                                    {
-                                      patientProfileData?.basic_information
-                                        ?.referred_by
-                                    }
-                                    <span style={{ color: "black" }}>
-                                      DS Code:
+                                    <span>
+                                      {
+                                        patientProfileData?.basic_information
+                                          ?.referred_by
+                                      }
                                     </span>
-                                    {patientInfo.ds_code}
                                   </Link>
+                                  <span style={{ color: "#199FD9" }}>
+                                    (DS Code:{patientInfo.ds_code})
+                                  </span>
                                 </>
                               ) : (
                                 <span>

@@ -3,7 +3,7 @@
 // import { FaPen, FaRegPlusSquare } from "react-icons/fa";
 // import { RiDeleteBin5Line } from "react-icons/ri";
 // import { useDispatch, useSelector } from "react-redux";
-// import { useLocation } from "react-router-dom";
+// import { useLocation, useNavigate } from "react-router-dom";
 // import { presciveMedicine, videoCallSubmit } from "../redux/slices/dataSlice";
 
 // // Import React-Toastify
@@ -14,13 +14,21 @@
 // const PrescriptiveDoctor = () => {
 //   const dispatch = useDispatch();
 //   const location = useLocation();
+
+//   const navigate = useNavigate();
 //   const [isloading, setIsLoading] = useState(false);
 
 //   const params = new URLSearchParams(location.search);
 //   const id = params.get("id");
 //   const patientId = params.get("patientId");
 
-//   console.log("ID:", id);
+//   useEffect(() => {
+//     if (!id || !patientId) {
+//       navigate("/doctor-home");
+//     }
+//   }, []);
+
+//   // console.log("ID:!!!!!!!!!!!!!!!!!!!!!!!", id);
 //   console.log("Patient ID:", patientId);
 //   // const { id, patientId } = location.state || {};
 
@@ -38,6 +46,7 @@
 //   // );
 
 //   const [data, setData] = useState(allMedicine);
+//   const [showSubmitConfirmModal, setShowSubmitConfirmModal] = useState(false); // New state for submit confirmation modal
 
 //   useEffect(() => {
 //     if (allMedicine) {
@@ -293,8 +302,8 @@
 //     const newMedicineId = selectedMedicine
 //       ? selectedMedicine.medicine_id
 //       : data.treatments && data.treatments.length > 0
-//         ? Math.max(...data.treatments.map((t) => t.medicine_id)) + 1
-//         : 1000; // Start new dynamic IDs from a high number or use UUID library
+//       ? Math.max(...data.treatments.map((t) => t.medicine_id)) + 1
+//       : 1000; // Start new dynamic IDs from a high number or use UUID library
 
 //     const updatedNewTreatment = {
 //       ...newTreatment,
@@ -321,9 +330,14 @@
 //     });
 //   };
 
-//   const handleSubmitToAPI = async () => {
+//   const handleSubmitButtonClick = () => {
+//     setShowSubmitConfirmModal(true); // Open the confirmation modal
+//   };
+
+//   const handleConfirmSubmit = async () => {
+//     setShowSubmitConfirmModal(false); // Close the confirmation modal
 //     setIsLoading(false);
-//     // Corrected: Added 'async' keyword here
+
 //     if (
 //       !data || // 'data' needs to be defined in the component's scope
 //       !data.disease_name ||
@@ -404,6 +418,12 @@
 //           theme: "dark",
 //         });
 //         setIsLoading(false);
+//         // navigate("/videocall");
+
+//         window.opener = null;
+//         window.open("", "_self");
+//         window.close();
+
 //         // Optionally, you can perform other actions on success, like redirecting or clearing form
 //       } else {
 //         toast.error(response.data.message || "An error occurred.", {
@@ -756,7 +776,9 @@
 
 //       {hasTreatments && (
 //         <div className="mt-6 text-center">
-//           <Button className="orange-btn" onClick={handleSubmitToAPI}>
+//           <Button className="orange-btn" onClick={handleSubmitButtonClick}>
+//             {" "}
+//             {/* Call the new handler */}
 //             Submit
 //           </Button>
 //         </div>
@@ -926,13 +948,13 @@
 //           )}
 //         </Modal.Body>
 //         <Modal.Footer className="justify-content-center p-4 bg-gray-100 border-t-0 rounded-b-lg">
-
 //           <Button
-//                       onClick={handleUpdate}
-//                       className="orange-btn" style={{fontWeight:"600", padding:"0 42px"}}
-//                     >
-//                       Update Changes
-//                     </Button>
+//             onClick={handleUpdate}
+//             className="orange-btn"
+//             style={{ fontWeight: "600", padding: "0 42px" }}
+//           >
+//             Update Changes
+//           </Button>
 //         </Modal.Footer>
 //       </Modal>
 
@@ -949,7 +971,7 @@
 //         </Modal.Header>
 //         <Modal.Body className="p-6 bg-gray-50">
 //           <Form>
-//             <Form.Group className="mb-3" controlId="formNewMedicineName">
+//             <Form.Group className="mb-3" controlId="newFormMedicineName">
 //               <Form.Label className="font-semibold text-gray-700">
 //                 Medicine Name
 //               </Form.Label>
@@ -959,7 +981,7 @@
 //                 value={newTreatment.medicine_name}
 //                 onChange={handleNewChange}
 //                 list="medicineSuggestionsList"
-//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 bg-white text-black"
+//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //               />
 //               <datalist id="medicineSuggestionsList">
 //                 {medicineSuggestions.map((medicine) => (
@@ -970,7 +992,7 @@
 //                 ))}
 //               </datalist>
 //             </Form.Group>
-//             <Form.Group className="mb-3" controlId="formNewDosage">
+//             <Form.Group className="mb-3" controlId="newFormDosage">
 //               <Form.Label className="font-semibold text-gray-700">
 //                 Dosage
 //               </Form.Label>
@@ -979,10 +1001,10 @@
 //                 name="dosage"
 //                 value={newTreatment.dosage}
 //                 onChange={handleNewChange}
-//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //               />
 //             </Form.Group>
-//             <Form.Group className="mb-3" controlId="formNewDuration">
+//             <Form.Group className="mb-3" controlId="newFormDuration">
 //               <Form.Label className="font-semibold text-gray-700">
 //                 Duration
 //               </Form.Label>
@@ -991,10 +1013,10 @@
 //                 name="duration"
 //                 value={newTreatment.duration}
 //                 onChange={handleNewChange}
-//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //               />
 //             </Form.Group>
-//             <Form.Group className="mb-3" controlId="formNewUnit">
+//             <Form.Group className="mb-3" controlId="newFormUnit">
 //               <Form.Label className="font-semibold text-gray-700">
 //                 Unit
 //               </Form.Label>
@@ -1002,7 +1024,7 @@
 //                 name="unit"
 //                 value={newTreatment.unit}
 //                 onChange={handleNewChange}
-//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 bg-white text-black"
+//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //               >
 //                 <option value="">Select Unit</option>
 //                 <option value="mg">Milligram (mg)</option>
@@ -1014,7 +1036,7 @@
 //                 <option value="tbsp">Tablespoon (tbsp)</option>
 //               </Form.Select>
 //             </Form.Group>
-//             <Form.Group className="mb-3" controlId="formNewWithWater">
+//             <Form.Group className="mb-3" controlId="newFormWithWater">
 //               <Form.Label className="font-semibold text-gray-700">
 //                 With Water
 //               </Form.Label>
@@ -1022,14 +1044,14 @@
 //                 name="with_water"
 //                 value={newTreatment.with_water}
 //                 onChange={handleNewChange}
-//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //               >
 //                 <option value="">Select</option>
 //                 <option value="Yes">Yes</option>
 //                 <option value="No">No</option>
 //               </Form.Select>
 //             </Form.Group>
-//             <Form.Group className="mb-3" controlId="formNewDosageFrequency">
+//             <Form.Group className="mb-3" controlId="newFormDosageFrequency">
 //               <Form.Label className="font-semibold text-gray-700">
 //                 Dosage Frequency
 //               </Form.Label>
@@ -1038,25 +1060,25 @@
 //                 name="dosage_frequency"
 //                 value={newTreatment.dosage_frequency}
 //                 onChange={handleNewChange}
-//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //               />
 //             </Form.Group>
-//             <Form.Group className="mb-3" controlId="formNewMealTiming">
+//             <Form.Group className="mb-3" controlId="newFormMealTiming">
 //               <Form.Label className="font-semibold text-gray-700">
-//                 Before/After Meal
+//                 Meal Timing
 //               </Form.Label>
 //               <Form.Select
 //                 name="meal_timing"
 //                 value={newTreatment.meal_timing}
 //                 onChange={handleNewChange}
-//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //               >
 //                 <option value="">Select Before/After Meal</option>
-//                 <option value="before">Before</option>
-//                 <option value="after">After</option>
+//                 <option value="before">Before </option>
+//                 <option value="after">After </option>
 //               </Form.Select>
 //             </Form.Group>
-//             <Form.Group className="mb-3" controlId="formNewDayTime">
+//             <Form.Group className="mb-3" controlId="newFormDayTime">
 //               <Form.Label className="font-semibold text-gray-700">
 //                 Day Time
 //               </Form.Label>
@@ -1064,7 +1086,7 @@
 //                 name="day_time"
 //                 value={newTreatment.day_time}
 //                 onChange={handleNewChange}
-//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //               >
 //                 <option value="">Select</option>
 //                 <option value="morning">Morning</option>
@@ -1080,7 +1102,7 @@
 //                 </option>
 //               </Form.Select>
 //             </Form.Group>
-//             <Form.Group className="mb-3" controlId="formNewRemarks">
+//             <Form.Group className="mb-3" controlId="newFormRemarks">
 //               <Form.Label className="font-semibold text-gray-700">
 //                 Remarks (Optional)
 //               </Form.Label>
@@ -1088,9 +1110,9 @@
 //                 as="textarea"
 //                 rows={3}
 //                 name="remarks"
-//                 value={newTreatment.remarks || ""}
+//                 value={newTreatment.remarks}
 //                 onChange={handleNewChange}
-//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+//                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //               />
 //             </Form.Group>
 //           </Form>
@@ -1098,17 +1120,109 @@
 //         <Modal.Footer className="justify-content-center p-4 bg-gray-100 border-t-0 rounded-b-lg">
 //           <Button
 //             onClick={handleAddNew}
-//             className="orange-btn" style={{ fontWeight: "600", padding: "0 42px" }}
+//             className="orange-btn"
+//             style={{ fontWeight: "600", padding: "0 42px" }}
 //           >
 //             Add Medicine
 //           </Button>
-//           {/* <Button
-//             onClick={handleAddNew}
-//             className="px-5 py-2 text-white bg-green-500 orange-btn rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75"
-//           >
-//             Add Medicine
-//           </Button> */}
 //         </Modal.Footer>
+//       </Modal>
+
+//       <Modal
+//         show={showSubmitConfirmModal}
+//         onHide={() => setShowSubmitConfirmModal(false)}
+//         centered
+//         dialogClassName="custom-modal-dialog" // Add a custom class for styling the modal container
+//       >
+//         <div
+//           className="modal-content text-center position-relative shadow" // Added shadow and position-relative for close button
+//           style={{
+//             width: "auto", // Adjust width as needed or let it be responsive
+//             minHeight: "280px", // Adjust height as needed
+//             // borderRadius: "20px", // More rounded corners
+//             padding: "30px 20px", // Overall padding inside the modal content
+//             backgroundColor: "white", // Ensure white background for the whole content area
+//             overflow: "hidden", // To ensure border-radius clips content
+//           }}
+//         >
+//           {/* Close Button (like in the reminder modal) */}
+//           <button
+//             type="button"
+//             onClick={() => setShowSubmitConfirmModal(false)}
+//             className="position-absolute top-0 end-0 m-3 border-0 bg-transparent"
+//             aria-label="Close"
+//           >
+//             <img
+//               src="./images/cross-blue.png" // Assuming you have a blue cross icon like in the reminder modal
+//               alt="Close Icon"
+//               style={{ width: "24px", height: "24px" }}
+//             />
+//           </button>
+
+//           {/* Exclamation Icon */}
+//           <div className="modal-icon mb-3 mt-4">
+//             <img
+//               src="/images/logout-icon.svg" // Placeholder: You'll need to provide your exact icon path
+//               alt="Info Icon"
+//               style={{ width: "60px", height: "60px", color: "#199FD9" }} // Adjust size and color as per screenshot
+//             />
+//           </div>
+
+//           {/* Title and Messages */}
+//           <div className="modal-header border-0 flex-column align-items-center p-0">
+//             {" "}
+//             {/* No border, centered */}
+//             <h2
+//               className="fw-bold mb-2"
+//               style={{ fontSize: "22px", color: "#333" }}
+//             >
+//               Confirm Submission
+//             </h2>
+//             <p className="m-0" style={{ color: "black", fontSize: "16px" }}>
+//               You cannot add more medicine after submission.
+//             </p>
+//             <p
+//               className="m-0"
+//               style={{ color: "black", fontSize: "16px", marginTop: "5px" }}
+//             >
+//               Are you sure you want to submit the prescription?
+//             </p>
+//           </div>
+
+//           {/* Buttons */}
+//           <div className="modal-body p-0 mt-5 d-flex justify-content-center gap-3">
+//             {" "}
+//             {/* Centered buttons with gap */}
+//             <Button
+//               variant="outline-primary" // Use outline variant for border and text color
+//               onClick={() => setShowSubmitConfirmModal(false)}
+//               className="px-4 py-2 rounded-md font-semibold"
+//               style={{
+//                 borderColor: "#199FD9", // Custom blue border color
+//                 color: "#199FD9", // Custom blue text color
+//                 backgroundColor: "white", // Ensure white background
+//                 minWidth: "120px", // Give a minimum width for consistent button size
+//                 fontSize: "16px",
+//               }}
+//             >
+//               Cancel
+//             </Button>
+//             <Button
+//               variant="primary"
+//               onClick={handleConfirmSubmit}
+//               className="orange-btn px-4 py-2 rounded-md font-semibold"
+//               style={{
+//                 backgroundColor: "#FF8C00", // Bright orange from screenshot
+//                 borderColor: "#FF8C00", // Same color for border
+//                 color: "white",
+//                 minWidth: "120px", // Give a minimum width for consistent button size
+//                 fontSize: "16px",
+//               }}
+//             >
+//               Confirm
+//             </Button>
+//           </div>
+//         </div>
 //       </Modal>
 //     </div>
 //   );
@@ -1117,11 +1231,7 @@
 // export default PrescriptiveDoctor;
 //
 
-//
-
-//
-
-//
+//date 27-06-2025
 
 import React, { useState, useEffect, useMemo } from "react";
 import { Table, Button, Modal, Form, Spinner } from "react-bootstrap";
@@ -1409,6 +1519,46 @@ const PrescriptiveDoctor = () => {
       }
     }
 
+    // New validation: Check if medicine_name is empty (from dropdown selection)
+    if (!newTreatment.medicine_name.trim()) {
+      toast.error("Medicine Name cannot be empty.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      isValid = false;
+    }
+
+    // New validation: Check for duplicate medicine in the existing table
+    if (
+      data.treatments &&
+      data.treatments.some(
+        (t) =>
+          t.medicine_name.toLowerCase() ===
+          newTreatment.medicine_name.toLowerCase()
+      )
+    ) {
+      toast.error(
+        "Duplicate medicine not added. This medicine already exists in the table.",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        }
+      );
+      isValid = false;
+    }
+
     if (!isValid) {
       return; // Stop the function if validation fails
     }
@@ -1648,6 +1798,9 @@ const PrescriptiveDoctor = () => {
 
   return (
     <div className="container p-4 mx-auto font-sans bg-white">
+      {/* ToastContainer is likely needed here, if not already in a parent component */}
+      {/* <ToastContainer /> */}
+
       <div
         style={{
           width: "200px",
@@ -2049,7 +2202,7 @@ const PrescriptiveDoctor = () => {
                   <option value="morning_afternoon_evening">
                     Morning + Afternoon + Evening
                   </option>
-                  <option value="morning_night">Morning + Evening</option>
+                  <option value="morning_night">Morning + Night</option>
                   <option value="night">Night</option>
                   <option value="morning_afternoon_evening_night">
                     Morning + Afternoon + Evening + Night
@@ -2083,7 +2236,7 @@ const PrescriptiveDoctor = () => {
         </Modal.Footer>
       </Modal>
 
-      {/* New Row Modal (Validation also in this one, as before) */}
+      {/* New Row Modal (with dropdown and validation) */}
       <Modal show={showNewModal} onHide={handleCloseNewModal} centered>
         <Modal.Header
           closeButton
@@ -2096,28 +2249,31 @@ const PrescriptiveDoctor = () => {
         </Modal.Header>
         <Modal.Body className="p-6 bg-gray-50">
           <Form>
-            <Form.Group className="mb-3" controlId="newFormMedicineName">
+            {/* Medicine Name Dropdown */}
+            <Form.Group className="mb-3" controlId="formNewMedicineName">
               <Form.Label className="font-semibold text-gray-700">
                 Medicine Name
               </Form.Label>
-              <Form.Control
-                type="text"
+              <Form.Select
                 name="medicine_name"
                 value={newTreatment.medicine_name}
                 onChange={handleNewChange}
-                list="medicineSuggestionsList"
                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <datalist id="medicineSuggestionsList">
+              >
+                <option value="">Select Medicine</option>{" "}
+                {/* Default empty option */}
                 {medicineSuggestions.map((medicine) => (
                   <option
                     key={medicine.medicine_id}
                     value={medicine.medicine_name}
-                  />
+                  >
+                    {medicine.medicine_name}
+                  </option>
                 ))}
-              </datalist>
+              </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="newFormDosage">
+            {/* Other fields remain unchanged */}
+            <Form.Group className="mb-3" controlId="formNewDosage">
               <Form.Label className="font-semibold text-gray-700">
                 Dosage
               </Form.Label>
@@ -2129,9 +2285,9 @@ const PrescriptiveDoctor = () => {
                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="newFormDuration">
+            <Form.Group className="mb-3" controlId="formNewDuration">
               <Form.Label className="font-semibold text-gray-700">
-                Duration
+                Duration (For day)
               </Form.Label>
               <Form.Control
                 type="text"
@@ -2141,7 +2297,7 @@ const PrescriptiveDoctor = () => {
                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="newFormUnit">
+            <Form.Group className="mb-3" controlId="formNewUnit">
               <Form.Label className="font-semibold text-gray-700">
                 Unit
               </Form.Label>
@@ -2161,7 +2317,7 @@ const PrescriptiveDoctor = () => {
                 <option value="tbsp">Tablespoon (tbsp)</option>
               </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="newFormWithWater">
+            <Form.Group className="mb-3" controlId="formNewWithWater">
               <Form.Label className="font-semibold text-gray-700">
                 With Water
               </Form.Label>
@@ -2176,7 +2332,7 @@ const PrescriptiveDoctor = () => {
                 <option value="No">No</option>
               </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="newFormDosageFrequency">
+            <Form.Group className="mb-3" controlId="formNewDosageFrequency">
               <Form.Label className="font-semibold text-gray-700">
                 Dosage Frequency
               </Form.Label>
@@ -2188,7 +2344,7 @@ const PrescriptiveDoctor = () => {
                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="newFormMealTiming">
+            <Form.Group className="mb-3" controlId="formNewMealTiming">
               <Form.Label className="font-semibold text-gray-700">
                 Meal Timing
               </Form.Label>
@@ -2199,11 +2355,11 @@ const PrescriptiveDoctor = () => {
                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Select Before/After Meal</option>
-                <option value="before">Before </option>
-                <option value="after">After </option>
+                <option value="before">Before</option>
+                <option value="after">After</option>
               </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="newFormDayTime">
+            <Form.Group className="mb-3" controlId="formNewDayTime">
               <Form.Label className="font-semibold text-gray-700">
                 Day Time
               </Form.Label>
@@ -2220,14 +2376,14 @@ const PrescriptiveDoctor = () => {
                 <option value="morning_afternoon_evening">
                   Morning + Afternoon + Evening
                 </option>
-                <option value="morning_night">Morning + Evening</option>
+                <option value="morning_night">Morning + Night</option>
                 <option value="night">Night</option>
                 <option value="morning_afternoon_evening_night">
                   Morning + Afternoon + Evening + Night
                 </option>
               </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="newFormRemarks">
+            <Form.Group className="mb-3" controlId="formNewRemarks">
               <Form.Label className="font-semibold text-gray-700">
                 Remarks (Optional)
               </Form.Label>
@@ -2235,7 +2391,7 @@ const PrescriptiveDoctor = () => {
                 as="textarea"
                 rows={3}
                 name="remarks"
-                value={newTreatment.remarks}
+                value={newTreatment.remarks || ""}
                 onChange={handleNewChange}
                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -2249,6 +2405,39 @@ const PrescriptiveDoctor = () => {
             style={{ fontWeight: "600", padding: "0 42px" }}
           >
             Add Medicine
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Submit Confirmation Modal */}
+      <Modal
+        show={showSubmitConfirmModal}
+        onHide={() => setShowSubmitConfirmModal(false)}
+        centered
+      >
+        <Modal.Header
+          closeButton
+          style={{ backgroundColor: "#199FD9", color: "white" }}
+        >
+          <Modal.Title>Confirm Submission</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-4 text-center">
+          Are you sure you want to submit this prescription?
+        </Modal.Body>
+        <Modal.Footer className="justify-content-center p-4 bg-gray-100">
+          <Button
+            variant="secondary"
+            onClick={() => setShowSubmitConfirmModal(false)}
+            className="px-4 py-2"
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            onClick={handleConfirmSubmit}
+            className="orange-btn px-4 py-2 ml-3"
+          >
+            Confirm
           </Button>
         </Modal.Footer>
       </Modal>
