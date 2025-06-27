@@ -185,16 +185,43 @@ const PendingPrescription = () => {
                                 {data?.is_referred_patient == false ? (
                                   <div
                                     className="time"
-                                    style={{ color: "#199FD9", marginLeft: 10 }}
+                                    style={{
+                                      color: "#199FD9",
+                                      marginLeft: 10,
+                                      color: "#199FD9",
+                                      fontWeight: "bold",
+                                    }}
                                   >
-                                    (DS Code: {data.ds_code})
+                                    <span
+                                      style={{
+                                        color: "black",
+                                        fontWeight: "bold",
+                                      }}
+                                    >
+                                      (DS Code:{" "}
+                                    </span>
+                                    {data.ds_code}
+
+                                    <span>)</span>
                                   </div>
                                 ) : (
                                   <div
                                     className="time"
-                                    style={{ color: "#199FD9" }}
+                                    style={{
+                                      color: "#199FD9",
+                                      fontWeight: "bold",
+                                    }}
                                   >
-                                    (Referred by DS Code: {data.ds_code})
+                                    <span
+                                      style={{
+                                        color: "black",
+                                        fontWeight: "bold",
+                                      }}
+                                    >
+                                      (Referred by DS Code:
+                                    </span>
+                                    {data.ds_code}
+                                    <span>)</span>
                                   </div>
                                 )}
                               </td>

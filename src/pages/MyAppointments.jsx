@@ -722,7 +722,11 @@ const MyAppointments = () => {
                                       state={{ patientId: patient.patient_id }}
                                     >
                                       <h3
-                                        style={{ margin: 0, textAlign: "left" }}
+                                        style={{
+                                          margin: 0,
+                                          textAlign: "left",
+                                          color: "#199FD9",
+                                        }}
                                       >
                                         {patient.patient_name || "-"}
                                       </h3>
@@ -1198,7 +1202,11 @@ const MyAppointments = () => {
                                       state={{ patientId: patient.patient_id }}
                                     >
                                       <h3
-                                        style={{ margin: 0, textAlign: "left" }}
+                                        style={{
+                                          margin: 0,
+                                          textAlign: "left",
+                                          color: "#199FD9",
+                                        }}
                                       >
                                         {patient.patient_name || "-"}
                                       </h3>

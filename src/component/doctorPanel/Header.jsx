@@ -1,34 +1,38 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { getDoctorProfile, logout } from "../../redux/slices/userSlice";
-import { changeAppointmentNotificaiton, checkToggleNotification, unreadCount } from "../../redux/slices/notificationSlice";
- 
+import {
+  changeAppointmentNotificaiton,
+  checkToggleNotification,
+  unreadCount,
+} from "../../redux/slices/notificationSlice";
+
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
- 
+
   const { user } = useSelector((state) => state.user);
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
-  const { unreadCounts, isNotificationActive } = useSelector((state) => state.notification);
-// console.log(isNotificationActive)
+  const { unreadCounts, isNotificationActive } = useSelector(
+    (state) => state.notification
+  );
+  // console.log(isNotificationActive)
   useEffect(() => {
     dispatch(unreadCount());
     dispatch(checkToggleNotification());
   }, [dispatch]);
- 
- 
+
   // Fetch doctor profile if not already fetched
   useEffect(() => {
     if (!user?.profile_path) {
       dispatch(getDoctorProfile());
     }
   }, [dispatch, user]);
- 
+
   // Confirm logout
   const handleDeleteConfirm = () => {
     setShowModal(false);
@@ -36,11 +40,13 @@ const Header = () => {
     dispatch(logout());
     navigate("/");
   };
- 
+
   const handleToggleChange = () => {
-    dispatch(changeAppointmentNotificaiton({isActive : !isNotificationActive}))
+    dispatch(
+      changeAppointmentNotificaiton({ isActive: !isNotificationActive })
+    );
   };
- 
+
   return (
     <>
       {/* Sidebar */}
@@ -67,7 +73,7 @@ const Header = () => {
             <i className="fa-solid fa-times-circle"></i>
           </div>
           <div className="doc-profile-wrp">
-            <div className="doc-img">
+            <div className="doc-img ml-0 ms-0">
               <img src={`${baseUrl}/${user?.profile_path}`} alt="Doctor" />
             </div>
             <div className="doc-profile-body">
@@ -77,17 +83,26 @@ const Header = () => {
               </Link>
             </div>
           </div>
- 
+
           <div className="sidebar-nav">
             <ul>
-               <li>
-                <img src="/images/dash.svg" alt="Icon" style={{height:"20px",width:"20px"}} />
-                <Link to="/doctor-home" onClick={() => setIsSidebarOpen(false)}>Dashboard</Link>
+              <li>
+                <img
+                  src="/images/dash.svg"
+                  alt="Icon"
+                  style={{ height: "20px", width: "20px" }}
+                />
+                <Link to="/doctor-home" onClick={() => setIsSidebarOpen(false)}>
+                  Dashboard
+                </Link>
               </li>
               <li>
                 <div className="notification-set">
                   <div className="not-set-left">
-                    <img src="/images/notification-icon.svg" alt="Notification" />
+                    <img
+                      src="/images/notification-icon.svg"
+                      alt="Notification"
+                    />
                     <span>Notification</span>
                   </div>
                   <div className="not-set-right">
@@ -103,18 +118,30 @@ const Header = () => {
                   </div>
                 </div>
               </li>
- 
+
               <li>
                 <img src="/images/appointment-icon.svg" alt="Icon" />
-                <Link to="/my-appointments" onClick={() => setIsSidebarOpen(false)}>My Appointments</Link>
+                <Link
+                  to="/my-appointments"
+                  onClick={() => setIsSidebarOpen(false)}
+                >
+                  My Appointments
+                </Link>
               </li>
               <li>
                 <img src="/images/pending-prescription-icon.svg" alt="Icon" />
-                <Link to="/pendingprescription" onClick={() => setIsSidebarOpen(false)}>Pending prescriptions</Link>
+                <Link
+                  to="/pendingprescription"
+                  onClick={() => setIsSidebarOpen(false)}
+                >
+                  Pending prescriptions
+                </Link>
               </li>
               <li>
                 <img src="/images/past-patients-icon.svg" alt="Icon" />
-                <Link to="/pastpatient" onClick={() => setIsSidebarOpen(false)}>My Past Patients</Link>
+                <Link to="/pastpatient" onClick={() => setIsSidebarOpen(false)}>
+                  My Past Patients
+                </Link>
               </li>
               {/* <li>
                 <img src="/images/terms-of-service-icon.svg" alt="Icon" />
@@ -124,7 +151,7 @@ const Header = () => {
                 <img src="/images/sidebar-nav-link-icon.svg" alt="Icon" />
                 <Link to="/privacy">Privacy Policy</Link>
               </li> */}
- 
+
               <li className="logout">
                 <img src="/images/menu-logout-icon.svg" alt="Icon" />
                 <Button
@@ -144,7 +171,7 @@ const Header = () => {
           </div>
         </div>
       </div>
- 
+
       {/* Top Header */}
       <div
         className="doc-panel-header"
@@ -160,7 +187,11 @@ const Header = () => {
           type="button"
           className="docpnl-hdr-toggler"
           onClick={() => setIsSidebarOpen(true)}
-          style={{ background: "transparent", border: "none", cursor: "pointer" }}
+          style={{
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+          }}
         >
           <img src="/images/bars.svg" alt="Menu" />
         </button>
@@ -173,11 +204,10 @@ const Header = () => {
           <Link to="/notifications">
             <img src="/images/notification-icon-2.svg" alt="Notification" />
           </Link>
-          {unreadCounts > 0 && (<span></span>)}
- 
+          {unreadCounts > 0 && <span></span>}
         </div>
       </div>
- 
+
       {/* Logout Modal */}
       {showModal && (
         <div
@@ -205,10 +235,18 @@ const Header = () => {
                 <p>Are you sure you want to logout?</p>
               </div>
               <div className="modal-footer btn-wrp">
-                <button type="button" className="cmn-btn" onClick={() => setShowModal(false)}>
+                <button
+                  type="button"
+                  className="cmn-btn"
+                  onClick={() => setShowModal(false)}
+                >
                   Cancel
                 </button>
-                <button type="button" className="cmn-btn orange-btn" onClick={handleDeleteConfirm}>
+                <button
+                  type="button"
+                  className="cmn-btn orange-btn"
+                  onClick={handleDeleteConfirm}
+                >
                   Logout
                 </button>
               </div>
@@ -219,6 +257,5 @@ const Header = () => {
     </>
   );
 };
- 
+
 export default Header;
- 

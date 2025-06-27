@@ -172,7 +172,7 @@ const PatientProfile = () => {
                                     }}
                                     style={{
                                       color: "#199fd9",
-                                      textDecoration: "underline",
+                                      textDecoration: "none",
                                       marginLeft: 5,
                                       display: "inline",
                                     }}
@@ -181,11 +181,21 @@ const PatientProfile = () => {
                                       patientProfileData?.basic_information
                                         ?.referred_by
                                     }
-                                    (DS Code:{patientInfo.ds_code})
+                                    <span style={{ color: "black" }}>
+                                      DS Code:
+                                    </span>
+                                    {patientInfo.ds_code}
                                   </Link>
                                 </>
                               ) : (
-                                <span>(DS Code:{patientInfo.ds_code})</span>
+                                <span>
+                                  (
+                                  <span style={{ color: "black" }}>
+                                    DS Code:
+                                  </span>
+                                  {patientInfo.ds_code}
+                                  <span>)</span>
+                                </span>
                               )}
                             </p>
                           </div>
@@ -207,7 +217,7 @@ const PatientProfile = () => {
                             >
                               <h3>Gender</h3>
                               {/* <p>{patientInfo.gender}</p> */}
-                              <p>
+                              <p style={{ color: "#199FD9" }}>
                                 {patientInfo.gender?.charAt(0).toUpperCase() +
                                   patientInfo.gender?.slice(1).toLowerCase()}
                               </p>
@@ -220,7 +230,9 @@ const PatientProfile = () => {
                               }}
                             >
                               <h3>Age</h3>
-                              <p>{patientInfo.age}</p>
+                              <p style={{ color: "#199FD9" }}>
+                                {patientInfo.age}
+                              </p>
                             </div>
                             <div
                               className="patient-info-card"
@@ -230,7 +242,9 @@ const PatientProfile = () => {
                               }}
                             >
                               <h3>Height</h3>
-                              <p>{patientInfo.height}</p>
+                              <p style={{ color: "#199FD9" }}>
+                                {patientInfo.height}
+                              </p>
                             </div>
                             <div
                               className="patient-info-card"
@@ -240,7 +254,9 @@ const PatientProfile = () => {
                               }}
                             >
                               <h3>Weight</h3>
-                              <p>{patientInfo.weight}</p>
+                              <p style={{ color: "#199FD9" }}>
+                                {patientInfo.weight}
+                              </p>
                             </div>
                           </div>
                           {!patientProfileData?.basic_information
@@ -251,7 +267,9 @@ const PatientProfile = () => {
                                 style={{ marginLeft: 20 }}
                               >
                                 <h3>Phone number</h3>
-                                <p>{patientInfo.phone_no}</p>
+                                <p style={{ color: "#199FD9" }}>
+                                  {patientInfo.phone_no}
+                                </p>
                                 {/* <a href="tel:3195550115">{patientInfo.phone}</a> */}
                               </div>
                               <div
@@ -260,7 +278,7 @@ const PatientProfile = () => {
                               >
                                 <h3 style={{ marginLeft: 15 }}>Email ID</h3>
                                 {/* <a href="mailto:patientname@gmail.com">{patientInfo.email}</a> */}
-                                <p style={{ marginLeft: 15 }}>
+                                <p style={{ marginLeft: 15, color: "#199FD9" }}>
                                   {patientInfo.email}
                                 </p>
                               </div>
@@ -488,16 +506,16 @@ const PatientProfile = () => {
                           {appointmentHistory.length > 0 ? (
                             appointmentHistory.map((appointment, index) => (
                               <tr key={appointment.id || index}>
-                                <td style={{ fontSize: 22 }}>
+                                <td style={{ fontSize: 20, color: "#199FD9" }}>
                                   {String(index + 1).padStart(2, "0")}
                                 </td>
-                                <td style={{ fontSize: 22 }}>
+                                <td style={{ fontSize: 20, color: "#199FD9" }}>
                                   {appointment.appointment_date}
                                 </td>
-                                <td style={{ fontSize: 22 }}>
+                                <td style={{ fontSize: 20, color: "#199FD9" }}>
                                   {appointment.diagnosis}
                                 </td>
-                                <td style={{ fontSize: 22 }}>
+                                <td style={{ fontSize: 20, color: "#199FD9" }}>
                                   <Link
                                     to="/completed-appointment-screen"
                                     state={{
@@ -517,7 +535,11 @@ const PatientProfile = () => {
                             ))
                           ) : (
                             <tr>
-                              <td colSpan="4" className="text-center">
+                              <td
+                                colSpan="4"
+                                className="text-center"
+                                style={{ fontSize: 20, color: "#199FD9" }}
+                              >
                                 No Appointment history found
                               </td>
                             </tr>
@@ -548,14 +570,18 @@ const PatientProfile = () => {
                             {referredPatients.length > 0 ? (
                               referredPatients.map((patient, index) => (
                                 <tr key={patient.id || index}>
-                                  <td style={{ fontSize: 22 }}>
+                                  <td
+                                    style={{ fontSize: 20, color: "#199FD9" }}
+                                  >
                                     {String(index + 1).padStart(2, "0")}
                                   </td>
                                   <td
                                     style={{
                                       textAlign: "left",
                                       paddingLeft: "60px",
-                                      fontSize: 22,
+
+                                      fontSize: 20,
+                                      color: "#199FD9",
                                     }}
                                   >
                                     <Link
@@ -574,7 +600,12 @@ const PatientProfile = () => {
 
                                   {/* <td>{patient.name}</td> */}
                                   {/* <td>{patient.gender}</td> */}
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontSize: 20,
+                                      color: "#199FD9",
+                                    }}
+                                  >
                                     {patientInfo.gender
                                       ?.charAt(0)
                                       .toUpperCase() +
@@ -583,17 +614,25 @@ const PatientProfile = () => {
                                         .toLowerCase()}
                                   </td>
 
-                                  <td style={{ fontSize: 22 }}>
+                                  <td
+                                    style={{ fontSize: 20, color: "#199FD9" }}
+                                  >
                                     {patient.age}
                                   </td>
-                                  <td style={{ fontSize: 22 }}>
+                                  <td
+                                    style={{ fontSize: 20, color: "#199FD9" }}
+                                  >
                                     {" "}
                                     {patient.weight}
                                   </td>
-                                  <td style={{ fontSize: 22 }}>
+                                  <td
+                                    style={{ fontSize: 20, color: "#199FD9" }}
+                                  >
                                     {patient.height}
                                   </td>
-                                  <td style={{ fontSize: 22 }}>
+                                  <td
+                                    style={{ fontSize: 20, color: "#199FD9" }}
+                                  >
                                     <Link
                                       to="/patient-profile"
                                       state={{
@@ -615,7 +654,11 @@ const PatientProfile = () => {
                               ))
                             ) : (
                               <tr>
-                                <td colSpan="7" className="text-center">
+                                <td
+                                  colSpan="7"
+                                  className="text-center"
+                                  style={{ color: "#199FD9", fontSize: 20 }}
+                                >
                                   No Referred patients found
                                 </td>
                               </tr>

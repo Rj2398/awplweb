@@ -848,10 +848,26 @@ const DoctorHome = () => {
                                       marginTop: "2px",
                                       fontSize: 16,
                                       marginLeft: -5,
+                                      fontWeight: "400",
                                     }}
                                   >
-                                    (Referred by DS Code: {prescription.ds_code}
-                                    )
+                                    <span
+                                      style={{
+                                        color: "black",
+                                        fontWeight: "400",
+                                      }}
+                                    >
+                                      (Referred by DS Code:
+                                    </span>
+                                    {prescription.ds_code}
+                                    <spna
+                                      style={{
+                                        color: "black",
+                                        fontWeight: "400",
+                                      }}
+                                    >
+                                      )
+                                    </spna>
                                   </div>
                                 ) : (
                                   <div
@@ -861,9 +877,27 @@ const DoctorHome = () => {
                                       marginTop: "2px",
                                       fontSize: 16,
                                       marginLeft: -5,
+                                      fontWeight: "400",
                                     }}
                                   >
-                                    (DS Code: {prescription.ds_code})
+                                    <span
+                                      style={{
+                                        color: "black",
+                                        fontWeight: "400",
+                                      }}
+                                    >
+                                      (DS Code:
+                                    </span>
+                                    {prescription.ds_code}
+
+                                    <span
+                                      style={{
+                                        color: "black",
+                                        fontWeight: "bold",
+                                      }}
+                                    >
+                                      )
+                                    </span>
                                   </div>
                                 )}
                               </td>
