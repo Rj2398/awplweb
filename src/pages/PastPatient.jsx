@@ -203,9 +203,19 @@ const PastPatient = () => {
           <div className="p-patient-cd-head">
             <h3>{patient?.patient_name}</h3>
             {patient.referred_by_patient_name ? (
-              <p>Referred by {patient.referred_by_patient_name}</p>
+              // <p>Referred by {patient.referred_by_patient_name}</p>
+
+              <p>
+                <span style={{ color: "black" }}>Referred by </span>
+                <span style={{ color: "#199FD9" }}>{patient.ds_code}</span>
+              </p>
             ) : (
-              <p>DS Code: {patient.ds_code}</p>
+              // <p>DS Code: {patient.ds_code}</p>
+
+              <p>
+                <span style={{ color: "black" }}>DS Code: </span>
+                <span style={{ color: "#199FD9" }}>{patient.ds_code}</span>
+              </p>
             )}
           </div>
           <div className="p-patient-cd-body">

@@ -125,7 +125,12 @@ const VideoCall = () => {
         !hasAppointmentEndToastShown &&
         now.getTime() >= edtTimeTarge.getTime()
       ) {
-        toast.success("Appointment time finish, call will end in 5 minutes");
+        toast.success(
+          "Note: This call will automatically end in 5 minutes. Please wrap up your discussion accordingly!",
+          {
+            duration: 10000, // 10000 milliseconds = 10 seconds
+          }
+        );
         hasAppointmentEndToastShown = true; // Set the flag to true so it doesn't show again
       }
 

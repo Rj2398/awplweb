@@ -442,28 +442,29 @@ const PatientDetails = () => {
 
   const hasAppointmentStarted = () => {
     const dateStr = patientAppointmentsDetail?.patientData?.dayDate; // "Tue Jun 24"
-    const timeStr = patientAppointmentsDetail?.patientData?.time;    // "07:00 - 07:15 PM"
-  
+    const timeStr = patientAppointmentsDetail?.patientData?.time; // "07:00 - 07:15 PM"
+
     if (!dateStr || !timeStr) return false;
-  
+
     try {
       const [, month, day] = dateStr.split(" "); // ["Tue", "Jun", "24"]
       const year = new Date().getFullYear();
-  
+
       const [startTime, endTimeWithPeriod] = timeStr.split(" - "); // "07:00", "07:15 PM"
       const period = endTimeWithPeriod.trim().slice(-2); // AM or PM
       const startTimeWithPeriod = `${startTime.trim()} ${period}`; // "07:00 PM"
-  
-      const startDateTime = new Date(`${month} ${day} ${year} ${startTimeWithPeriod}`);
+
+      const startDateTime = new Date(
+        `${month} ${day} ${year} ${startTimeWithPeriod}`
+      );
       const now = new Date();
-  
+
       return now >= startDateTime; // Appointment already started
     } catch (error) {
       console.error("Time parse error:", error);
       return false;
     }
   };
-  
 
   return (
     <>
@@ -613,10 +614,12 @@ const PatientDetails = () => {
                                 type="text"
                                 placeholder="Male"
                                 value={
-                                  patientAppointmentsDetail?.basicInformation
-                                    ?.gender?.charAt(0).toUpperCase() + patientAppointmentsDetail?.basicInformation
-                                    ?.gender?.slice(1).toLowerCase()
-
+                                  patientAppointmentsDetail?.basicInformation?.gender
+                                    ?.charAt(0)
+                                    .toUpperCase() +
+                                  patientAppointmentsDetail?.basicInformation?.gender
+                                    ?.slice(1)
+                                    .toLowerCase()
                                 }
                                 readOnly
                               />
@@ -744,34 +747,34 @@ const PatientDetails = () => {
                           </div>
                         )}
 
-                      {patientAppointmentsDetail?.patientData
-                        ?.need_prescription == true ? (
-                        <div className="btn-wrp">
-                          <Link
-                            to="/CompletedAssignedPrescription"
-                            state={{
-                              id: id,
-                              patientId: patientId,
-                            }}
-                          >
-                            <button type="button" className="orange-btn">
-                              Respond
+                      {
+                        patientAppointmentsDetail?.patientData
+                          ?.need_prescription == true ? (
+                          <div className="btn-wrp">
+                            <Link
+                              to="/CompletedAssignedPrescription"
+                              state={{
+                                id: id,
+                                patientId: patientId,
+                              }}
+                            >
+                              <button type="button" className="orange-btn">
+                                Respond
+                              </button>
+                            </Link>
+                          </div>
+                        ) : !hasAppointmentStarted() ? ( // ✅ CONDITION OUTSIDE
+                          <div className="btn-wrp">
+                            <button
+                              type="button"
+                              className="orange-btn"
+                              onClick={() => handleCancelClick(id)}
+                            >
+                              Cancel
                             </button>
-                          </Link>
-                        </div>
-                      ) : !hasAppointmentStarted() ? (   // ✅ CONDITION OUTSIDE
-                        <div className="btn-wrp">
-                          <button
-                            type="button"
-                            className="orange-btn"
-                            onClick={() => handleCancelClick(id)}
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      ) : null
+                          </div>
+                        ) : null
 
-                        
                         // <div className="btn-wrp">
                         //   <button
                         //     type="button"

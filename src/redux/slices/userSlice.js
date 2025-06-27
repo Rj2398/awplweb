@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 // For Unauthenticated User
 function logouterror() {
-  toast.error("Token Expired")
+  toast.error("Token Expired");
   localStorage.removeItem("nfc-admin");
   setTimeout(() => {
     window.location.href = "/";
@@ -12,175 +12,225 @@ function logouterror() {
 }
 
 // 1.email-valid API
-export const emailCheck = createAsyncThunk("doctor/emailCheck", async (formData, { rejectWithValue }) => {
-  try {
-    const response = await api.emailCheck(formData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const emailCheck = createAsyncThunk(
+  "doctor/emailCheck",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.emailCheck(formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-});
+);
 
 // 2.login-password API
-export const login = createAsyncThunk("doctor/login", async (formData, { rejectWithValue }) => {
-  try {
-    const response = await api.login(formData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const login = createAsyncThunk(
+  "doctor/login",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.login(formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-});
+);
 
 // 3.forgot-password API
-export const forgotPassword = createAsyncThunk("doctor/forgotPassword", async (formData, { rejectWithValue }) => {
-  try {
-    const response = await api.forgotPassword(formData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const forgotPassword = createAsyncThunk(
+  "doctor/forgotPassword",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.forgotPassword(formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-})
-
+);
 
 // 4.otp-verfication API
-export const otpVerification = createAsyncThunk("doctor/otpVerification", async (formData, { rejectWithValue }) => {
-  try {
-    const response = await api.otpVerification(formData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const otpVerification = createAsyncThunk(
+  "doctor/otpVerification",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.otpVerification(formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-})
+);
 
 // 5.otp-verfication API
-export const resendOtp = createAsyncThunk("doctor/resendOtp", async (formData, { rejectWithValue }) => {
-  try {
-    const response = await api.resendOtp(formData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const resendOtp = createAsyncThunk(
+  "doctor/resendOtp",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.resendOtp(formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-})
+);
 
 // 6.reset-password API
-export const resetPassword = createAsyncThunk("doctor/resetPassword", async (formData, { rejectWithValue }) => {
-  try {
-    const response = await api.resetPassword(formData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const resetPassword = createAsyncThunk(
+  "doctor/resetPassword",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.resetPassword(formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-})
+);
 
 // 7.first-login API
-export const firstLogin = createAsyncThunk("doctor/firstLogin", async (formData, { rejectWithValue }) => {
-  try {
-    const response = await api.firstLogin(formData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const firstLogin = createAsyncThunk(
+  "doctor/firstLogin",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.firstLogin(formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-})
+);
 
 //  8.Get Doctor profile Data API
-export const getDoctorProfile = createAsyncThunk("doctor/getDoctorProfile", async (_, { rejectWithValue }) => {
-  try {
-    const response = await api.getDoctorProfile();
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const getDoctorProfile = createAsyncThunk(
+  "doctor/getDoctorProfile",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.getDoctorProfile();
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-})
+);
 
 // 9.Doctor Profile Update API
-export const doctorProfileUpdate = createAsyncThunk("doctor/doctorProfileUpdate", async (formData, { rejectWithValue }) => {
-  try {
-    const response = await api.doctorProfileUpdate(formData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const doctorProfileUpdate = createAsyncThunk(
+  "doctor/doctorProfileUpdate",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.doctorProfileUpdate(formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-})
+);
 
 // 10.Doctor Photo Update API
-export const doctorPhotoUpdate = createAsyncThunk("doctor/doctorPhotoUpdate", async (formData, { rejectWithValue }) => {
-  try {
-    const response = await api.doctorPhotoUpdate(formData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const doctorPhotoUpdate = createAsyncThunk(
+  "doctor/doctorPhotoUpdate",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.doctorPhotoUpdate(formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-})
+);
 
 // 11.Delete Doctor Photo Update API
-export const deleteDoctorPhoto = createAsyncThunk("doctor/deleteDoctorPhoto", async (_, { rejectWithValue }) => {
-  try {
-    const response = await api.deleteDoctorPhoto();
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const deleteDoctorPhoto = createAsyncThunk(
+  "doctor/deleteDoctorPhoto",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.deleteDoctorPhoto();
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-});
+);
 
 // 12.Doctor Pending Prescriptions Update API
-export const doctorPendingPrescriptions = createAsyncThunk("doctor/doctorPendingPrescriptions", async (_, { rejectWithValue }) => {
-  try {
-    const response = await api.doctorPendingPrescriptions();
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const doctorPendingPrescriptions = createAsyncThunk(
+  "doctor/doctorPendingPrescriptions",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.doctorPendingPrescriptions();
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-})
+);
 
 // 13.Doctor Completed Prescriptions Update API
-export const doctorCompletedPrescriptions = createAsyncThunk("doctor/doctorCompletedPrescriptions", async (_, { rejectWithValue }) => {
-  try {
-    const response = await api.doctorCompletedPrescriptions();
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const doctorCompletedPrescriptions = createAsyncThunk(
+  "doctor/doctorCompletedPrescriptions",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.doctorCompletedPrescriptions();
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-})
+);
 
 // 14.symptom Upload Details API
-export const symptomUploadDetails = createAsyncThunk("doctor/symptomUploadDetails", async (formData, { rejectWithValue }) => {
-  try {
-    const response = await api.symptomUploadDetails(formData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const symptomUploadDetails = createAsyncThunk(
+  "doctor/symptomUploadDetails",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.symptomUploadDetails(formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-})
+);
 
 // 15.complete Assigned Prescription submit API
-export const completePrescription = createAsyncThunk("doctor/completePrescription", async (formData, { rejectWithValue }) => {
-  try {
-    const response = await api.completePrescription(formData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const completePrescription = createAsyncThunk(
+  "doctor/completePrescription",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.completePrescription(formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-})
+);
 
 //16 Logout by soni
-export const logout = createAsyncThunk("doctor/logout", async (formData, { rejectWithValue }) => {
-  try {
-    const response = await api.logout(formData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const logout = createAsyncThunk(
+  "doctor/logout",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.logout(formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-})
+);
 
 //medicine
-export const medicineSearch = createAsyncThunk("user/medicineSearch", async (formData, { rejectWithValue }) => {
-  try {
-    const response = await api.medicineSearch(formData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const medicineSearch = createAsyncThunk(
+  "user/medicineSearch",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.medicineSearch(formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-})
+);
 
 // // 16.Doctor Home Dashboard API
 // export const doctorHomeDashboard = createAsyncThunk("doctor/doctorHomeDashboard", async (formData, { rejectWithValue }) => {
@@ -192,60 +242,68 @@ export const medicineSearch = createAsyncThunk("user/medicineSearch", async (for
 //   }
 // })
 
-
-
-
-
-
-
-
 // Get All Users
-export const getAllUser = createAsyncThunk("user/getAllUser", async (_, { rejectWithValue }) => {
-  try {
-    const response = await api.getAllUser();
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const getAllUser = createAsyncThunk(
+  "user/getAllUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.getAllUser();
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-});
+);
 
 // Create User
-export const getUserId = createAsyncThunk("user/userId", async (_, { rejectWithValue }) => {
-  try {
-    const response = await api.getUserId();
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const getUserId = createAsyncThunk(
+  "user/userId",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.getUserId();
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-});
+);
 
-export const createUser = createAsyncThunk("user/create", async (formData, { rejectWithValue }) => {
-  try {
-    const response = await api.createUser(formData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const createUser = createAsyncThunk(
+  "user/create",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.createUser(formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-});
+);
 
 // Edit User
-export const editUser = createAsyncThunk("user/editUser", async (formData, { rejectWithValue }) => {
-  try {
-    const response = await api.editUser(formData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const editUser = createAsyncThunk(
+  "user/editUser",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.editUser(formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-});
+);
 // Delete User
-export const deleteUser = createAsyncThunk("user/delete", async (userData, { rejectWithValue }) => {
-  try {
-    const response = await api.deleteUser(userData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const deleteUser = createAsyncThunk(
+  "user/delete",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await api.deleteUser(userData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-});
+);
 
 // Slice
 
@@ -289,12 +347,20 @@ const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
 
-        localStorage.setItem("doctor-app", JSON.stringify({ doctorData: action.payload.data?.doctor, token: action.payload.data?.token }))
-        //we are saving token and id in localStorage after login successful. 
+        localStorage.setItem(
+          "doctor-app",
+          JSON.stringify({
+            doctorData: action.payload.data?.doctor,
+            token: action.payload.data?.token,
+          })
+        );
+        //we are saving token and id in localStorage after login successful.
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+
+        toast.error(action.payload.message);
       })
 
       // 3.forgot-password API extraReducer
@@ -349,7 +415,7 @@ const userSlice = createSlice({
         state.user = action.payload;
 
         // localStorage.setItem("doctor-app", JSON.stringify({ id: action.payload.data?.id, token: action.payload.data?.token }))
-        //we are saving token and id in localStorage after login successful. 
+        //we are saving token and id in localStorage after login successful.
       })
       .addCase(resetPassword.rejected, (state, action) => {
         state.loading = false;
@@ -365,8 +431,14 @@ const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
 
-        localStorage.setItem("doctor-app", JSON.stringify({ doctorData: action.payload.data?.doctor, token: action.payload.data?.token }))
-        //we are saving token and id in localStorage after login successful. 
+        localStorage.setItem(
+          "doctor-app",
+          JSON.stringify({
+            doctorData: action.payload.data?.doctor,
+            token: action.payload.data?.token,
+          })
+        );
+        //we are saving token and id in localStorage after login successful.
       })
       .addCase(firstLogin.rejected, (state, action) => {
         state.loading = false;
@@ -395,7 +467,6 @@ const userSlice = createSlice({
       .addCase(doctorProfileUpdate.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
-
       })
       .addCase(doctorProfileUpdate.rejected, (state, action) => {
         state.loading = false;
@@ -454,7 +525,8 @@ const userSlice = createSlice({
       })
       .addCase(doctorCompletedPrescriptions.fulfilled, (state, action) => {
         state.loading = false;
-        state.completedPrescription = action.payload.data?.completed_prescriptions;
+        state.completedPrescription =
+          action.payload.data?.completed_prescriptions;
       })
       .addCase(doctorCompletedPrescriptions.rejected, (state, action) => {
         state.loading = false;
@@ -489,7 +561,7 @@ const userSlice = createSlice({
         state.error = action.payload;
       })
 
-      // 16 Logout 
+      // 16 Logout
 
       .addCase(logout.pending, (state) => {
         state.loading = true;
@@ -528,92 +600,87 @@ const userSlice = createSlice({
       .addCase(medicineSearch.fulfilled, (state, action) => {
         state.loading2 = false;
         state.medicineSearch = action.payload?.data?.results;
-
       })
       .addCase(medicineSearch.rejected, (state, action) => {
         state.loading2 = false;
         state.error = action.payload || "Failed to search medicine";
-        toast.error(action.payload.message || "Failed to search medicine")
-
+        toast.error(action.payload.message || "Failed to search medicine");
       })
-
-
 
       // Get all users
       .addCase(getAllUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-    .addCase(getAllUser.fulfilled, (state, action) => {
-      state.loading = false;
-      state.user = action.payload;
+      .addCase(getAllUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(getAllUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch users";
+        if (action.payload.message == "Unauthenticated.") {
+          logouterror();
+        }
+      })
 
-    })
-    .addCase(getAllUser.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload || "Failed to fetch users";
-      if (action.payload.message == "Unauthenticated.") {
-        logouterror();
-      }
-    })
+      // Create user
+      .addCase(createUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.message = "User created successfully";
+        toast.success(action.payload.message || "User created successfully");
+      })
+      .addCase(createUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.errors || "User creation failed";
+        if (action.payload.message == "Unauthenticated.") {
+          logouterror();
+        }
+      })
 
-    // Create user
-    .addCase(createUser.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    })
-    .addCase(createUser.fulfilled, (state, action) => {
-      state.loading = false;
-      state.user = action.payload;
-      state.message = "User created successfully";
-      toast.success(action.payload.message || "User created successfully")
-    })
-    .addCase(createUser.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload?.errors || "User creation failed";
-      if (action.payload.message == "Unauthenticated.") {
-        logouterror();
-      }
-    })
+      // Edit user
+      .addCase(editUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(editUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.message = "User updated successfully";
+      })
+      .addCase(editUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to update user";
+        if (action.payload.message == "Unauthenticated.") {
+          logouterror();
+        }
+      })
 
-    // Edit user
-    .addCase(editUser.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    })
-    .addCase(editUser.fulfilled, (state, action) => {
-      state.loading = false;
-      state.user = action.payload;
-      state.message = "User updated successfully";
-    })
-    .addCase(editUser.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload || "Failed to update user";
-      if (action.payload.message == "Unauthenticated.") {
-        logouterror();
-      }
-    })
-
-    // Delete User
-    .addCase(deleteUser.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    })
-    .addCase(deleteUser.fulfilled, (state, action) => {
-      state.loading = false;
-      state.user = action.payload;
-      state.message = "User Deleted successfully";
-      toast.success(action.payload.message || "User deleted successfully")
-    })
-    .addCase(deleteUser.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload || "Failed to delete user";
-      toast.error(action.payload.message || "Failed to delete user")
-      if (action.payload.message == "Unauthenticated.") {
-        logouterror();
-      }
-    })
-},
+      // Delete User
+      .addCase(deleteUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.message = "User Deleted successfully";
+        toast.success(action.payload.message || "User deleted successfully");
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to delete user";
+        toast.error(action.payload.message || "Failed to delete user");
+        if (action.payload.message == "Unauthenticated.") {
+          logouterror();
+        }
+      });
+  },
 });
 
 export default userSlice.reducer;

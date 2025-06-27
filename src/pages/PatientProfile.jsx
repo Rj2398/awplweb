@@ -258,9 +258,11 @@ const PatientProfile = () => {
                                 className="patient-info-card"
                                 style={{ marginLeft: -50 }}
                               >
-                                <h3>Email ID</h3>
+                                <h3 style={{ marginLeft: 15 }}>Email ID</h3>
                                 {/* <a href="mailto:patientname@gmail.com">{patientInfo.email}</a> */}
-                                <p>{patientInfo.email}</p>
+                                <p style={{ marginLeft: 15 }}>
+                                  {patientInfo.email}
+                                </p>
                               </div>
                             </div>
                           )}

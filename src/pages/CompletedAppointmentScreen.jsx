@@ -11,7 +11,8 @@ import Config from "../config/Constant";
 const CompletedAppointment = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { id, patientId, appointmentId, chat_id } = location.state || {};
+  const { id, patientId, appointmentId, chat_id, ds_code } =
+    location.state || {};
   console.log("id", id, chat_id, "Chat idddd***************");
 
   // useEffect(() => {
@@ -125,6 +126,12 @@ const CompletedAppointment = () => {
                                   ?.patient_name
                               }
                             </h2>
+                            <spna>
+                              DS Code:
+                              <span style={{ color: "#199FD9" }}>
+                                {ds_code}
+                              </span>
+                            </spna>
                           </div>
                           <div className="date h3-title">
                             {

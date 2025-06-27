@@ -141,13 +141,21 @@ const PendingPrescription = () => {
                           {currentPatients.length == 0 && (
                             <tr>
                               <td colSpan="8" style={{ textAlign: "center" }}>
-                                {loading ? "Loading..." : "No data found"}
+                                {loading ? (
+                                  "Loading..."
+                                ) : (
+                                  <span
+                                    style={{ fontWeight: "400", fontSize: 20 }}
+                                  >
+                                    No data found
+                                  </span>
+                                )}
                               </td>
                             </tr>
                           )}
                           {currentPatients.map((data, index) => (
                             <tr key={index}>
-                              <td>
+                              <td style={{ fontSize: 20, color: "#199FD9" }}>
                                 {String(
                                   (currentPage - 1) * patientsPerPage +
                                     index +
@@ -166,14 +174,18 @@ const PendingPrescription = () => {
                                   to="/patient-profile"
                                   state={{ patientId: data.patient_id }}
                                   className="no-underline-link"
-                                  style={{ display: "inline-block" }}
+                                  style={{
+                                    display: "inline-block ",
+                                    fontSize: 20,
+                                    marginLeft: 10,
+                                  }}
                                 >
                                   {data.patient_name}
                                 </Link>
                                 {data?.is_referred_patient == false ? (
                                   <div
                                     className="time"
-                                    style={{ color: "#199FD9" }}
+                                    style={{ color: "#199FD9", marginLeft: 10 }}
                                   >
                                     (DS Code: {data.ds_code})
                                   </div>
@@ -189,11 +201,19 @@ const PendingPrescription = () => {
 
                               <td>
                                 {/* <div className="date">{data.date}</div> */}
-                                <div className="date">
+                                <div
+                                  className="date"
+                                  style={{ color: "#199FD9", fontSize: 20 }}
+                                >
                                   {formatDate(data.date)}
                                 </div>
 
-                                <div className="time">{data.time}</div>
+                                <div
+                                  className="time"
+                                  style={{ color: "#199FD9" }}
+                                >
+                                  {data.time}
+                                </div>
                               </td>
                               <td>
                                 <Link
@@ -204,6 +224,7 @@ const PendingPrescription = () => {
                                     referrerDscode: data.ds_code,
                                     referrer: data.referred_patient_name,
                                   }}
+                                  style={{ fontSize: 20 }}
                                 >
                                   View
                                 </Link>

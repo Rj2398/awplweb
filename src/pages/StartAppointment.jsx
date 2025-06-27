@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 import Header from "../component/doctorPanel/Header";
 import Footer from "../component/doctorPanel/Footer";
 
@@ -10,10 +10,9 @@ const StartAppointment = () => {
 
       <main className="doctor-panel">
         <div className="container-fluid">
-
-        <div className="doc-panel-inr">
-          <Header />
-        </div>
+          <div className="doc-panel-inr">
+            <Header />
+          </div>
           {/* Panel Body Begin */}
           <div className="doc-panel-body">
             <div className="appointments">
@@ -33,12 +32,19 @@ const StartAppointment = () => {
                         <p>Referred by DS User Patient Name</p>
                       </div>
                       <div className="appoint-btm">
-                        <p><img src="/images/clock-icon.svg" alt="Icon" />Thu May 14</p>
+                        <p>
+                          <img src="/images/clock-icon.svg" alt="Icon" />
+                          Thu May 14
+                        </p>
                         <p className="appoint-time">10:00 - 10:15 AM</p>
-                        <Link to="/VideoCall" className="orange-btn">Start now</Link>
+                        <Link to="/VideoCall" className="orange-btn">
+                          Start now
+                        </Link>
                       </div>
                     </div>
-                    <Link to="/patient-details" className="cmn-btn">View profile</Link>
+                    <Link to="/patient-details" className="cmn-btn">
+                      View profile
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -47,19 +53,29 @@ const StartAppointment = () => {
               <div className="upcoming-apoints cmn-mb">
                 <div className="docpnl-sec-head">
                   <h2>Upcoming Appointments</h2>
-                  <Link to="#" className="cmn-btn">See all</Link>
+                  <Link to="#" className="cmn-btn">
+                    See all
+                  </Link>
                 </div>
                 <div className="appointments-row-wrp cmn-mb">
                   <div className="appointments-row row">
                     {[1, 2, 3, 4].map((item) => (
-                      <div className="appointment-card-wrp col-lg-3 col-md-4 col-sm-6" key={item}>
+                      <div
+                        className="appointment-card-wrp col-lg-3 col-md-4 col-sm-6"
+                        key={item}
+                      >
                         <div className="appointment-card">
                           <div className="card-img">
-                            <img src={`/images/client-img-${item}.png`} alt="Client" />
+                            <img
+                              src={`/images/client-img-${item}.png`}
+                              alt="Client"
+                            />
                           </div>
                           <div className="card-body">
                             <div className="card-btm">
-                              <Link to="/patient-details" className="cmn-btn">View full detail</Link>
+                              <Link to="/patient-details" className="cmn-btn">
+                                View full detail
+                              </Link>
                               <div className="card-ftr-inr-wrp">
                                 <div className="appointment-datetime">
                                   <p className="date">Thu May 14</p>
@@ -67,7 +83,11 @@ const StartAppointment = () => {
                                 </div>
                                 <h3>Client’s Name</h3>
                               </div>
-                              <input type="submit" value="Cancel" className="w-100" />
+                              <input
+                                type="submit"
+                                value="Cancel"
+                                className="w-100"
+                              />
                             </div>
                           </div>
                         </div>
@@ -81,7 +101,9 @@ const StartAppointment = () => {
               <div className="pending-prescriptions">
                 <div className="docpnl-sec-head">
                   <h2>Pending Prescriptions</h2>
-                  <Link to="#" className="cmn-btn">See all</Link>
+                  <Link to="#" className="cmn-btn">
+                    See all
+                  </Link>
                 </div>
                 <div className="pending-presc-table">
                   <table>
@@ -102,7 +124,9 @@ const StartAppointment = () => {
                             <div className="date">21/12/2024</div>
                             <div className="time">10:40 PM</div>
                           </td>
-                          <td><Link to="/pendingprescription">View</Link></td>
+                          <td>
+                            <Link to="/pendingprescription">View</Link>
+                          </td>
                         </tr>
                       ))}
                     </tbody>

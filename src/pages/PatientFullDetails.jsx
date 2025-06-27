@@ -1,17 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Header from '../component/doctorPanel/Header';
-import Footer from '../component/doctorPanel/Footer';
+import React from "react";
+import { Link } from "react-router-dom";
+import Header from "../component/doctorPanel/Header";
+import Footer from "../component/doctorPanel/Footer";
 
 const PatientFullDetails = () => {
   return (
     <>
-      
-
       <main className="doctor-panel">
         <div className="container-fluid">
           <div className="doc-panel-inr">
-          <Header />
+            <Header />
           </div>
 
           <div className="doc-panel-body appoint-details-pg has-texture">
@@ -19,18 +17,20 @@ const PatientFullDetails = () => {
               <img src="./images/doctor-symbol.png" alt="Image" />
             </div>
             <div className="appointments">
-
               <div className="start-appointment cmn-mb">
                 <div className="docpnl-sec-head">
                   <h1 className="h2-title">Appointment Details</h1>
                   <div className="back-btn">
-  <Link to="#" onClick={(e) => {
-    e.preventDefault();
-    window.history.back();
-  }}>
-    <img src="./images/left-arrow.svg" alt="Back" />
-  </Link>
-</div>
+                    <Link
+                      to="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.history.back();
+                      }}
+                    >
+                      <img src="./images/left-arrow.svg" alt="Back" />
+                    </Link>
+                  </div>
                 </div>
                 <div className="apointment-detail-card">
                   <div className="apoint-dtl-img">
@@ -42,11 +42,16 @@ const PatientFullDetails = () => {
                         <h2 className="h3-title">Patient’s name</h2>
                       </div>
                       <div className="appoint-btm">
-                        <p><img src="./images/clock-icon.svg" alt="Icon" />Thu May 14</p>
+                        <p>
+                          <img src="./images/clock-icon.svg" alt="Icon" />
+                          Thu May 14
+                        </p>
                         <p className="appoint-time">10:00 - 10:15 AM</p>
                       </div>
                     </div>
-                    <Link to="/patient-profile" className="cmn-btn">View profile</Link>
+                    <Link to="/patient-profile" className="cmn-btn">
+                      View profile
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -54,7 +59,6 @@ const PatientFullDetails = () => {
               <div className="patient-details-wrp">
                 <form>
                   <div className="patient-dtl-form">
-
                     <div className="patient-basic-info cmn-mb2">
                       <h2>Basic Information</h2>
                       <div className="row">
@@ -95,16 +99,27 @@ const PatientFullDetails = () => {
                       <h2>Health Issues & Symptoms</h2>
                       <div className="health-symptoms-inr">
                         <div className="formfield white-input">
-                          <label>What symptoms are you facing? Please describe your symptoms in brief.</label>
+                          <label>
+                            What symptoms are you facing? Please describe your
+                            symptoms in brief.
+                          </label>
                           <input type="text" placeholder="Answer" />
                         </div>
                         <div className="formfield white-input">
-                          <label>How long have you been experiencing these symptoms?</label>
+                          <label>
+                            How long have you been experiencing these symptoms?
+                          </label>
                           <input type="text" placeholder="Answer" />
                         </div>
                         <div className="formfield white-input">
-                          <label>Any knows Diseases / Health Conditions you are facing?</label>
-                          <input type="text" placeholder="Parasitic diseases       Parasitic diseases       Parasitic diseases" />
+                          <label>
+                            Any knows Diseases / Health Conditions you are
+                            facing?
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Parasitic diseases       Parasitic diseases       Parasitic diseases"
+                          />
                         </div>
                         <div className="formfield white-input">
                           <label>Any past medical conditions?</label>
@@ -124,10 +139,12 @@ const PatientFullDetails = () => {
                     <div className="scheduled-call-consultations cmn-mb2">
                       <h2>Scheduled Call Consultations</h2>
                       <div className="row">
-                        {[1, 2, 3].map(i => (
+                        {[1, 2, 3].map((i) => (
                           <div className="col-lg-12" key={i}>
                             <div className="formfield">
-                              <label>{i}. Lorem ipsum dolor sit amet, consectetur</label>
+                              <label>
+                                {i}. Lorem ipsum dolor sit amet, consectetur
+                              </label>
                               <input type="text" placeholder="Answer" />
                             </div>
                           </div>
@@ -138,10 +155,16 @@ const PatientFullDetails = () => {
                     <div className="view-uploaded-images-wrp">
                       <h2>View Uploaded Images</h2>
                       <div className="view-uploaded-img">
-                        {[1, 2, 3].map(i => (
+                        {[1, 2, 3].map((i) => (
                           <div className="img-wrp" key={i}>
-                            <a href="./images/symptom-img.png" data-fancybox="symptoms">
-                              <img src="./images/symptom-img.png" alt="Symptoms Image" />
+                            <a
+                              href="./images/symptom-img.png"
+                              data-fancybox="symptoms"
+                            >
+                              <img
+                                src="./images/symptom-img.png"
+                                alt="Symptoms Image"
+                              />
                             </a>
                           </div>
                         ))}
@@ -149,13 +172,13 @@ const PatientFullDetails = () => {
                     </div>
 
                     <div className="btn-wrp">
-                      <a href="#url" className="orange-btn">Cancel</a>
+                      <a href="#url" className="orange-btn">
+                        Cancel
+                      </a>
                     </div>
-
                   </div>
                 </form>
               </div>
-
             </div>
           </div>
           <Footer />
@@ -180,8 +203,6 @@ const PatientFullDetails = () => {
           </div>
         </div>
       </div> */}
-
-      
     </>
   );
 };

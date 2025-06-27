@@ -404,31 +404,26 @@ const MyAppointmentsSearch = ({
   };
 
   // Add this utility function at the top of your file
+  // const formatDateDisplay = (dateStr) => {
+  //   if (!dateStr) return '';
+
+  //   const [day, month, year] = dateStr.split('/').map(Number);
+  //   const date = new Date(year, month - 1, day);
+
+  //   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  //     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  //   return `${monthNames[date.getMonth()]} ${date.getDate().toString().padStart(2, '0')}, ${date.getFullYear()}`;
+  // };
+
   const formatDateDisplay = (dateStr) => {
     if (!dateStr) return "";
 
     const [day, month, year] = dateStr.split("/").map(Number);
-    const date = new Date(year, month - 1, day);
-
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-
-    return `${monthNames[date.getMonth()]} ${date
-      .getDate()
+    // Return in DD/MM/YYYY format
+    return `${day.toString().padStart(2, "0")}/${month
       .toString()
-      .padStart(2, "0")}, ${date.getFullYear()}`;
+      .padStart(2, "0")}/${year}`;
   };
 
   return (
@@ -460,6 +455,18 @@ const MyAppointmentsSearch = ({
           value={fromDate && toDate ? `${fromDate} - ${toDate}` : ''}
           onClick={handleCalendarToggle}
         /> */}
+
+        {/* <input
+          type="text"
+          id="dateRangeInput"
+          placeholder="Select date range"
+          readOnly
+          value={fromDate && toDate ?
+            `${formatDateDisplay(fromDate)} - ${formatDateDisplay(toDate)}` :
+            ''}
+          onClick={handleCalendarToggle}
+        /> */}
+
         <input
           type="text"
           id="dateRangeInput"
@@ -498,6 +505,14 @@ const MyAppointmentsSearch = ({
                 >
                   <span id="fromDateLabel">{fromDate || 'From Date'}</span>
                 </button> */}
+                {/* <button
+                  type="button"
+                  className={`range-btn ${selectingFromDate ? 'active' : ''}`}
+                  onClick={() => setSelectingFromDate(true)}
+                >
+                  <span id="fromDateLabel">{fromDate ? formatDateDisplay(fromDate) : 'From Date'}</span>
+                </button> */}
+
                 <button
                   type="button"
                   className={`range-btn ${selectingFromDate ? "active" : ""}`}
@@ -516,6 +531,14 @@ const MyAppointmentsSearch = ({
                 >
                   <span id="toDateLabel">{toDate || 'To Date'}</span>
                 </button> */}
+                {/* <button
+                  type="button"
+                  className={`range-btn ${!selectingFromDate ? 'active' : ''}`}
+                  onClick={() => setSelectingFromDate(false)}
+                >
+                  <span id="toDateLabel">{toDate ? formatDateDisplay(toDate) : 'To Date'}</span>
+                </button> */}
+
                 <button
                   type="button"
                   className={`range-btn ${!selectingFromDate ? "active" : ""}`}

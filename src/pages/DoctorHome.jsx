@@ -14,6 +14,7 @@ import {
 import { getDoctorProfile } from "../redux/slices/userSlice";
 import axios from "axios";
 import { setVideoData } from "../redux/slices/infoSlice";
+import SuspensionModal from "../component/SuspensionModal";
 
 const DoctorHome = () => {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const DoctorHome = () => {
 
   const { channelDetails } = useSelector((state) => state.appointments);
   console.log(channelDetails, "jfaklshfsahdfks");
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const { user } = useSelector((state) => state.user);
 
@@ -53,7 +55,12 @@ const DoctorHome = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [showReminderModal, setShowReminderModal] = useState(false);
   const [canOpenModal, setCanOpenModal] = useState(true);
-  const handleCloseModal = () => setModalOpen(false);
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+    navigate("/login-password");
+    localStorage.removeItem("doctor-app");
+  };
+
   const [isLoading, setIsLoading] = useState(false);
 
   //for StartAppointment
@@ -350,12 +357,97 @@ const DoctorHome = () => {
     return `${day}/${month}/${year}`;
   };
 
+  //user suspeded out the app
+
+  const checkSuspensionStatus = async () => {
+    const apiEndpoint =
+      "https://awplconnectadmin.tgastaging.com/api/doctor/is_suspended";
+
+    try {
+      const storedAuth = JSON.parse(localStorage.getItem("doctor-app"));
+      const token = storedAuth?.token;
+
+      if (!token) {
+        console.warn(
+          "No token found in localStorage. User might not be logged in."
+        );
+        // If no token, the user is likely not authenticated.
+        // Redirect to login or show an unauthenticated state.
+
+        // navigate("/login"); // Example: if you have navigate from react-router-dom
+        return;
+      }
+
+      // Using Axios for the POST request
+      const response = await axios.post(
+        apiEndpoint,
+        {},
+        {
+          // The second argument {} is for the request body (empty in this case),
+          // the third argument is for config (headers, etc.)
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Assuming Bearer token
+          },
+        }
+      );
+
+      // Axios automatically parses JSON, so response.data is directly the JSON object
+      const result = response.data;
+
+      if (response.data) {
+        console.log(result?.data?.is_suspended, "jsdfkashdkfhsjfjsjdfs");
+        // Check for successful HTTP status codes
+        if (result.data.is_suspended) {
+          setIsModalVisible(true);
+        } else {
+          setIsModalVisible(false); // Ensure modal is hidden if not suspended
+        }
+      } else {
+        // This block might be less frequently hit with Axios because it throws errors for 4xx/5xx
+        console.error(
+          "API Error (unexpected Axios success path):",
+          result.message
+        );
+      }
+    } catch (err) {
+      // Axios throws an error for 4xx and 5xx status codes,
+      // so this catch block will handle both network errors and API errors (e.g., 401, 403, 500)
+      if (axios.isAxiosError(err)) {
+        if (err.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          const apiErrorMsg = err.response.data?.message || err.message;
+          console.error("Axios API Error Response:", err.response.data);
+          // Specific handling for 401 Unauthorized, etc.
+          // if (err.response.status === 401) { navigate("/login"); }
+        } else if (err.request) {
+          // The request was made but no response was received
+
+          console.error("Axios No Response Error:", err.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error("Axios Request Setup Error:", err.message);
+        }
+      } else {
+        // Any other non-Axios related error
+        console.error("General Error:", err);
+      }
+    }
+  };
+  useEffect(() => {
+    checkSuspensionStatus();
+  }, [checkSuspensionStatus, navigate]);
   return (
     <>
       {/* <Header /> */}
 
       <main className="doctor-panel">
         <div className="container-fluid">
+          <SuspensionModal
+            visible={isModalVisible}
+            onClose={handleCloseModal}
+          />
           <div
             className="doc-panel-inr"
             style={{ display: "flex", gap: "20px" }}
@@ -430,13 +522,30 @@ const DoctorHome = () => {
                               </p>
                             )} */}
                             {currentAppointment.is_referred_patient == true ? (
-                              <p style={{ color: "#199fd9" }}>
-                                Referred by DS Code:{" "}
-                                {currentAppointment.ds_code}
+                              // <p style={{ color: "#199fd9" }}>
+                              //   Referred by DS Code:{" "}
+                              //   {currentAppointment.ds_code}
+                              // </p>
+
+                              <p>
+                                <span style={{ color: "black" }}>
+                                  Referred by DS Code:{" "}
+                                </span>
+                                <span style={{ color: "#199FD9" }}>
+                                  {currentAppointment.ds_code}
+                                </span>
                               </p>
                             ) : (
-                              <p style={{ color: "#199fd9" }}>
-                                DS Code: {currentAppointment.ds_code}
+                              // <p style={{ color: "#199fd9" }}>
+                              //   DS Code: {currentAppointment.ds_code}
+                              // </p>
+                              <p>
+                                <span style={{ color: "black" }}>
+                                  DS Code:{" "}
+                                </span>
+                                <span style={{ color: "#199FD9" }}>
+                                  {currentAppointment.ds_code}
+                                </span>
                               </p>
                             )}
                           </div>
@@ -507,8 +616,9 @@ const DoctorHome = () => {
                           style={{
                             textAlign: "center",
                             padding: "25px 0",
-                            fontWeight: "bold",
+                            fontWeight: "400",
                             color: "#356598",
+                            fontSize: 20,
                           }}
                         >
                           No upcoming appointments.
@@ -567,27 +677,28 @@ const DoctorHome = () => {
                               {/* Add min-height to maintain consistent space */}
                               <div style={{ minHeight: "24px" }}>
                                 {appointment.is_referred_patient ? (
-                                  // <p>Referred by DS Code: {appointment.ds_code}</p>
                                   <p>
-                                    Referred by DS Code:{" "}
-                                    {
-                                      <span style={{ color: "#199FD9" }}>
-                                        {appointment.ds_code}
-                                      </span>
-                                    }
+                                    <span style={{ color: "black" }}>
+                                      Referred by DS Code:{" "}
+                                    </span>
+                                    <span style={{ color: "#199FD9" }}>
+                                      {appointment.ds_code}
+                                    </span>
                                   </p>
                                 ) : (
-                                  <p style={{}}>
-                                    DS Code:{" "}
-                                    {
-                                      <span style={{ color: "#199FD9" }}>
-                                        {appointment.ds_code}
-                                      </span>
-                                    }
+                                  <p>
+                                    <span style={{ color: "black" }}>
+                                      DS Code:{" "}
+                                    </span>
+                                    <span style={{ color: "#199FD9" }}>
+                                      {appointment.ds_code}
+                                    </span>
                                   </p>
                                 )}
                               </div>
-                              <h3>{appointment.patient_name}</h3>
+                              <h3 style={{ fontSize: 22 }}>
+                                {appointment.patient_name}
+                              </h3>
 
                               {isAppointmentOngoing(
                                 appointment.date,
@@ -685,7 +796,14 @@ const DoctorHome = () => {
                         <tbody>
                           {visiblePrescriptions.length == 0 && (
                             <tr>
-                              <td colSpan="8" style={{ textAlign: "center" }}>
+                              <td
+                                colSpan="8"
+                                style={{
+                                  textAlign: "center",
+                                  fontWeight: "400",
+                                  fontSize: 20,
+                                }}
+                              >
                                 {loading ? "Loading..." : "No data found"}
                               </td>
                             </tr>
@@ -693,7 +811,9 @@ const DoctorHome = () => {
                           {visiblePrescriptions.map((prescription, index) => (
                             <tr key={index}>
                               {/* <td>{index + 1}</td> */}
-                              <td>{String(index + 1).padStart(2, "0")}</td>
+                              <td style={{ color: "#199FD9" }}>
+                                {String(index + 1).padStart(2, "0")}
+                              </td>
 
                               <td
                                 style={{
@@ -709,6 +829,7 @@ const DoctorHome = () => {
                                   style={{
                                     display: "inline-block",
                                     fontSize: 21,
+                                    marginLeft: -5,
                                   }}
                                 >
                                   {prescription.patient_name}
@@ -725,6 +846,7 @@ const DoctorHome = () => {
                                       color: "#199fd9",
                                       marginTop: "2px",
                                       fontSize: 16,
+                                      marginLeft: -5,
                                     }}
                                   >
                                     (Referred by DS Code: {prescription.ds_code}
@@ -737,6 +859,7 @@ const DoctorHome = () => {
                                       color: "#199fd9",
                                       marginTop: "2px",
                                       fontSize: 16,
+                                      marginLeft: -5,
                                     }}
                                   >
                                     (DS Code: {prescription.ds_code})
@@ -744,12 +867,18 @@ const DoctorHome = () => {
                                 )}
                               </td>
                               <td>
-                                <div className="date" style={{ fontSize: 21 }}>
+                                <div
+                                  className="date"
+                                  style={{ fontSize: 21, color: "#199FD9" }}
+                                >
                                   {/* {prescription.symptom_upload_date.split(" ")[0]} */}
                                   {/* {prescription.date} */}
                                   {formatDate(prescription.date)}
                                 </div>
-                                <div className="time" style={{ fontSize: 16 }}>
+                                <div
+                                  className="time"
+                                  style={{ fontSize: 16, color: "#199fd9" }}
+                                >
                                   {prescription.time}
                                 </div>
                               </td>
@@ -763,7 +892,7 @@ const DoctorHome = () => {
                                     referrer:
                                       prescription.referred_patient_name,
                                   }}
-                                  style={{ fontSize: 21 }}
+                                  style={{ fontSize: 21, marginLeft: -50 }}
                                 >
                                   View
                                 </Link>

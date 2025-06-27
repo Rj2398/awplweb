@@ -666,6 +666,9 @@ const MyAppointments = () => {
                                 style={{
                                   textAlign: "center",
                                   padding: "25px 0",
+                                  fontSize: 22,
+                                  fontWeight: "400",
+                                  color: "#199FD9",
                                 }}
                               >
                                 No data found
@@ -676,7 +679,7 @@ const MyAppointments = () => {
                             (patient, index) => (
                               <tr key={`upcoming-${index}`}>
                                 {/* <td>{(currentPage - 1) * patientsPerPage + index + 1}</td> */}
-                                <td>
+                                <td style={{ color: "#199FD9" }}>
                                   {String(
                                     (currentPage - 1) * patientsPerPage +
                                       index +
@@ -732,28 +735,46 @@ const MyAppointments = () => {
                                     {patient?.referred == true ? (
                                       <div
                                         style={{
+                                          // This div's color will be inherited by parts not explicitly styled
                                           color: "#199fd9",
                                           marginTop: "2px",
                                         }}
                                       >
-                                        (Referred by DS Code: {patient.ds_code})
+                                        <span style={{ color: "black" }}>
+                                          {" "}
+                                          (Referred by DS Code:{" "}
+                                        </span>
+                                        {patient.ds_code}
+                                        <span style={{ color: "black" }}>
+                                          )
+                                        </span>
                                       </div>
                                     ) : (
                                       <div
                                         style={{
+                                          // This div's color will be inherited by parts not explicitly styled
                                           color: "#199fd9",
                                           marginTop: "2px",
                                         }}
                                       >
-                                        (DS Code: {patient.ds_code})
+                                        <span style={{ color: "black" }}>
+                                          {" "}
+                                          (Referred by DS Code:{" "}
+                                        </span>
+                                        {patient.ds_code}
+                                        <span style={{ color: "black" }}>
+                                          )
+                                        </span>
                                       </div>
                                     )}
                                   </div>
                                 </td>
 
-                                <td>{patient.patient_age || "-"}</td>
+                                <td style={{ color: "#199FD9" }}>
+                                  {patient.patient_age || "-"}
+                                </td>
                                 {/* <td>{patient.patient_gender || "-"}</td> */}
-                                <td>
+                                <td style={{ color: "#199FD9" }}>
                                   {patient.patient_gender
                                     ?.charAt(0)
                                     .toUpperCase() +
@@ -761,13 +782,21 @@ const MyAppointments = () => {
                                       ?.slice(1)
                                       .toLowerCase()}
                                 </td>
-                                <td>{patient.patient_phone || "-"}</td>
-                                <td>
+                                <td style={{ color: "#199FD9" }}>
+                                  {patient.patient_phone || "-"}
+                                </td>
+                                <td style={{ color: "#199FD9" }}>
                                   {/* <div className="date h3-title">{patient.datetime}</div> */}
-                                  <div className="date h3-title">
+                                  <div
+                                    className="date h3-title"
+                                    style={{ color: "#199FD9" }}
+                                  >
                                     {patient.datetime.split(" ")[0]}
                                   </div>
-                                  <div className="time">
+                                  <div
+                                    className="time"
+                                    style={{ color: "#199FD9" }}
+                                  >
                                     {patient.datetime.split(" ")[1]}{" "}
                                     {patient.datetime.split(" ")[2]}
                                   </div>
@@ -896,6 +925,9 @@ const MyAppointments = () => {
                                 style={{
                                   textAlign: "center",
                                   padding: "25px 0",
+                                  fontSize: 22,
+                                  fontWeight: "400",
+                                  color: "#199FD9",
                                 }}
                               >
                                 No data found
@@ -906,7 +938,7 @@ const MyAppointments = () => {
                             (patient, index) => (
                               <tr key={`completed-${index}`}>
                                 {/* <td>{(currentPage - 1) * patientsPerPage + index + 1}</td> */}
-                                <td>
+                                <td style={{ color: "#199FD9" }}>
                                   {String(
                                     (currentPage - 1) * patientsPerPage +
                                       index +
@@ -944,7 +976,11 @@ const MyAppointments = () => {
                                       state={{ patientId: patient.patient_id }}
                                     >
                                       <h3
-                                        style={{ margin: 0, textAlign: "left" }}
+                                        style={{
+                                          margin: 0,
+                                          textAlign: "left",
+                                          color: "#199FD9",
+                                        }}
                                       >
                                         {patient.patient_name || "-"}
                                       </h3>
@@ -957,27 +993,49 @@ const MyAppointments = () => {
                                     {patient?.referred == true ? (
                                       <div
                                         style={{
+                                          // This div's color will be inherited by parts not explicitly styled
                                           color: "#199fd9",
                                           marginTop: "2px",
                                         }}
                                       >
-                                        (Referred by DS Code: {patient.ds_code})
+                                        <span style={{ color: "black" }}>
+                                          {" "}
+                                          (Referred by DS Code:{" "}
+                                        </span>
+                                        {patient.ds_code}
+                                        <span style={{ color: "black" }}>
+                                          )
+                                        </span>
                                       </div>
                                     ) : (
                                       <div
                                         style={{
-                                          color: "#199fd9",
+                                          color: "#199fd9", // This color will apply to the patient.ds_code if not overridden
                                           marginTop: "2px",
                                         }}
                                       >
-                                        (DS Code: {patient.ds_code})
+                                        <span
+                                          style={{
+                                            color: "black",
+                                            fontSize: 15,
+                                          }}
+                                        >
+                                          {" "}
+                                          (DS Code:{" "}
+                                        </span>
+                                        {patient.ds_code}{" "}
+                                        <span style={{ color: "black" }}>
+                                          )
+                                        </span>
                                       </div>
                                     )}
                                   </div>
                                 </td>
-                                <td>{patient.patient_age || "-"}</td>
+                                <td style={{ color: "#199FD9" }}>
+                                  {patient.patient_age || "-"}
+                                </td>
                                 {/* <td>{patient.patient_gender || "-"}</td> */}
-                                <td>
+                                <td style={{ color: "#199FD9" }}>
                                   {patient.patient_gender
                                     ?.charAt(0)
                                     .toUpperCase() +
@@ -985,18 +1043,28 @@ const MyAppointments = () => {
                                       ?.slice(1)
                                       .toLowerCase()}
                                 </td>
-                                <td>{patient.patient_phone || "-"}</td>
+                                <td style={{ color: "#199FD9" }}>
+                                  {patient.patient_phone || "-"}
+                                </td>
                                 <td>
                                   {/* <div className="date h3-title">{patient.datetime}</div> */}
-                                  <div className="date h3-title">
+                                  <div
+                                    className="date h3-title"
+                                    style={{ color: "#199FD9" }}
+                                  >
                                     {patient.datetime.split(" ")[0]}
                                   </div>
-                                  <div className="time">
+                                  <div
+                                    className="time"
+                                    style={{ color: "#199FD9" }}
+                                  >
                                     {patient.datetime.split(" ")[1]}{" "}
                                     {patient.datetime.split(" ")[2]}
                                   </div>
                                 </td>
-                                <td>{patient.diagnosis || "-"}</td>
+                                <td style={{ color: "#199FD9" }}>
+                                  {patient.diagnosis || "-"}
+                                </td>
                                 <td>
                                   <Link
                                     to="/completed-appointment-screen"
@@ -1004,6 +1072,7 @@ const MyAppointments = () => {
                                       id: patient.prescription_id,
                                       patientId: patient.patient_id,
                                       chat_id: patient.chat_id,
+                                      ds_code: patient.ds_code,
                                     }}
                                     style={{
                                       color: "#199FD9",
@@ -1076,6 +1145,9 @@ const MyAppointments = () => {
                                 style={{
                                   textAlign: "center",
                                   padding: "25px 0",
+                                  fontSize: 22,
+                                  color: "#199FD9",
+                                  fontWeight: "400",
                                 }}
                               >
                                 No data found
@@ -1086,7 +1158,7 @@ const MyAppointments = () => {
                             (patient, index) => (
                               <tr key={`cancelled-${index}`}>
                                 {/* <td>{(currentPage - 1) * patientsPerPage + index + 1}</td> */}
-                                <td>
+                                <td style={{ color: "#199FD9" }}>
                                   {String(
                                     (currentPage - 1) * patientsPerPage +
                                       index +
@@ -1137,27 +1209,45 @@ const MyAppointments = () => {
                                     {patient?.referred == true ? (
                                       <div
                                         style={{
+                                          // This div's color will be inherited by parts not explicitly styled
                                           color: "#199fd9",
                                           marginTop: "2px",
                                         }}
                                       >
-                                        (Referred by DS Code: {patient.ds_code})
+                                        <span style={{ color: "black" }}>
+                                          {" "}
+                                          (Referred by DS Code:{" "}
+                                        </span>
+                                        {patient.ds_code}
+                                        <span style={{ color: "black" }}>
+                                          )
+                                        </span>
                                       </div>
                                     ) : (
                                       <div
                                         style={{
+                                          // This div's color will be inherited by parts not explicitly styled
                                           color: "#199fd9",
                                           marginTop: "2px",
                                         }}
                                       >
-                                        (DS Code: {patient.ds_code})
+                                        <span style={{ color: "black" }}>
+                                          {" "}
+                                          (Referred by DS Code:{" "}
+                                        </span>
+                                        {patient.ds_code}
+                                        <span style={{ color: "black" }}>
+                                          )
+                                        </span>
                                       </div>
                                     )}
                                   </div>
                                 </td>
-                                <td>{patient.patient_age || "-"}</td>
+                                <td style={{ color: "#199FD9" }}>
+                                  {patient.patient_age || "-"}
+                                </td>
                                 {/* <td>{patient.patient_gender || "-"}</td> */}
-                                <td>
+                                <td style={{ color: "#199FD9" }}>
                                   {patient.patient_gender
                                     ?.charAt(0)
                                     .toUpperCase() +
@@ -1165,13 +1255,21 @@ const MyAppointments = () => {
                                       ?.slice(1)
                                       .toLowerCase()}
                                 </td>
-                                <td>{patient.patient_phone || "-"}</td>
-                                <td>
+                                <td style={{ color: "#199FD9" }}>
+                                  {patient.patient_phone || "-"}
+                                </td>
+                                <td style={{ color: "#199FD9" }}>
                                   {/* <div className="date h3-title">{patient.datetime}</div> */}
-                                  <div className="date h3-title">
+                                  <div
+                                    className="date h3-title"
+                                    style={{ color: "#199FD9" }}
+                                  >
                                     {patient.datetime.split(" ")[0]}
                                   </div>
-                                  <div className="time">
+                                  <div
+                                    className="time"
+                                    style={{ color: "#199FD9" }}
+                                  >
                                     {patient.datetime.split(" ")[1]}{" "}
                                     {patient.datetime.split(" ")[2]}
                                   </div>
@@ -1242,6 +1340,9 @@ const MyAppointments = () => {
                                 style={{
                                   textAlign: "center",
                                   padding: "25px 0",
+                                  fontSize: 22,
+                                  fontWeight: "400",
+                                  color: "#199FD9",
                                 }}
                               >
                                 No data found
@@ -1253,7 +1354,7 @@ const MyAppointments = () => {
                           )?.map((patient, index) => (
                             <tr key={`incompleted-${index}`}>
                               {/* <td>{(currentPage - 1) * patientsPerPage + index + 1}</td> */}
-                              <td>
+                              <td style={{ color: "#199FD9" }}>
                                 {String(
                                   (currentPage - 1) * patientsPerPage +
                                     index +
@@ -1300,27 +1401,41 @@ const MyAppointments = () => {
                                   {patient?.referred == true ? (
                                     <div
                                       style={{
+                                        // This div's color will be inherited by parts not explicitly styled
                                         color: "#199fd9",
                                         marginTop: "2px",
                                       }}
                                     >
-                                      (Referred by DS Code: {patient.ds_code})
+                                      <span style={{ color: "black" }}>
+                                        {" "}
+                                        (Referred by DS Code:{" "}
+                                      </span>
+                                      {patient.ds_code}
+                                      <span style={{ color: "black" }}>)</span>
                                     </div>
                                   ) : (
                                     <div
                                       style={{
+                                        // This div's color will be inherited by parts not explicitly styled
                                         color: "#199fd9",
                                         marginTop: "2px",
                                       }}
                                     >
-                                      (DS Code: {patient.ds_code})
+                                      <span style={{ color: "black" }}>
+                                        {" "}
+                                        (Referred by DS Code:{" "}
+                                      </span>
+                                      {patient.ds_code}
+                                      <span style={{ color: "black" }}>)</span>
                                     </div>
                                   )}
                                 </div>
                               </td>
-                              <td>{patient.patient_age || "-"}</td>
+                              <td style={{ color: "#199FD9" }}>
+                                {patient.patient_age || "-"}
+                              </td>
                               {/* <td>{patient.patient_gender || "-"}</td> */}
-                              <td>
+                              <td style={{ color: "#199FD9" }}>
                                 {patient.patient_gender
                                   ?.charAt(0)
                                   .toUpperCase() +
@@ -1328,18 +1443,26 @@ const MyAppointments = () => {
                                     ?.slice(1)
                                     .toLowerCase()}
                               </td>
-                              <td>{patient.patient_phone || "-"}</td>
+                              <td style={{ color: "#199FD9" }}>
+                                {patient.patient_phone || "-"}
+                              </td>
                               <td>
                                 {/* <div className="date h3-title">{patient.datetime}</div> */}
-                                <div className="date h3-title">
+                                <div
+                                  className="date h3-title"
+                                  style={{ color: "#199FD9" }}
+                                >
                                   {patient.datetime.split(" ")[0]}
                                 </div>
-                                <div className="time">
+                                <div
+                                  className="time"
+                                  style={{ color: "#199FD9" }}
+                                >
                                   {patient.datetime.split(" ")[1]}{" "}
                                   {patient.datetime.split(" ")[2]}
                                 </div>
                               </td>
-                              <td>
+                              <td style={{ color: "#199FD9" }}>
                                 {/* <Link
                                     to="/patient-profile"
                                     state={{

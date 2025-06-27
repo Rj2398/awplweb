@@ -1,49 +1,44 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Modal, Button, Form } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Modal, Button, Form } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
 
-import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
-import { login } from '../../redux/slices/userSlice';
-import {useNavigate} from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { login } from "../../redux/slices/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const LoginPassword = () => {
   const navigate = useNavigate();
-     const dispatch = useDispatch();
-      const { loading } = useSelector((state) => state.user)
-      const location = useLocation();
-      const { email, password } = location.state || {};
-      
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.user);
+  const location = useLocation();
+  const { email, password } = location.state || {};
 
-  const [password1, setPassword] = useState('');
+  const [password1, setPassword] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showPassword, setShowPassword] = useState(false); // 👈 Toggle state
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted');
+    console.log("Form submitted");
 
     // const passRegex = /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
     const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\d\W]).{8,}$/;
 
-
-    
     if (!passRegex.test(password1)) {
       toast.error("Please enter a valid password");
       return;
     }
-        const res = await dispatch(login({"email":email, "password": password1}))
-        console.log(res)
-        console.log(email)
-        console.log(password1)
+    const res = await dispatch(login({ email: email, password: password1 }));
+    console.log(res);
+    console.log(email);
+    console.log(password1);
 
-        // setShowModal(true);
-        if (res.payload && res.payload.status) {
-          setShowModal(true); // Login successful
-        } else {
-          toast.error("Invalid password. Please try again.");
-        }
+    // setShowModal(true);
+    if (res.payload && res.payload.status) {
+      setShowModal(true); // Login successful
+    }
 
     // Further form processing logic (like API call) can go here
   };
@@ -54,9 +49,8 @@ const LoginPassword = () => {
 
   const handleOkClick = () => {
     setShowModal(false);
-    navigate('/doctor-home', { replace: true }); // This prevents back nav to current page
+    navigate("/doctor-home", { replace: true }); // This prevents back nav to current page
   };
-
 
   return (
     <>
@@ -70,7 +64,10 @@ const LoginPassword = () => {
                     <img src="./images/doctor-symbol.png" alt="Doctor Symbol" />
                   </div>
                   <div className="sign-left-img">
-                    <img src="./images/login-left-img.png" alt="Login Left Image" />
+                    <img
+                      src="./images/login-left-img.png"
+                      alt="Login Left Image"
+                    />
                   </div>
                 </div>
               </div>
@@ -95,7 +92,7 @@ const LoginPassword = () => {
                             <label>Enter Password</label>
                             <div className="input-pass-field">
                               <input
-                                type={showPassword ? 'text' : 'password'} // 👈 Toggle type
+                                type={showPassword ? "text" : "password"} // 👈 Toggle type
                                 id="password"
                                 placeholder="Password"
                                 required
@@ -112,15 +109,25 @@ const LoginPassword = () => {
                               <span
                                 className="eye-btn"
                                 onClick={togglePasswordVisibility}
-                                style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                                style={{
+                                  position: "absolute",
+                                  right: 10,
+                                  top: "50%",
+                                  transform: "translateY(-50%)",
+                                  cursor: "pointer",
+                                }}
                               >
                                 <img
                                   src={
                                     showPassword
-                                      ? './images/eye-open.svg'
-                                      : './images/eye-close.svg'
+                                      ? "./images/eye-open.svg"
+                                      : "./images/eye-close.svg"
                                   }
-                                  alt={showPassword ? 'Hide password' : 'Show password'}
+                                  alt={
+                                    showPassword
+                                      ? "Hide password"
+                                      : "Show password"
+                                  }
                                 />
                               </span>
                             </div>
@@ -133,7 +140,10 @@ const LoginPassword = () => {
                           {/* <button type="submit" className="orange-btn loginBtn">
                             Login
                           </button> */}
-                          <button type='submit' className="orange-btn"> Login </button>
+                          <button type="submit" className="orange-btn">
+                            {" "}
+                            Login{" "}
+                          </button>
                         </div>
                       </div>
                     </form>
@@ -143,8 +153,7 @@ const LoginPassword = () => {
             </div>
           </div>
         </div>
-        </div>
-      
+      </div>
 
       {/* Login Successful Modal */}
       {/* <div
@@ -200,11 +209,10 @@ const LoginPassword = () => {
         <Modal.Footer className="d-flex justify-content-center border-0">
           {/* <Link to="/doctor-home" className="orange-btn" onClick={() => setShowModal(false)}>Ok</Link> */}
           <button className="orange-btn" onClick={handleOkClick}>
-      Ok
-    </button>
+            Ok
+          </button>
         </Modal.Footer>
       </Modal>
-      
     </>
   );
 };
