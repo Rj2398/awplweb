@@ -524,6 +524,7 @@ const PatientProfile = () => {
                                         patientProfileData?.appointment_details
                                           ?.patient_id,
                                       chat_id: appointment.chat_id,
+                                      ds_code: patientInfo.ds_code,
                                     }}
                                     className="link"
                                   >
