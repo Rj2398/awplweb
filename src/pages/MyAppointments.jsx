@@ -759,7 +759,7 @@ const MyAppointments = () => {
                                       >
                                         <span style={{ color: "black" }}>
                                           {" "}
-                                          (Referred by DS Code:{" "}
+                                          (DS Code:{" "}
                                         </span>
                                         {patient.ds_code}
                                         <span style={{ color: "black" }}>
@@ -1235,7 +1235,7 @@ const MyAppointments = () => {
                                       >
                                         <span style={{ color: "black" }}>
                                           {" "}
-                                          (Referred by DS Code:{" "}
+                                          (DS Code:{" "}
                                         </span>
                                         {patient.ds_code}
                                         <span style={{ color: "black" }}>
@@ -1431,7 +1431,7 @@ const MyAppointments = () => {
                                     >
                                       <span style={{ color: "black" }}>
                                         {" "}
-                                        (Referred by DS Code:{" "}
+                                        (DS Code:{" "}
                                       </span>
                                       {patient.ds_code}
                                       <span style={{ color: "black" }}>)</span>

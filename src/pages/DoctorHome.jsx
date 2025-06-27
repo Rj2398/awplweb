@@ -18,6 +18,7 @@ import SuspensionModal from "../component/SuspensionModal";
 
 const DoctorHome = () => {
   const navigate = useNavigate();
+
   const appData = JSON.parse(localStorage.getItem("doctor-app") || "{}");
   const DoctorLoginId = appData.doctorData;
 
@@ -42,7 +43,7 @@ const DoctorHome = () => {
 
   useEffect(() => {
     dispatch(doctorHomeDashboard());
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   // const [activeTab, setActiveTab] = useState('upcoming');
   const [showModal, setShowModal] = useState(false);

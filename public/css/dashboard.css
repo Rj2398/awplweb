@@ -625,7 +625,8 @@ input[type="number"] {
   height: 60px;
   border-radius: 50%;
   overflow: hidden;
-  margin-bottom: 5px;
+  margin: auto;
+  margin-bottom: 8px;
 }
 .doc-img img {
   width: 100%;
@@ -633,10 +634,11 @@ input[type="number"] {
   object-fit: cover;
 }
 .doc-profile-body p {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--white);
   margin-bottom: 5px;
+  display: ruby-text;
 }
 .doc-profile-body .view-profile {
   color: var(--white);
@@ -870,7 +872,7 @@ input[type="number"] {
   width: 100%;
 }
 .doc-panel-body {
-  padding: 100px 0;
+  padding: 50px 0;
 }
 .docpnl-sec-head {
   display: flex;
