@@ -11,7 +11,7 @@ import Config from "../config/Constant";
 const CompletedAppointment = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { id, patientId, appointmentId, chat_id, ds_code } =
+  const { id, patientId, appointmentId, chat_id, ds_code, referred } =
     location.state || {};
   console.log("id", id, chat_id, "Chat idddd***************");
 
@@ -126,12 +126,28 @@ const CompletedAppointment = () => {
                                   ?.patient_name
                               }
                             </h2>
-                            <spna>
-                              DS Code:
-                              <span style={{ color: "#199FD9" }}>
-                                {ds_code}
-                              </span>
-                            </spna>
+                            {referred == true ? (
+                              // <p>Referred by DS Code: {appointment.ds_code}</p>
+                              <p>
+                                (Referred by DS Code:{" "}
+                                {
+                                  <span style={{ color: "#199FD9" }}>
+                                    {ds_code}
+                                  </span>
+                                }
+                                )
+                              </p>
+                            ) : (
+                              <p style={{ fontWeight: "bold" }}>
+                                (DS Code:{" "}
+                                {
+                                  <span style={{ color: "#199FD9" }}>
+                                    {ds_code}
+                                  </span>
+                                }
+                                )
+                              </p>
+                            )}
                           </div>
                           <div className="date h3-title">
                             {

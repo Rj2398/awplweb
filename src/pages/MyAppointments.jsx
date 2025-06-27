@@ -1073,6 +1073,8 @@ const MyAppointments = () => {
                                       patientId: patient.patient_id,
                                       chat_id: patient.chat_id,
                                       ds_code: patient.ds_code,
+
+                                      referred: patient.referred,
                                     }}
                                     style={{
                                       color: "#199FD9",
@@ -1281,7 +1283,7 @@ const MyAppointments = () => {
                                       patientId: patient.patient_id,
                                       appointmentId: patient.appointment_id,
                                       source: "cancelled",
-                                      hideSchedule: false,
+                                      hideSchedule: true,
                                     }}
                                     className="cmn-btn"
                                   >
