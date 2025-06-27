@@ -662,7 +662,7 @@ const GlobalReminderModal = () => {
     const now = new Date();
     const diffInMs = appointmentDateTime.getTime() - now.getTime();
 
-    const reminders = [{ minutesBefore: 5 }, { minutesBefore: 2 }];
+    const reminders = [{ minutesBefore: 10 }, { minutesBefore: 2 }];
     const timers = [];
 
     reminders.forEach(({ minutesBefore }) => {
