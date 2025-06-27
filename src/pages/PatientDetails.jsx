@@ -536,6 +536,20 @@ const PatientDetails = () => {
                               patientAppointmentsDetail?.patientData
                                 ?.patient_name
                             }
+
+                            {!patientAppointmentsDetail?.patientData
+                              ?.is_referred_patient && (
+                              <div style={{ fontSize: "15px" }}>
+                                (
+                                <span style={{ color: "black" }}>
+                                  DS Code:{" "}
+                                </span>
+                                <span style={{ color: "#199FD9" }}>
+                                  {referrerDscode}
+                                </span>
+                                )
+                              </div>
+                            )}
                           </h2>
                         </div>
                         <div className="appoint-btm">
