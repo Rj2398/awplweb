@@ -1389,7 +1389,13 @@ const MyAppointments = () => {
                                       to="/patient-profile"
                                       state={{ patientId: patient.patient_id }}
                                     > */}
-                                  <h3 style={{ margin: 0, textAlign: "left" }}>
+                                  <h3
+                                    style={{
+                                      margin: 0,
+                                      textAlign: "left",
+                                      color: "#199FD9",
+                                    }}
+                                  >
                                     {patient.patient_name || "-"}
                                   </h3>
                                   {/* </Link> */}

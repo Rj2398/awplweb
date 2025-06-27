@@ -617,7 +617,7 @@ const DoctorHome = () => {
                             textAlign: "center",
                             padding: "25px 0",
                             fontWeight: "400",
-                            color: "#356598",
+                            color: "#199FD9",
                             fontSize: 20,
                           }}
                         >
