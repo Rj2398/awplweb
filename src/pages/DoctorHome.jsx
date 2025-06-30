@@ -18,6 +18,9 @@ import SuspensionModal from "../component/SuspensionModal";
 
 const DoctorHome = () => {
   const navigate = useNavigate();
+  const [nextApiCallTime, setNextApiCallTime] = useState(null);
+
+  console.log(nextApiCallTime, "asdfasdfhkashdfksh");
 
   const appData = JSON.parse(localStorage.getItem("doctor-app") || "{}");
   const DoctorLoginId = appData.doctorData;
@@ -41,9 +44,58 @@ const DoctorHome = () => {
     }
   }, [dispatch, user]);
 
+  // useEffect(() => {
+  //   dispatch(doctorHomeDashboard());
+  // }, [dispatch, navigate]);
+
   useEffect(() => {
-    dispatch(doctorHomeDashboard());
-  }, [dispatch, navigate]);
+    // Initial API call
+    dispatch(doctorHomeDashboard())
+      .then((response) => {
+        // Assuming response.payload contains the userData
+        const apiData = response.payload?.data;
+        console.log(apiData, "ASDFASDFASDFASFASDASDFAS");
+
+        if (
+          apiData &&
+          apiData.upcomingAppointments &&
+          apiData.upcomingAppointments.length > 0
+        ) {
+          const firstAppointmentTime =
+            apiData.upcomingAppointments[0].appointment_starttime;
+          setNextApiCallTime(new Date(firstAppointmentTime));
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching dashboard data:", error);
+      });
+  }, [dispatch]);
+
+  // This effect will run when nextApiCallTime changes
+  useEffect(() => {
+    if (nextApiCallTime) {
+      const currentTime = new Date();
+      const delay = nextApiCallTime.getTime() - currentTime.getTime();
+      console.log(delay, "fddgfgfghgfgfdfdd");
+
+      if (delay > 0) {
+        console.log(`Scheduling next API call in ${delay / 1000} seconds.`);
+        const timerId = setTimeout(() => {
+          console.log("Re-hitting API due to scheduled time.");
+          dispatch(doctorHomeDashboard());
+        }, delay);
+
+        // Cleanup function for useEffect
+        return () => clearTimeout(timerId);
+      } else {
+        console.log(
+          "Appointment time is in the past or now. Re-hitting API immediately."
+        );
+        // If the time has already passed or is current, re-hit immediately
+        dispatch(doctorHomeDashboard());
+      }
+    }
+  }, [nextApiCallTime, dispatch]);
 
   // const [activeTab, setActiveTab] = useState('upcoming');
   const [showModal, setShowModal] = useState(false);
