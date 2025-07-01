@@ -106,16 +106,29 @@ const Notifications = () => {
 
   //notification read one by one
 
-  const readOneByOneChat = async (id) => {
+  const deleteOneByOne = async (id) => {
     if (!id) return;
     console.log(id, "hello user*********");
+
     try {
-      const read = [id];
-      await dispatch(markAllRead({ notification_ids: read }));
+      const read = [String(id)]; // Convert id to string and store in array
+      await dispatch(deleteNotification(read));
+      // deleteOnByOne(id);
     } catch (error) {
-      console.error("Error marking notification as read:", error);
+      console.error("Error deleting notification:", error);
     }
   };
+
+  // const deleteOnByOne = async (id) => {
+  //   console.log("delete api call");
+  //   if (!id) return;
+  //   try {
+  //     const read = [id];
+  //     await dispatch(deleteNotification({ notification_ids: read }));
+  //   } catch (error) {
+  //     console.error("deleting api from error:", error);
+  //   }
+  // };
 
   const renderNotifications = (group) => {
     // const groupItems = notifications.filter(n => n.group === group);
@@ -189,7 +202,7 @@ const Notifications = () => {
 
                       // setReadNotificationOneByone(n?.id);
 
-                      readOneByOneChat(n?.id);
+                      deleteOneByOne(n?.id);
                     }}
                   >
                     <h3

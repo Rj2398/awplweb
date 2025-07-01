@@ -235,8 +235,12 @@ const notificationSlice = createSlice({
       .addCase(notifyNewChatRes.fulfilled, (state, action) => {
         state.loading = false;
         state.newNotificaion = action.payload.data;
+        console.log(action.payload.data, "ashdkfahsdfjhksahfks");
 
-        toast.success("new message receive please check notification..");
+        if (action.payload.data?.notification_count == 0) {
+          toast.success("No notification from chat.");
+        }
+        toast.success(action.payload.data?.notification_message);
       })
       .addCase(notifyNewChatRes.rejected, (state, action) => {
         state.loading = false;
