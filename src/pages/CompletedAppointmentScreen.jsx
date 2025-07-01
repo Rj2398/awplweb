@@ -13,7 +13,15 @@ const CompletedAppointment = () => {
   const navigate = useNavigate();
   const { id, patientId, appointmentId, chat_id, ds_code, referred } =
     location.state || {};
-  console.log("id", id, chat_id, "Chat idddd***************");
+  console.log(
+    id,
+    patientId,
+    appointmentId,
+    chat_id,
+    ds_code,
+    referred,
+    "Chat idddd***************"
+  );
 
   // useEffect(() => {
   //   if (!id || !patientId || !chat_id) {

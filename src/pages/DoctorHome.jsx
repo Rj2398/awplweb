@@ -15,6 +15,7 @@ import { getDoctorProfile } from "../redux/slices/userSlice";
 import axios from "axios";
 import { setVideoData } from "../redux/slices/infoSlice";
 import SuspensionModal from "../component/SuspensionModal";
+import { notifyNewChatRes } from "../redux/slices/notificationSlice";
 
 const DoctorHome = () => {
   const navigate = useNavigate();
@@ -70,6 +71,10 @@ const DoctorHome = () => {
         console.error("Error fetching dashboard data:", error);
       });
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(notifyNewChatRes());
+  }, []);
 
   // This effect will run when nextApiCallTime changes
   useEffect(() => {

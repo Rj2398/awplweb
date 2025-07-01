@@ -1196,7 +1196,7 @@ const ScheduleAppointment = () => {
           <Modal.Title id="exampleModalLongTitle" className="w-100">
             <h2>Congratulations</h2>
           </Modal.Title>
-          <p style={{ padding: "20px", fontSize: "25px", color: "#858484" }}>
+          <p style={{ padding: "20px", fontSize: "20px", color: "#858484" }}>
             Your appointment with
             <br /> {patientName} is confirmed for <br />
             <span className="bookingDateTime">

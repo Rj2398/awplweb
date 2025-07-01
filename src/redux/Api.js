@@ -374,6 +374,18 @@ export const getPrscriveMedicine = (formData) =>
     },
   });
 
+//
+
+export const notifyNewChatRes = (formData) =>
+  API.post("/getChat", formData, {
+    headers: {
+      Authorization: `Bearer ${
+        JSON.parse(localStorage.getItem("doctor-app"))?.token
+      }`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
 // export const logout = (id) => API.post('/api/logout', id, {
 //   headers: {
 //     'Authorization': `Bearer ${JSON.parse(localStorage.getItem("doctor-app"))?.token}`,

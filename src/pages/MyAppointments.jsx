@@ -666,7 +666,7 @@ const MyAppointments = () => {
                                 style={{
                                   textAlign: "center",
                                   padding: "25px 0",
-                                  fontSize: 22,
+                                  fontSize: 18,
                                   fontWeight: "400",
                                   color: "#199FD9",
                                 }}
@@ -929,7 +929,7 @@ const MyAppointments = () => {
                                 style={{
                                   textAlign: "center",
                                   padding: "25px 0",
-                                  fontSize: 22,
+                                  fontSize: 18,
                                   fontWeight: "400",
                                   color: "#199FD9",
                                 }}
@@ -1151,7 +1151,7 @@ const MyAppointments = () => {
                                 style={{
                                   textAlign: "center",
                                   padding: "25px 0",
-                                  fontSize: 22,
+                                  fontSize: 18,
                                   color: "#199FD9",
                                   fontWeight: "400",
                                 }}
@@ -1350,7 +1350,7 @@ const MyAppointments = () => {
                                 style={{
                                   textAlign: "center",
                                   padding: "25px 0",
-                                  fontSize: 22,
+                                  fontSize: 18,
                                   fontWeight: "400",
                                   color: "#199FD9",
                                 }}

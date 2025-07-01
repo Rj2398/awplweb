@@ -12,12 +12,19 @@ import {
 import sucessIcon from "/images/calendar-tick-success.svg";
 import CancelIcon from "/images/calendar-cancelled.svg";
 import ScheduleIcon from "/images/calendar-changes.svg";
+// import Chat_Icon from "/images/login/chat_icon.png";
+import Chat_Icon from "/images/login/chat_icon_2.png";
+import { useNavigate } from "react-router-dom";
 
 const Notifications = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { doctorNotifications, loading, error } = useSelector(
     (state) => state.notification
   );
+
+  // const [readNotificationOneByone, setReadNotificationOneByone] = useState([]);
+  // console.log(readNotificationOneByone, "Read notification one by one****");
   // console.log("older data",doctorNotifications?.older)
   // console.log("older data",doctorNotifications?.today)
   // console.log("older data",doctorNotifications?.yesterday)
@@ -28,6 +35,8 @@ const Notifications = () => {
 
   const [selectedIds, setSelectedIds] = useState([]);
   const [finalNotification, setFinalNotification] = useState([]);
+
+  console.log(finalNotification, "********final data comes from");
 
   // const todayNotfication = doctorNotifications?.today?.map(n => n.id) ?? [];
   // const yesterdayNotfication = doctorNotifications?.yesterday?.map(n => n.id) ?? [];
@@ -95,6 +104,19 @@ const Notifications = () => {
     dispatch(unreadCount());
   };
 
+  //notification read one by one
+
+  const readOneByOneChat = async (id) => {
+    if (!id) return;
+    console.log(id, "hello user*********");
+    try {
+      const read = [id];
+      await dispatch(markAllRead({ notification_ids: read }));
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+    }
+  };
+
   const renderNotifications = (group) => {
     // const groupItems = notifications.filter(n => n.group === group);
     const groupItems = doctorNotifications[group];
@@ -143,25 +165,62 @@ const Notifications = () => {
                         ? CancelIcon
                         : n?.type?.includes("appointment_success")
                         ? sucessIcon
+                        : n?.type?.includes("new_message")
+                        ? Chat_Icon
                         : ScheduleIcon
                     }
                     alt="Icon"
                   />
                 </div>
-                <div className="notif-text">
-                  <h3
-                    style={{
-                      fontWeight: n.is_read === "true" ? "normal" : "bold",
+
+                {n?.type == "new_message" ? (
+                  <div
+                    className="notif-text"
+                    onClick={() => {
+                      navigate("/completed-appointment-screen", {
+                        state: {
+                          id: n?.notification_data?.prescription_id,
+                          patientId: n?.notification_data?.patient_id,
+                          chat_id: n?.notification_data?.chat_channel,
+                          ds_code: n?.notification_data?.ds_code,
+                          referred: n?.notification_data?.referred,
+                        },
+                      });
+
+                      // setReadNotificationOneByone(n?.id);
+
+                      readOneByOneChat(n?.id);
                     }}
                   >
-                    {n.title}
-                  </h3>
-                  {/* <p>{n?.message}</p> */}
-                  <p>
-                    {n?.message?.trim()}
-                    {n?.message?.trim().endsWith(".") ? "" : "."}
-                  </p>
-                </div>
+                    <h3
+                      style={{
+                        fontWeight: n.is_read === "true" ? "normal" : "bold",
+                      }}
+                    >
+                      {n.title}
+                    </h3>
+                    {/* <p>{n?.message}</p> */}
+                    <p>
+                      {n?.message?.trim()}
+                      {n?.message?.trim().endsWith(".") ? "" : "."}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="notif-text">
+                    <h3
+                      style={{
+                        fontWeight: n.is_read === "true" ? "normal" : "bold",
+                      }}
+                    >
+                      {n.title}
+                    </h3>
+                    {/* <p>{n?.message}</p> */}
+                    <p>
+                      {n?.message?.trim()}
+                      {n?.message?.trim().endsWith(".") ? "" : "."}
+                    </p>
+                  </div>
+                )}
               </div>
               {/* <div className="notif-time">{n.created_at}</div> */}
               <div
