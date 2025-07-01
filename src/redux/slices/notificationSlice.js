@@ -239,8 +239,9 @@ const notificationSlice = createSlice({
 
         if (action.payload.data?.notification_count == 0) {
           toast.success("No notification from chat.");
+        } else if (action.payload.data?.notification_message) {
+          toast.success(action.payload.data?.notification_message);
         }
-        toast.success(action.payload.data?.notification_message);
       })
       .addCase(notifyNewChatRes.rejected, (state, action) => {
         state.loading = false;

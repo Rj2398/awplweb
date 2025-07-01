@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../component/doctorPanel/Header";
 import Footer from "../component/doctorPanel/Footer";
@@ -417,7 +417,7 @@ const DoctorHome = () => {
 
   //user suspeded out the app
 
-  const checkSuspensionStatus = async () => {
+  const checkSuspensionStatus = useCallback(async () => {
     const apiEndpoint =
       "https://awplconnectadmin.tgastaging.com/api/doctor/is_suspended";
 
@@ -492,10 +492,10 @@ const DoctorHome = () => {
         console.error("General Error:", err);
       }
     }
-  };
+  }, [navigate]);
   useEffect(() => {
     checkSuspensionStatus();
-  }, [checkSuspensionStatus, navigate]);
+  }, [checkSuspensionStatus]);
   return (
     <>
       {/* <Header /> */}
