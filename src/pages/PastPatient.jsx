@@ -440,6 +440,7 @@ const PastPatient = () => {
                       padding: "25px 0",
                       fontWeight: "bold",
                       color: "#356598",
+                      fontSize: 18,
                     }}
                   >
                     No data found

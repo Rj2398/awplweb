@@ -676,7 +676,7 @@ const DoctorHome = () => {
                             padding: "25px 0",
                             fontWeight: "400",
                             color: "#199FD9",
-                            fontSize: 20,
+                            fontSize: 18,
                           }}
                         >
                           No upcoming appointments.
@@ -859,7 +859,7 @@ const DoctorHome = () => {
                                 style={{
                                   textAlign: "center",
                                   fontWeight: "400",
-                                  fontSize: 20,
+                                  fontSize: 18,
                                 }}
                               >
                                 {loading ? "Loading..." : "No data found"}

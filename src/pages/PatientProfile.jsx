@@ -212,8 +212,13 @@ const PatientProfile = () => {
                                       }
                                     </span>
                                   </Link>
-                                  <span style={{ color: "#199FD9" }}>
-                                    (DS Code:{patientInfo.ds_code})
+                                  <span style={{ color: "#000" }}>
+                                    (DS Code:
+                                    <span style={{ color: "#199FD9" }}>
+                                      {" "}
+                                      {patientInfo.ds_code}
+                                    </span>
+                                    )
                                   </span>
                                 </>
                               ) : (

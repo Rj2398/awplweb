@@ -145,7 +145,7 @@ const PendingPrescription = () => {
                                   "Loading..."
                                 ) : (
                                   <span
-                                    style={{ fontWeight: "400", fontSize: 20 }}
+                                    style={{ fontWeight: "400", fontSize: 18 }}
                                   >
                                     No data found
                                   </span>
