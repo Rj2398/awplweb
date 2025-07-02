@@ -1,21 +1,3 @@
-// src/routes/PrivateRoute.js
-// import { Navigate, useLocation } from "react-router-dom";
-// import { toast } from "react-toastify";
-
-// const PrivateRoute = ({ children }) => {
-//   const location = useLocation();
-//   const doctorData = localStorage.getItem("doctor-app");
-
-//   if (!doctorData) {
-//     toast.error("Please Login First");
-//     return <Navigate to="/" state={{ from: location }} replace />;
-//   }
-
-//   return children;
-// };
-
-// export default PrivateRoute;
-
 import { Navigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";

@@ -238,7 +238,7 @@ const notificationSlice = createSlice({
         console.log(action.payload.data, "ashdkfahsdfjhksahfks");
 
         if (action.payload.data?.notification_count == 0) {
-          toast.success("No notification from chat.");
+          // toast.success("No notification from chat.");
         } else if (action.payload.data?.notification_message) {
           toast.success(action.payload.data?.notification_message);
         }

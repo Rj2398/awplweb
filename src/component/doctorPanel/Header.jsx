@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { getDoctorProfile, logout } from "../../redux/slices/userSlice";
 import {
   changeAppointmentNotificaiton,
   checkToggleNotification,
+  notifyNewChatRes,
   unreadCount,
 } from "../../redux/slices/notificationSlice";
 
@@ -14,6 +15,8 @@ const Header = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const loaction = useLocation();
 
   const { user } = useSelector((state) => state.user);
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
@@ -40,6 +43,10 @@ const Header = () => {
     dispatch(logout());
     navigate("/");
   };
+
+  useEffect(() => {
+    dispatch(notifyNewChatRes());
+  }, [loaction?.pathname]);
 
   const handleToggleChange = () => {
     dispatch(

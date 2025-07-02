@@ -72,9 +72,9 @@ const DoctorHome = () => {
       });
   }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(notifyNewChatRes());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(notifyNewChatRes());
+  // }, []);
 
   // This effect will run when nextApiCallTime changes
   useEffect(() => {
