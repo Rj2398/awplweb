@@ -108,13 +108,13 @@ h1,
   z-index: 1;
   display: inline-block;
   padding-bottom: 7px;
-  font-size: 28px;
+  font-size: 26px;
 }
 
 h2,
 .h2-title {
   font-weight: 600;
-  font-size: 26px;
+  font-size: 24px;
   line-height: 1.2;
 }
 
@@ -807,6 +807,7 @@ input[type="number"] {
   outline: 0;
   background: var(--white);
   transition: all ease-in-out 0.3s;
+  color: var(--text-clr) !important;
 }
 
 .sidebar-nav ul li button:hover {
@@ -1237,9 +1238,15 @@ input[type="number"] {
   font-weight: 600;
 }
 
-.pending-presc-table table td {
+.pending-presc-table table td,
+.pending-presc-table table td div,
+.pending-presc-table table td a {
   font-size: 16px !important;
   color: var(--theme-clr-1);
+  text-align: center !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin: 0 !important;
 }
 
 .pending-presc-table table td .time {
@@ -1356,6 +1363,8 @@ input[type="number"] {
 
 .appoint-dtl-head h2 {
   margin-bottom: 5px;
+  line-height: 28px;
+  font-size: 20px;
 }
 
 .appoint-dtl-head p {
@@ -1369,7 +1378,7 @@ input[type="number"] {
 
 .appoint-btm p {
   margin-bottom: 5px;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -1976,6 +1985,7 @@ input[type="number"] {
   color: var(--text-clr);
   text-align: center;
   padding: 8px 15px 35px;
+  font-size: 16px;
 }
 
 .myapintmnt-table table tr:last-child td {
@@ -2011,7 +2021,7 @@ input[type="number"] {
   font-size: 16px;
   font-weight: 600;
   color: var(--theme-clr-1);
-  padding-left: 15px;
+  /* padding-left: 15px; */
 }
 
 .myapintmnt-table table tr td .time {
@@ -2647,7 +2657,7 @@ input[type="range"]::-moz-range-progress {
 
 .vdoclscrn-patient-details {
   border: 1px solid var(--theme-clr-2);
-  padding: 13px;
+  padding: 25px;
   border-radius: 20px;
 }
 
@@ -2780,6 +2790,9 @@ input[type="range"]::-moz-range-progress {
 
 .vdoclscrn-left {
   height: 100%;
+  border: 1px solid var(--theme-clr-2);
+  padding: 5px;
+  border-radius: 10px;
 }
 
 .vdoclscrn-patient-details-wrp>*,
@@ -2913,10 +2926,10 @@ input[type="range"]::-moz-range-progress {
 }
 
 .cap-pg .vdoclscrn-patient-details-wrp button.orange-btn {
-  height: 55px;
-  min-width: 220px;
-  font-size: 24px;
-  font-weight: 700;
+  height: 50px;
+  min-width: 160px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .cap-pg .vdoclscrn-patient-details-wrp .medicine-wrp-single button.orange-btn {
@@ -3173,7 +3186,7 @@ input[type="range"]::-moz-range-progress {
 }
 
 .my-profile-pg .docpnl-sec-head .h2-title {
-  min-width: 311px;
+  min-width: 251px;
 }
 
 .my-profile-img-wrp {
@@ -5053,6 +5066,7 @@ span.eye-btn.eye-open {
   .sidebar-nav ul li a,
   .sidebar-nav ul li button {
     margin-left: 10px;
+    color: var(--text-clr);
   }
 
   .docpnl-hdr-toggler {
@@ -5834,4 +5848,10 @@ span.eye-btn.eye-open {
 
 .dash-pop {
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+.add-new-med-close button {
+  opacity: 1;
+  filter: brightness(0) invert(1);
 }

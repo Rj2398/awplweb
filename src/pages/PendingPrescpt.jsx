@@ -2886,7 +2886,7 @@ const PendingPrescpt = ({ id }) => {
     );
 
   return (
-    <div className="container p-4 mx-auto font-sans bg-white">
+    <div className="mx-auto font-sans bg-white">
       <ToastContainer />
 
       <div
@@ -2898,7 +2898,7 @@ const PendingPrescpt = ({ id }) => {
           marginBottom: -40,
         }}
       >
-        <h3 className="text-3xl font-bold text-gray-800 m-0">
+        <h3 className="text-3xl font-bold text-gray-800 m-0" style={{fontSize : 20}}>
           {data?.disease_name || "N/A"}
         </h3>
       </div>
@@ -2907,7 +2907,7 @@ const PendingPrescpt = ({ id }) => {
         <Button
           onClick={handleNewClick}
           style={{ backgroundColor: "#F47820" }}
-          className="px-6 py-2 rounded-lg shadow-md text-white flex items-center gap-2 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-75"
+          className="border-0 px-6 py-2 rounded-lg shadow-md text-white flex items-center gap-2 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-75"
         >
           <FaRegPlusSquare style={{ marginBottom: 5, marginRight: 5 }} />
           Add New Medicine
@@ -3154,7 +3154,7 @@ const PendingPrescpt = ({ id }) => {
         <Modal.Header
           closeButton
           style={{ backgroundColor: "#199FD9", color: "white" }}
-          className="border-b-0 rounded-t-lg"
+          className="add-new-med-close border-b-0 rounded-t-lg"
         >
           <Modal.Title className="text-xl font-bold">
             Update Medicine
@@ -3334,7 +3334,7 @@ const PendingPrescpt = ({ id }) => {
         <Modal.Header
           closeButton
           style={{ backgroundColor: "#199FD9", color: "white" }}
-          className="border-b-0 rounded-t-lg"
+          className="add-new-med-close border-b-0 rounded-t-lg"
         >
           <Modal.Title className="text-xl font-bold">
             Add New Medicine
