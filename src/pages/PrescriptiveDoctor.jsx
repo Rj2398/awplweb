@@ -1240,6 +1240,7 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { presciveMedicine, videoCallSubmit } from "../redux/slices/dataSlice";
+import { medicineSearch } from "../redux/slices/userSlice";
 
 // Import React-Toastify
 import { toast } from "react-toastify";
@@ -1252,7 +1253,9 @@ const PrescriptiveDoctor = () => {
 
   const navigate = useNavigate();
   const [isloading, setIsLoading] = useState(false);
-
+  const { medicineSearch: medicineSearchResults } = useSelector(
+    (state) => state.user
+  );
   const params = new URLSearchParams(location.search);
   const id = params.get("id");
   const patientId = params.get("patientId");
@@ -1262,6 +1265,10 @@ const PrescriptiveDoctor = () => {
       navigate("/doctor-home");
     }
   }, []);
+
+  useEffect(() => {
+    dispatch(medicineSearch()); // Keep commented out if you're using hardcoded data
+  }, [dispatch]);
 
   // console.log("ID:!!!!!!!!!!!!!!!!!!!!!!!", id);
   console.log("Patient ID:", patientId);
@@ -1480,16 +1487,33 @@ const PrescriptiveDoctor = () => {
     setShowNewModal(false);
   };
 
+  // const handleNewChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setNewTreatment((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
+
   const handleNewChange = (e) => {
     const { name, value } = e.target;
-    setNewTreatment((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+
+    setNewTreatment((prev) => {
+      const updatedTreatment = { ...prev, [name]: value };
+
+      if (name === "medicine_name" && value) {
+        const selectedMed = medicineSearchResults.find(
+          (med) => med.product_name === value
+        );
+        if (selectedMed && selectedMed.unit) {
+          updatedTreatment.unit = selectedMed.unit;
+        }
+      }
+      return updatedTreatment;
+    });
   };
 
   const handleAddNew = () => {
-    // --- Validation Logic for New Medicine Modal ---
     let isValid = true;
     const requiredFields = [
       "medicine_name",
@@ -1515,13 +1539,12 @@ const PrescriptiveDoctor = () => {
           theme: "colored",
         });
         isValid = false;
-        break; // Stop on the first invalid field
+        break;
       }
     }
 
-    // New validation: Check if medicine_name is empty (from dropdown selection)
     if (!newTreatment.medicine_name.trim()) {
-      toast.error("Medicine Name cannot be empty.", {
+      toast.error("Please select a Medicine Name.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -1534,7 +1557,6 @@ const PrescriptiveDoctor = () => {
       isValid = false;
     }
 
-    // New validation: Check for duplicate medicine in the existing table
     if (
       data.treatments &&
       data.treatments.some(
@@ -1560,25 +1582,21 @@ const PrescriptiveDoctor = () => {
     }
 
     if (!isValid) {
-      return; // Stop the function if validation fails
+      return;
     }
 
-    // Generate new treatment_id
     const newTreatmentId =
       data.treatments && data.treatments.length > 0
-        ? Math.max(...data.treatments.map((t) => t.treatment_id)) + 1
+        ? Math.max(...data.treatments.map((t) => t.treatment_id || 0)) + 1
         : 1;
 
-    // Find medicine_id from derived medicineSuggestions
-    const selectedMedicine = medicineSuggestions.find(
-      (med) => med.medicine_name === newTreatment.medicine_name
+    const selectedMedicineFromSearch = medicineSearchResults.find(
+      (med) => med.product_name === newTreatment.medicine_name
     );
 
-    const newMedicineId = selectedMedicine
-      ? selectedMedicine.medicine_id
-      : data.treatments && data.treatments.length > 0
-      ? Math.max(...data.treatments.map((t) => t.medicine_id)) + 1
-      : 1000; // Start new dynamic IDs from a high number or use UUID library
+    const newMedicineId = selectedMedicineFromSearch
+      ? selectedMedicineFromSearch.product_code
+      : newTreatmentId;
 
     const updatedNewTreatment = {
       ...newTreatment,
@@ -2262,14 +2280,20 @@ const PrescriptiveDoctor = () => {
               >
                 <option value="">Select Medicine</option>{" "}
                 {/* Default empty option */}
-                {medicineSuggestions.map((medicine) => (
-                  <option
-                    key={medicine.medicine_id}
-                    value={medicine.medicine_name}
-                  >
-                    {medicine.medicine_name}
+                {medicineSearchResults && medicineSearchResults.length > 0 ? (
+                  medicineSearchResults.map((medicine) => (
+                    <option
+                      key={medicine.product_code}
+                      value={medicine.product_name}
+                    >
+                      {medicine.product_name}
+                    </option>
+                  ))
+                ) : (
+                  <option value="" disabled>
+                    Loading medicines...
                   </option>
-                ))}
+                )}
               </Form.Select>
             </Form.Group>
             {/* Other fields remain unchanged */}
@@ -2410,7 +2434,7 @@ const PrescriptiveDoctor = () => {
       </Modal>
 
       {/* Submit Confirmation Modal */}
-      <Modal
+      {/* <Modal
         show={showSubmitConfirmModal}
         onHide={() => setShowSubmitConfirmModal(false)}
         centered
@@ -2440,7 +2464,7 @@ const PrescriptiveDoctor = () => {
             Confirm
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
 
       <Modal
         show={showSubmitConfirmModal}

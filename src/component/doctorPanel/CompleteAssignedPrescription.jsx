@@ -18,6 +18,8 @@ const CompletedAssignedPrescription = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { id, patientId } = location.state || {};
+  const { medicineSearch } = useSelector((state) => state.user);
+  console.log(medicineSearch, "FHASDFJASHFSDFJSFJSFJFJ");
 
   console.log(id, "id **********************");
 

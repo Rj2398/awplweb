@@ -290,7 +290,7 @@ export const markAllRead = (formData) =>
   });
 
 export const medicineSearch = (formData) =>
-  API.post("/doctor/medicines/search", formData, {
+  API.post("/doctor/medicines/search", null, {
     headers: {
       Authorization: `Bearer ${
         JSON.parse(localStorage.getItem("doctor-app"))?.token
