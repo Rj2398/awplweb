@@ -98,28 +98,74 @@ const MyAppointmentsSearch = ({
   //   setFilters(prev => ({ ...prev, [name]: value }));
   // };
 
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+
+  //   if (name === "name") {
+  //     // Only allow letters and spaces (no numbers or special characters)
+  //     const filteredValue = value.replace(/[^A-Za-z\s]/g, "");
+  //     setFilters((prev) => ({ ...prev, [name]: filteredValue }));
+  //   } else if (name === "age") {
+  //     // Only allow numbers (0-9) and enforce 2-digit limit
+  //     if (value === "" || /^[0-9\b]+$/.test(value)) {
+  //       if (
+  //         value === "" ||
+  //         (parseInt(value, 10) >= 0 &&
+  //           parseInt(value, 10) <= 99 &&
+  //           value.length <= 2)
+  //       ) {
+  //         setFilters((prev) => ({ ...prev, [name]: value }));
+  //       }
+  //     }
+  //   } else {
+  //     // Default behavior for other fields (e.g., diagnosis)
+  //     setFilters((prev) => ({ ...prev, [name]: value }));
+  //   }
+  // };
+
+  const [ageError, setAgeError] = useState("");
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "name") {
-      // Only allow letters and spaces (no numbers or special characters)
-      const filteredValue = value.replace(/[^A-Za-z\s]/g, "");
-      setFilters((prev) => ({ ...prev, [name]: filteredValue }));
-    } else if (name === "age") {
-      // Only allow numbers (0-9) and enforce 2-digit limit
-      if (value === "" || /^[0-9\b]+$/.test(value)) {
-        if (
-          value === "" ||
-          (parseInt(value, 10) >= 0 &&
-            parseInt(value, 10) <= 99 &&
-            value.length <= 2)
-        ) {
-          setFilters((prev) => ({ ...prev, [name]: value }));
+    if (name === "age") {
+      // Age validation logic (as before)
+      if (value === "" || /^\d+$/.test(value)) {
+        setFilters((prevFilters) => ({
+          ...prevFilters,
+          [name]: value,
+        }));
+
+        if (value !== "") {
+          const ageNum = parseInt(value, 10);
+          if (ageNum < 12 || ageNum > 120) {
+            setAgeError("Age must be between 12 and 120.");
+          } else {
+            setAgeError("");
+          }
+        } else {
+          setAgeError("");
         }
       }
+    } else if (name === "name") {
+      // Name validation logic: Only allow letters and spaces
+      // Regex /^[A-Za-z\s]*$/ matches zero or more letters (uppercase/lowercase) or spaces
+      if (/^[A-Za-z\s]*$/.test(value)) {
+        setFilters((prevFilters) => ({
+          ...prevFilters,
+          [name]: value,
+        }));
+        setNameError(""); // Clear error if valid input
+      } else {
+        // If invalid character is typed, set error and prevent updating state for that character
+        setNameError("Name can only contain letters and spaces.");
+      }
     } else {
-      // Default behavior for other fields (e.g., diagnosis)
-      setFilters((prev) => ({ ...prev, [name]: value }));
+      // For any other input fields, just update the state
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        [name]: value,
+      }));
     }
   };
 
@@ -783,6 +829,11 @@ const MyAppointmentsSearch = ({
                   // inputMode="numeric"
                   pattern="[0-9]*" // Helps with mobile numeric keyboard
                 />
+                {ageError && (
+                  <p style={{ color: "red", fontSize: "0.85em", marginTop: 5 }}>
+                    {ageError}
+                  </p>
+                )}
               </div>
               <div className="filter-grp">
                 <label>Disease</label>
