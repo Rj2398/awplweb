@@ -536,7 +536,10 @@ const VideoCall = () => {
                         <input type="range" />
                       </div>
                     </div>
-                    <div className="vdoscrn-controls-ftr">
+                    <div
+                      className="vdoscrn-controls-ftr"
+                      style={{ marginLeft: 100 }}
+                    >
                       <div className="vdoscrn-action-controls">
                         <button
                           className="vdo-toggle-btn"
