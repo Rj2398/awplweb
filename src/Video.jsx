@@ -1330,7 +1330,7 @@ const Video = ({ isCameraOn, isMuted, patientInfo }) => {
       style={{
         position: "relative",
         width: "100%",
-        height: "700px",
+        height: "580px",
         backgroundColor: "#000",
         display: "flex",
         flexDirection: "column",
@@ -1350,7 +1350,7 @@ const Video = ({ isCameraOn, isMuted, patientInfo }) => {
           justifyContent: "center",
           alignContent: "center",
           width: "100%",
-          height: "700px",
+          height: "580px",
         }}
       >
         {Object.entries(remoteUsers).map(([uid, user]) => (
@@ -1371,7 +1371,7 @@ const Video = ({ isCameraOn, isMuted, patientInfo }) => {
               boxShadow: "0 2px 8px rgba(0,0,0,0.4)",
               backgroundColor: "#0c0d0f",
               width: "100%",
-              height: "700px",
+              height: "580px",
             }}
           >
             {user.videoMuted ? (
@@ -1435,7 +1435,7 @@ const Video = ({ isCameraOn, isMuted, patientInfo }) => {
       <div
         style={{
           position: "absolute",
-          bottom: "140px",
+          bottom: "120px",
           right: "20px",
           width: "180px",
           height: "240px",

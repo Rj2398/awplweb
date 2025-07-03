@@ -541,6 +541,7 @@ const VideoCall = () => {
                         <button
                           className="vdo-toggle-btn"
                           onClick={handleToggleCamera}
+                          style={{ marginTop: -30 }}
                         >
                           <img
                             src={
@@ -561,6 +562,7 @@ const VideoCall = () => {
                           style={{
                             borderRadius: "50%",
                             padding: "10px",
+                            marginTop: -30,
                           }}
                         >
                           <img
@@ -575,6 +577,7 @@ const VideoCall = () => {
                         <button
                           className="vdo-mute-toggle-btn"
                           onClick={handleToggleMute}
+                          style={{ marginTop: -30 }}
                         >
                           <img
                             src={
