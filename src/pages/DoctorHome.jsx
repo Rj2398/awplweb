@@ -667,7 +667,10 @@ const DoctorHome = () => {
                     </button>
                   </div>
                   {/* Upcoming Appointments */}
-                  <div className="appointments-row-wrp cmn-mb">
+                  <div
+                    className="appointments-row-wrp cmn-mb"
+                    style={{ marginTop: -35 }}
+                  >
                     <div className="appointments-row row">
                       {visibleAppointments.length == 0 && (
                         <h3
@@ -831,7 +834,10 @@ const DoctorHome = () => {
                     </div>
                   </div>
 
-                  <div className="pending-prescriptions">
+                  <div
+                    className="pending-prescriptions"
+                    style={{ marginTop: -40 }}
+                  >
                     <div className="docpnl-sec-head">
                       <h2>Pending Prescriptions</h2>
                       <button
@@ -841,7 +847,10 @@ const DoctorHome = () => {
                         See all
                       </button>
                     </div>
-                    <div className="pending-presc-table">
+                    <div
+                      className="pending-presc-table"
+                      style={{ marginTop: -20 }}
+                    >
                       <table>
                         <thead>
                           <tr>
