@@ -194,7 +194,7 @@ const DoctorHome = () => {
   // Determine which appointments/prescriptions to show based on "See all" state
   const visibleAppointments = showAllAppointments
     ? upcomingAppointments
-    : upcomingAppointments.slice(0, 4);
+    : upcomingAppointments.slice(0, 6);
 
   const visiblePrescriptions = showAllPrescriptions
     ? pendingPrescriptions
@@ -684,7 +684,7 @@ const DoctorHome = () => {
                       )}
                       {visibleAppointments.map((appointment, idx) => (
                         <div
-                          className="appointment-card-wrp col-lg-3 col-md-4 col-sm-6"
+                          className="appointment-card-wrp col-lg-2 col-md-4 col-sm-6"
                           key={idx}
                         >
                           <div className="appointment-card">
@@ -786,7 +786,7 @@ const DoctorHome = () => {
                                 <input
                                   type="submit"
                                   value="Cancel"
-                                  className="w-100"
+                                  className="w-100 up-btn"
                                   onClick={() =>
                                     handleCancelClick(
                                       appointment.appointment_id
