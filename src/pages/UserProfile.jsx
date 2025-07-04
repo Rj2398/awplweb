@@ -176,6 +176,15 @@ const UserProfile = () => {
 
   const handleCancel = () => {
     setIsEditing(false); // Switch back to view mode without saving
+
+    setProfile((prev) => ({
+      ...prev,
+      fullName: user.name || "",
+      email: user.email || "",
+      phone: user.contact_no || "",
+      experience: user.experience || "",
+      profilePic: baseUrl + "/" + user.profile_path || "", // updated here
+    }));
   };
 
   if (loading)
