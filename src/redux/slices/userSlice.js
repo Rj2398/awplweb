@@ -471,6 +471,11 @@ const userSlice = createSlice({
       .addCase(doctorProfileUpdate.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+
+        toast.error(
+          action.payload?.data?.experience?.[0] ||
+            action.payload?.data?.contact_no?.[0]
+        );
       })
 
       // 10.Doctor Photo Update API extraReducer
