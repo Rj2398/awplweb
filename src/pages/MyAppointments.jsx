@@ -1328,7 +1328,7 @@ const MyAppointments = () => {
                       display: activeTab === "incompleted" ? "block" : "none",
                     }}
                   >
-                    <div className="myapintmnt-table">
+                    <div className="myapintmnt-table incomp_tbl">
                       <table>
                         <thead>
                           <tr>
