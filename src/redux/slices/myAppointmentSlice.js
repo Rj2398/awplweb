@@ -36,6 +36,18 @@ export const getAllIncompletedAppointment = createAsyncThunk(
   }
 );
 
+export const getAllMissedAppointment = createAsyncThunk(
+  "user/getAllMissedAppointment",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.getAllMissedAppointment();
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 //
 // export const getJoinVideoCall = createAsyncThunk(
 //   "doctor/appointments/upcoming",
@@ -171,7 +183,9 @@ const myAppointmentSlice = createSlice({
     cancelledAppointment: [],
     cancelledLoading: false,
     incompletedAppointment: [],
+    missedAppointment: [],
     incompletedLoading: false,
+    missedLoading: false,
     doctorCancelledAppointment: [],
     doctorcancelledLoading: false,
     patientAppointmentsDetail: [],
@@ -192,8 +206,7 @@ const myAppointmentSlice = createSlice({
       })
       .addCase(getAllUpcomingAppointment.fulfilled, (state, action) => {
         state.upcomingLoading = false;
-        state.upcommingAppointment =
-          action.payload?.data?.upcomingAppointments;
+        state.upcommingAppointment = action.payload?.data?.upcomingAppointments;
       })
       .addCase(getAllUpcomingAppointment.rejected, (state, action) => {
         state.upcomingLoading = false;
@@ -244,6 +257,22 @@ const myAppointmentSlice = createSlice({
       })
       .addCase(getAllIncompletedAppointment.rejected, (state, action) => {
         state.incompletedLoading = false;
+        state.error = action.payload || "Failed to fetch users";
+        if (action.payload.message == "Unauthenticated.") {
+          logouterror();
+        }
+      })
+
+      .addCase(getAllMissedAppointment.pending, (state) => {
+        state.missedLoading = true;
+        state.error = null;
+      })
+      .addCase(getAllMissedAppointment.fulfilled, (state, action) => {
+        state.missedLoading = false;
+        state.missedAppointment = action.payload?.data?.missed_appointments;
+      })
+      .addCase(getAllMissedAppointment.rejected, (state, action) => {
+        state.missedLoading = false;
         state.error = action.payload || "Failed to fetch users";
         if (action.payload.message == "Unauthenticated.") {
           logouterror();

@@ -298,7 +298,7 @@ const PatientProfile = () => {
                             <div className="patient-info">
                               <div
                                 className="patient-info-card"
-                                style={{ marginLeft: 20 }}
+                                style={{ marginLeft: 12, flex: "0 1 calc(25% - 12px)", minWidth: "150px" }}
                               >
                                 <h3>Phone number</h3>
                                 <p style={{ color: "#199FD9" }}>
@@ -308,7 +308,7 @@ const PatientProfile = () => {
                               </div>
                               <div
                                 className="patient-info-card"
-                                style={{ marginLeft: -50 }}
+                                style={{ flex: "0 1 calc(25% - 12px)", minWidth: "150px" }}
                               >
                                 <h3 style={{ marginLeft: 15 }}>Email ID</h3>
                                 {/* <a href="mailto:patientname@gmail.com">{patientInfo.email}</a> */}

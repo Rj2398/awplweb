@@ -13,6 +13,7 @@ import {
   getAllCanceledAppointment,
   getAllCompletedAppointment,
   getAllIncompletedAppointment,
+  getAllMissedAppointment,
   getAllUpcomingAppointment,
   getJoinVideoCall,
   sendPushNotification,
@@ -32,11 +33,13 @@ const MyAppointments = () => {
     cancelledAppointment,
     incompletedAppointment,
     doctorcancelledAppointment,
+    missedAppointment,
     upcomingLoading,
     completedLoading,
     cancelledLoading,
     incompletedLoading,
     doctorcancelledLoading,
+    missedLoading,
   } = useSelector((state) => state.appointments);
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -67,11 +70,14 @@ const MyAppointments = () => {
   const [filteredIncompletedPatients, setFilteredIncompletedPatients] =
     useState([]);
 
+  const [filteredMissedPatients, setFilteredMissedPatients] = useState([]);
+
   useEffect(() => {
     dispatch(getAllUpcomingAppointment());
     dispatch(getAllCompletedAppointment());
     dispatch(getAllCanceledAppointment());
     dispatch(getAllIncompletedAppointment());
+    dispatch(getAllMissedAppointment());
   }, [dispatch]);
 
   useEffect(() => {
@@ -87,12 +93,14 @@ const MyAppointments = () => {
     setFilteredCompletedPatients(completedAppointment);
     setFilteredCancelledPatients(cancelledAppointment);
     setFilteredIncompletedPatients(incompletedAppointment);
+    setFilteredMissedPatients(missedAppointment);
   }, [
     activeTab,
     upcommingAppointment,
     completedAppointment,
     cancelledAppointment,
     incompletedAppointment,
+    missedAppointment,
   ]);
 
   console.log("$$$$$$$$$$$$", upcommingAppointment);
@@ -193,6 +201,9 @@ const MyAppointments = () => {
         setFilteredIncompletedPatients(
           applyFilters(incompletedAppointment, "incompleted")
         );
+        break;
+      case "missed":
+        setFilteredMissedPatients(applyFilters(missedAppointment, "missed"));
         break;
       default:
         break;
@@ -331,6 +342,9 @@ const MyAppointments = () => {
         break;
       case "incompleted":
         setFilteredIncompletedPatients(searchPatients(incompletedAppointment));
+        break;
+      case "missed":
+        setFilteredMissedPatients(searchPatients(missedAppointment));
         break;
       default:
         break;
@@ -471,7 +485,9 @@ const MyAppointments = () => {
         ? filteredCompletedPatients
         : activeTab === "cancelled"
         ? filteredCancelledPatients
-        : filteredIncompletedPatients
+        : activeTab === "incompleted"
+        ? filteredIncompletedPatients
+        : filteredMissedPatients
     );
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -491,8 +507,10 @@ const MyAppointments = () => {
       : activeTab === "completed"
       ? filteredCompletedPatients
       : activeTab === "cancelled"
-        ? filteredCancelledPatients
-        : filteredIncompletedPatients
+      ? filteredCancelledPatients
+      : activeTab === "incompleted"
+      ? filteredIncompletedPatients
+      : filteredMissedPatients;
 
   const totalPages = getTotalPages(currentPatients);
   const pageNumbers = [];
@@ -547,12 +565,18 @@ const MyAppointments = () => {
           {" "}
           <Header />{" "}
         </div>
-        {upcomingLoading || completedLoading || cancelledLoading ? (
+        {upcomingLoading ||
+        completedLoading ||
+        cancelledLoading ||
+        incompletedLoading ? (
           <div className="loader-main">
             <span className="loader"></span>
           </div>
         ) : (
           <div className="doc-panel-body">
+            <div className="docpnl-sec-head">
+              <h1 className="h2-title">My Appointments</h1>
+            </div>
             <div className="my-appointments-wrp">
               <div className="my-appointments-inr">
                 {/* Tabs */}
@@ -620,6 +644,22 @@ const MyAppointments = () => {
                       >
                         {" "}
                         Incompleted{" "}
+                      </li>
+
+                      <li
+                        style={
+                          activeTab == "missed"
+                            ? {
+                                backgroundColor: "white",
+                                borderRadius: "10px",
+                                color: "#356598",
+                              }
+                            : {}
+                        }
+                        onClick={() => setActiveTab("missed")}
+                      >
+                        {" "}
+                        Missed{" "}
                       </li>
                     </ul>
                   </div>
@@ -1506,6 +1546,202 @@ const MyAppointments = () => {
                       <Pagination
                         currentPage={currentPage}
                         totalPages={getTotalPages(filteredIncompletedPatients)}
+                        onPageChange={handlePageChange}
+                        onPrevious={handlePrevious}
+                        onNext={handleNext}
+                      />
+                    )}
+                  </div>
+
+                  {/* Missed Tab */}
+                  <div
+                    className={`myapintmnt-content-tab ${
+                      activeTab === "missed" ? "missed" : ""
+                    }`}
+                    style={{
+                      display: activeTab === "missed" ? "block" : "none",
+                    }}
+                  >
+                    <div className="myapintmnt-table incomp_tbl">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>S.no.</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th>Phone number</th>
+                            <th>Appointment date</th>
+                            <th>Reason</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {getPaginatedPatients(filteredMissedPatients)
+                            ?.length == 0 && (
+                            <tr>
+                              <td
+                                colSpan="8"
+                                style={{
+                                  textAlign: "center",
+                                  padding: "25px 0",
+                                  fontSize: 18,
+                                  fontWeight: "400",
+                                  color: "#199FD9",
+                                }}
+                              >
+                                No data found
+                              </td>
+                            </tr>
+                          )}
+                          {getPaginatedPatients(filteredMissedPatients)?.map(
+                            (patient, index) => (
+                              <tr key={`missed-${index}`}>
+                                {/* <td>{(currentPage - 1) * patientsPerPage + index + 1}</td> */}
+                                <td style={{ color: "#199FD9" }}>
+                                  {String(
+                                    (currentPage - 1) * patientsPerPage +
+                                      index +
+                                      1
+                                  ).padStart(2, "0")}
+                                </td>
+                                {/* <td>
+                                                                <img src={baseUrl + "/" + patient?.patient_profile} alt="Patient" />
+                                                                
+                                                                <Link to="/patient-profile" state={{ patientId: patient.patient_id }}><h3>{patient.patient_name || "-"}</h3></Link>
+
+                                                            </td> */}
+                                <td
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "10px",
+                                  }}
+                                >
+                                  <img
+                                    src={
+                                      baseUrl + "/" + patient?.patient_profile
+                                    }
+                                    alt="Patient"
+                                  />
+
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "column",
+                                    }}
+                                  >
+                                    {/* <Link
+                                      to="/patient-profile"
+                                      state={{ patientId: patient.patient_id }}
+                                    > */}
+                                    <h3
+                                      style={{
+                                        margin: 0,
+                                        textAlign: "left",
+                                        color: "#199FD9",
+                                      }}
+                                    >
+                                      {patient.patient_name || "-"}
+                                    </h3>
+                                    {/* </Link> */}
+                                    {/* {(patient?.ds_code &&
+                                                                        <div style={{ color: "#199fd9", marginTop: "2px" }}>
+                                                                            (DS Code: {patient.ds_code})
+                                                                        </div>
+                                                                    )} */}
+                                    {patient?.referred == true ? (
+                                      <div
+                                        style={{
+                                          // This div's color will be inherited by parts not explicitly styled
+                                          color: "#199fd9",
+                                          marginTop: "2px",
+                                        }}
+                                      >
+                                        <span style={{ color: "black" }}>
+                                          {" "}
+                                          (Referred by DS Code:{" "}
+                                        </span>
+                                        {patient.ds_code}
+                                        <span style={{ color: "black" }}>
+                                          )
+                                        </span>
+                                      </div>
+                                    ) : (
+                                      <div
+                                        style={{
+                                          // This div's color will be inherited by parts not explicitly styled
+                                          color: "#199fd9",
+                                          marginTop: "2px",
+                                        }}
+                                      >
+                                        <span style={{ color: "black" }}>
+                                          {" "}
+                                          (DS Code:{" "}
+                                        </span>
+                                        {patient.ds_code}
+                                        <span style={{ color: "black" }}>
+                                          )
+                                        </span>
+                                      </div>
+                                    )}
+                                  </div>
+                                </td>
+                                <td style={{ color: "#199FD9" }}>
+                                  {patient.patient_age || "-"}
+                                </td>
+                                {/* <td>{patient.patient_gender || "-"}</td> */}
+                                <td style={{ color: "#199FD9" }}>
+                                  {patient.patient_gender
+                                    ?.charAt(0)
+                                    .toUpperCase() +
+                                    patient.patient_gender
+                                      ?.slice(1)
+                                      .toLowerCase()}
+                                </td>
+                                <td style={{ color: "#199FD9" }}>
+                                  {patient.patient_phone || "-"}
+                                </td>
+                                <td>
+                                  {/* <div className="date h3-title">{patient.datetime}</div> */}
+                                  <div
+                                    className="date h3-title"
+                                    style={{ color: "#199FD9" }}
+                                  >
+                                    {patient.datetime.split(" ")[0]}
+                                  </div>
+                                  <div
+                                    className="time"
+                                    style={{ color: "#199FD9" }}
+                                  >
+                                    {patient.datetime.split(" ")[1]}{" "}
+                                    {patient.datetime.split(" ")[2]}
+                                  </div>
+                                </td>
+                                <td style={{ color: "#199FD9" }}>
+                                  {/* <Link
+                                    to="/patient-profile"
+                                    state={{
+                                      patientId: patient.patient_id,
+                                      appointmentId: patient.appointment_id,
+                                      source: "cancelled",
+                                      hideSchedule: false,
+                                    }}
+                                    className="cmn-btn"
+                                  >
+                                    View Profile
+                                  </Link> */}
+                                  {patient.reason}
+                                </td>
+                              </tr>
+                            )
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                    {filteredMissedPatients?.length > 0 && (
+                      <Pagination
+                        currentPage={currentPage}
+                        totalPages={getTotalPages(filteredMissedPatients)}
                         onPageChange={handlePageChange}
                         onPrevious={handlePrevious}
                         onNext={handleNext}

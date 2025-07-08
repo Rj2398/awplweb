@@ -486,7 +486,9 @@ const MyAppointmentsSearch = ({
       <div
         className="datepicker-wrp"
         style={
-          activeTab == "upcoming" || activeTab == "incompleted"
+          activeTab == "upcoming" ||
+          activeTab == "incompleted" ||
+          activeTab == "missed"
             ? { display: "none" }
             : activeTab === "cancelled"
             ? { width: "50%" }
@@ -718,7 +720,8 @@ const MyAppointmentsSearch = ({
         style={
           activeTab === "cancelled" ||
           activeTab === "upcoming" ||
-          activeTab === "incompleted"
+          activeTab === "incompleted" ||
+          activeTab === "missed"
             ? { display: "none" }
             : {}
         }

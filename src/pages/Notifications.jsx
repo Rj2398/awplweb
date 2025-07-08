@@ -148,7 +148,24 @@ const Notifications = () => {
             <li
               key={n.id}
               className="notification-item"
-              onClick={() => toggleSelect(n?.id)}
+              onClick={() => {
+                if (n?.type === "new_message") {
+                  // Use strict equality (===)
+
+                  navigate("/completed-appointment-screen", {
+                    state: {
+                      // This is the 'state' object
+                      id: n?.notification_data?.prescription_id,
+                      patientId: n?.notification_data?.patient_id,
+                      chat_id: n?.notification_data?.chat_channel,
+                      ds_code: n?.notification_data?.ds_code,
+                      referred: n?.notification_data?.referred,
+                    }, // Close the 'state' object here
+                  }); // Close the navigate function call and end the statement
+                } else {
+                  toggleSelect(n?.id);
+                }
+              }}
               style={{
                 backgroundColor: selectedIds.includes(n?.id)
                   ? "#c0c0c0" // Darker gray for selected

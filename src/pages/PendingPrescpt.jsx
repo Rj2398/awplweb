@@ -2919,7 +2919,7 @@ const PendingPrescpt = ({ id }) => {
           <Table
             hover
             responsive
-            className="min-w-full text-left table-auto rounded-lg overflow-hidden"
+            className="min-w-full text-center table-auto rounded-lg overflow-hidden"
           >
             <thead style={{ backgroundColor: "#199FD9", color: "white" }}>
               <tr>

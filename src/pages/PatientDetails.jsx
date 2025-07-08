@@ -483,9 +483,9 @@ const PatientDetails = () => {
                 <img src="/images/doctor-symbol.png" alt="Image" />
               </div>
               <div className="appointments">
-                <div className="start-appointment cmn-mb">
+                <div className="start-appointment cmn-mb mb-4">
                   <div className="docpnl-sec-head">
-                    <h1 className="h2-title">Appointment Details</h1>
+                    <h1 className="h2-title mb-1">Appointment Details</h1>
                     <div className="back-btn">
                       <Link
                         to="#"

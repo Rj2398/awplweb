@@ -104,7 +104,7 @@ const CompletedAppointment = () => {
                   </div>
                 </div>
 
-                <div className="chat-header">
+                {/* <div className="chat-header">
                   <a
                     // href="./images/file-icon.svg"
                     className="orange-btn"
@@ -113,10 +113,28 @@ const CompletedAppointment = () => {
                   >
                     Download Prescription
                   </a>
+                </div> */}
+
+
+                <div className="row">
+                  <div className="col-lg-6">
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="chat-header">
+                      <a
+                        // href="./images/file-icon.svg"
+                        className="orange-btn"
+                        // download
+                        onClick={() => handleDownloadPrescription()}
+                      >
+                        Download Prescription
+                      </a>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="completed-appoint-scrn-inr row">
-                  <div className="completed-appoint-scrn-left col-lg-6">
+                  <div className="completed-appoint-scrn-left col-lg-6" style={{marginTop : "-80px" }}>
                     <div className="apointment-detail-card cmn-mb2">
                       <div className="apoint-dtl-img">
                         {/* <img src="./images/client-img-5.png" alt="Client" /> */}
