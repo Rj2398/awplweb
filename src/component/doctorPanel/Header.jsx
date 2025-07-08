@@ -56,6 +56,21 @@ const Header = () => {
 
   return (
     <>
+    {isSidebarOpen && (
+      <div onClick={() => setIsSidebarOpen(false)}
+      style={{
+        position:"fixed",
+        top:0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        backgroundColor: "rgba(0, 0, 0, 0.3)",
+        // backgroundColor: "red",
+        zIndex: 999,
+      }}
+      />
+    )}
+
       {/* Sidebar */}
       <div
         className="sidebar"
@@ -97,7 +112,7 @@ const Header = () => {
                 <img
                   src="/images/dash.svg"
                   alt="Icon"
-                  style={{ height: "20px", width: "20px" }}
+                  style={{ height: "18px", width: "18px" }}
                 />
                 <Link to="/doctor-home" onClick={() => setIsSidebarOpen(false)}>
                   Dashboard
@@ -109,6 +124,7 @@ const Header = () => {
                     <img
                       src="/images/notification-icon.svg"
                       alt="Notification"
+                      style={{ height: "18px", width: "18px" }}
                     />
                     <span>Notification</span>
                   </div>
@@ -127,7 +143,7 @@ const Header = () => {
               </li>
 
               <li>
-                <img src="/images/appointment-icon.svg" alt="Icon" />
+                <img src="/images/appointment-icon.svg" alt="Icon" style={{ height: "18px", width: "18px" }}/>
                 <Link
                   to="/my-appointments"
                   onClick={() => setIsSidebarOpen(false)}
@@ -136,7 +152,7 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <img src="/images/pending-prescription-icon.svg" alt="Icon" />
+                <img src="/images/pending-prescription-icon.svg" alt="Icon" style={{ height: "18px", width: "18px" }}/>
                 <Link
                   to="/pendingprescription"
                   onClick={() => setIsSidebarOpen(false)}
@@ -145,7 +161,7 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <img src="/images/past-patients-icon.svg" alt="Icon" />
+                <img src="/images/past-patients-icon.svg" alt="Icon" style={{ height: "18px", width: "18px" }}/>
                 <Link to="/pastpatient" onClick={() => setIsSidebarOpen(false)}>
                   My Past Patients
                 </Link>
@@ -160,7 +176,7 @@ const Header = () => {
               </li> */}
 
               <li className="logout">
-                <img src="/images/menu-logout-icon.svg" alt="Icon" />
+                <img src="/images/menu-logout-icon.svg" alt="Icon" style={{ height: "18px", width: "18px" }}/>
                 <Button
                   variant="link"
                   style={{

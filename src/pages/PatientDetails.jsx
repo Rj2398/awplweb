@@ -595,7 +595,7 @@ const PatientDetails = () => {
                           </div>
                           <div className="col-lg-4 col-md-4 col-sm-6">
                             <div className="formfield">
-                              <label>Enter Your Height</label>
+                              <label>Height</label>
                               <input
                                 type="text"
                                 placeholder="26"
@@ -609,7 +609,7 @@ const PatientDetails = () => {
                           </div>
                           <div className="col-lg-4 col-md-4 col-sm-6">
                             <div className="formfield">
-                              <label>Enter Your Weight</label>
+                              <label>Weight</label>
                               <input
                                 type="text"
                                 placeholder="50kg"
@@ -641,7 +641,7 @@ const PatientDetails = () => {
                           </div>
                           <div className="col-lg-4 col-md-4 col-sm-6">
                             <div className="formfield">
-                              <label>Enter Age</label>
+                              <label>Age</label>
                               <input
                                 type="text"
                                 placeholder="26"

@@ -469,7 +469,9 @@ const MyAppointments = () => {
         ? filteredUpcomingPatients
         : activeTab === "completed"
         ? filteredCompletedPatients
-        : filteredCancelledPatients
+        : activeTab === "cancelled"
+        ? filteredCancelledPatients
+        : filteredIncompletedPatients
     );
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -488,7 +490,9 @@ const MyAppointments = () => {
       ? filteredUpcomingPatients
       : activeTab === "completed"
       ? filteredCompletedPatients
-      : filteredCancelledPatients;
+      : activeTab === "cancelled"
+        ? filteredCancelledPatients
+        : filteredIncompletedPatients
 
   const totalPages = getTotalPages(currentPatients);
   const pageNumbers = [];

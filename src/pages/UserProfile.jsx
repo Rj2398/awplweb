@@ -20,6 +20,10 @@ const UserProfile = () => {
     dispatch(getDoctorProfile());
   }, [dispatch]);
 
+
+  const [tempProfilePic, setTempProfilePic] = useState("");
+  const [isImageRemoved, setIsImageRemoved] = useState(false);
+
   // console.log(data)
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({
@@ -102,63 +106,112 @@ const UserProfile = () => {
   //   }
   // };
 
-  const handleUpload = async (e) => {
+  // const handleUpload = async (e) => {
+  //   const file = e.target.files[0];
+  //   if (!file) return;
+
+  //   // Create temporary preview (optional, for immediate UI feedback)
+  //   const imageUrl = URL.createObjectURL(file);
+  //   setProfile((prev) => ({ ...prev, profilePic: imageUrl }));
+
+  //   // Create FormData to send the actual file
+  //   const formData = new FormData();
+  //   formData.append("profileImage", file); // Make sure this matches what your backend expects
+
+  //   try {
+  //     const res = await dispatch(doctorPhotoUpdate(formData));
+
+  //     if (res.payload && res.payload.status) {
+  //       // After successful upload, refresh profile to get permanent URL from backend
+  //       await dispatch(getDoctorProfile());
+  //     } else {
+  //       // If upload fails, revert to previous image
+  //       setProfile((prev) => ({
+  //         ...prev,
+  //         profilePic: user.profile_path || "/images/my-profile-img.png",
+  //       }));
+  //     }
+  //   } catch (error) {
+  //     console.error("Error uploading image:", error);
+  //     setProfile((prev) => ({
+  //       ...prev,
+  //       profilePic: user.profile_path || "/images/my-profile-img.png",
+  //     }));
+  //   }
+  // };
+
+  const handleUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Create temporary preview (optional, for immediate UI feedback)
     const imageUrl = URL.createObjectURL(file);
-    setProfile((prev) => ({ ...prev, profilePic: imageUrl }));
-
-    // Create FormData to send the actual file
-    const formData = new FormData();
-    formData.append("profileImage", file); // Make sure this matches what your backend expects
-
-    try {
-      const res = await dispatch(doctorPhotoUpdate(formData));
-
-      if (res.payload && res.payload.status) {
-        // After successful upload, refresh profile to get permanent URL from backend
-        await dispatch(getDoctorProfile());
-      } else {
-        // If upload fails, revert to previous image
-        setProfile((prev) => ({
-          ...prev,
-          profilePic: user.profile_path || "/images/my-profile-img.png",
-        }));
-      }
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      setProfile((prev) => ({
-        ...prev,
-        profilePic: user.profile_path || "/images/my-profile-img.png",
-      }));
-    }
+    setTempProfilePic(imageUrl);
+    setIsImageRemoved(false); // reset in case previously removed
   };
 
-  const handleRemoveImage = async () => {
-    // setProfile((prev) => ({ ...prev, profilePic: '' }));
-    try {
-      const res = await dispatch(deleteDoctorPhoto());
+  // const handleRemoveImage = async () => {
+  //   try {
+  //     const res = await dispatch(deleteDoctorPhoto());
 
-      if (res.payload && res.payload.status) {
-        // After successful deletion, refresh profile
-        await dispatch(getDoctorProfile());
+  //     if (res.payload && res.payload.status) {
+  //       // After successful deletion, refresh profile
+  //       await dispatch(getDoctorProfile());
 
-        // //Update local State
-        // setProfile(prev => ({
-        //   ...prev,
-        //   profilePic: '/images/my-profile-img.png' //default image
-        // }))
-      } else {
-        console.log("failed to delete image");
-      }
-    } catch (error) {
-      console.log("Error deleting image", error);
-    }
+
+  //     } else {
+  //       console.log("failed to delete image");
+  //     }
+  //   } catch (error) {
+  //     console.log("Error deleting image", error);
+  //   }
+  // };
+
+  const handleRemoveImage = () => {
+    setTempProfilePic("");            // Remove preview
+    setProfile((prev) => ({
+      ...prev,
+      // profilePic: "",
+      profilePic: "https://awplconnectadmin.tgastaging.com/public/doctorPlaceholder.jpg",
+
+    }));
+    setIsImageRemoved(true);         // Mark for permanent deletion on save
   };
+  
+
+  // const handleSave = async () => {
+  //   const res = await dispatch(
+  //     doctorProfileUpdate({
+  //       name: profile.fullName,
+  //       contact_no: profile.phone,
+  //       experience: profile.experience,
+  //     })
+  //   );
+  //   console.log(res);
+  //   // console.log(res.payload.data)
+  //   if (res.payload && res.payload.status) {
+  //     await dispatch(getDoctorProfile());
+  //     setIsEditing(false); // Switch back to view mode
+  //   }
+  // };
 
   const handleSave = async () => {
+    // 1. Delete image if removed
+    if (isImageRemoved) {
+      await dispatch(deleteDoctorPhoto());
+    }
+  
+    // 2. Upload new image if provided
+    else if (tempProfilePic && tempProfilePic !== profile.profilePic) {
+      const response = await fetch(tempProfilePic);
+      const blob = await response.blob();
+      const file = new File([blob], "profile.jpg", { type: blob.type });
+  
+      const formData = new FormData();
+      formData.append("profileImage", file);
+      await dispatch(doctorPhotoUpdate(formData));
+    }
+  
+    // 3. Update basic profile details
     const res = await dispatch(
       doctorProfileUpdate({
         name: profile.fullName,
@@ -166,26 +219,43 @@ const UserProfile = () => {
         experience: profile.experience,
       })
     );
-    console.log(res);
-    // console.log(res.payload.data)
-    if (res.payload && res.payload.status) {
+  
+    if (res.payload?.status) {
       await dispatch(getDoctorProfile());
-      setIsEditing(false); // Switch back to view mode
+      setIsEditing(false);
     }
   };
+  
+  // const handleCancel = () => {
+  //   setIsEditing(false); // Switch back to view mode without saving
+
+  //   setProfile((prev) => ({
+  //     ...prev,
+  //     fullName: user.name || "",
+  //     email: user.email || "",
+  //     phone: user.contact_no || "",
+  //     experience: user.experience || "",
+  //     profilePic: baseUrl + "/" + user.profile_path || "", // updated here
+  //   }));
+  // };
 
   const handleCancel = () => {
-    setIsEditing(false); // Switch back to view mode without saving
-
+    const restoredImage = user?.profile_path ? baseUrl + "/" + user.profile_path : "/images/my-profile-img.png";
+  
     setProfile((prev) => ({
       ...prev,
       fullName: user.name || "",
       email: user.email || "",
       phone: user.contact_no || "",
       experience: user.experience || "",
-      profilePic: baseUrl + "/" + user.profile_path || "", // updated here
+      profilePic: restoredImage,
     }));
+    setTempProfilePic(restoredImage);
+    setIsImageRemoved(false);
+    setIsEditing(false);
   };
+  
+
 
   if (loading)
     return (
@@ -209,12 +279,18 @@ const UserProfile = () => {
           <div className="my-profile-details">
             <div className="my-profile-img-wrp">
               <div className="my-profile-img">
-                {profile.profilePic && (
+                {/* {profile.profilePic && (
                   <img
                     src={profile.profilePic || "/images/my-profile-img.png"}
                     alt="My Profile"
                   />
-                )}
+                  
+                )} */}
+                <img
+                  src={tempProfilePic || profile.profilePic }
+                  alt="My Profile"
+                />
+
               </div>
 
               {isEditing && (
@@ -270,7 +346,12 @@ const UserProfile = () => {
                   <div className="btn-wrp">
                     <button
                       className="orange-btn"
-                      onClick={() => setIsEditing(true)}
+                      onClick={() => {
+                        setTempProfilePic(profile.profilePic);
+                        setIsImageRemoved(false);
+                        setIsEditing(true);
+
+                      }}
                     >
                       <img src="./images/pencil-icon.svg" alt="Edit" /> Edit
                       profile

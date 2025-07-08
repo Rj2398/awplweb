@@ -202,7 +202,7 @@ const Notifications = () => {
 
                       // setReadNotificationOneByone(n?.id);
 
-                      deleteOneByOne(n?.id);
+                      // deleteOneByOne(n?.id);
                     }}
                   >
                     <h3

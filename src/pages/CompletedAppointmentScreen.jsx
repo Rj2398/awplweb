@@ -218,7 +218,7 @@ const CompletedAppointment = () => {
                               </div>
                               <div className="col-lg-12">
                                 <div className="formfield">
-                                  <label>Enter Your Height</label>
+                                  <label>Height</label>
                                   <input
                                     type="text"
                                     value={
@@ -231,7 +231,7 @@ const CompletedAppointment = () => {
                               </div>
                               <div className="col-lg-12">
                                 <div className="formfield">
-                                  <label>Enter Your Weight</label>
+                                  <label>Weight</label>
                                   <input
                                     type="text"
                                     value={
@@ -261,7 +261,7 @@ const CompletedAppointment = () => {
                               </div>
                               <div className="col-lg-12">
                                 <div className="formfield">
-                                  <label>Enter Age</label>
+                                  <label>Age</label>
                                   <input
                                     type="text"
                                     value={

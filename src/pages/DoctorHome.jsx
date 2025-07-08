@@ -518,9 +518,11 @@ const DoctorHome = () => {
                 <img src={`${baseUrl}/${user?.profile_path}`} alt="Doctor" />
               </div>
               <div className="doc-profile-body">
+                <Link to="/UserProfile">
                 <p style={{ color: "#199FD9" }}>
                   {user?.name || "Doctor Name"}
                 </p>
+                </Link>
               </div>
             </div>
           </div>
