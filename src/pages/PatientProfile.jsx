@@ -214,7 +214,7 @@ const PatientProfile = () => {
                                   </Link>
                                   <span style={{ color: "#000" }}>
                                     (DS Code:
-                                    <span style={{ color: "#199FD9" }}>
+                                    <span style={{ color: "#199fd9" }}>
                                       {" "}
                                       {patientInfo.ds_code}
                                     </span>
@@ -298,7 +298,11 @@ const PatientProfile = () => {
                             <div className="patient-info">
                               <div
                                 className="patient-info-card"
-                                style={{ marginLeft: 12, flex: "0 1 calc(25% - 12px)", minWidth: "150px" }}
+                                style={{
+                                  marginLeft: 12,
+                                  flex: "0 1 calc(25% - 12px)",
+                                  minWidth: "150px",
+                                }}
                               >
                                 <h3>Phone number</h3>
                                 <p style={{ color: "#199FD9" }}>
@@ -308,7 +312,10 @@ const PatientProfile = () => {
                               </div>
                               <div
                                 className="patient-info-card"
-                                style={{ flex: "0 1 calc(25% - 12px)", minWidth: "150px" }}
+                                style={{
+                                  flex: "0 1 calc(25% - 12px)",
+                                  minWidth: "150px",
+                                }}
                               >
                                 <h3 style={{ marginLeft: 15 }}>Email ID</h3>
                                 {/* <a href="mailto:patientname@gmail.com">{patientInfo.email}</a> */}
@@ -553,12 +560,14 @@ const PatientProfile = () => {
                                   <Link
                                     to="/completed-appointment-screen"
                                     state={{
-                                      id: appointment.prescription_id,
+                                      id: appointment?.appointment_id,
                                       patientId:
                                         patientProfileData?.appointment_details
                                           ?.patient_id,
                                       chat_id: appointment.chat_id,
                                       ds_code: patientInfo.ds_code,
+                                      prescription_id:
+                                        appointment?.prescription_id,
                                     }}
                                     className="link"
                                   >

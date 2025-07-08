@@ -1117,12 +1117,13 @@ const MyAppointments = () => {
                                   <Link
                                     to="/completed-appointment-screen"
                                     state={{
-                                      id: patient.prescription_id,
+                                      id: patient.appointment_id,
                                       patientId: patient.patient_id,
                                       chat_id: patient.chat_id,
                                       ds_code: patient.ds_code,
 
                                       referred: patient.referred,
+                                      prescription_id: patient?.prescription_id,
                                     }}
                                     style={{
                                       color: "#199FD9",

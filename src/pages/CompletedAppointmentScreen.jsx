@@ -8,18 +8,26 @@ import { completeAppointmentPatientDetails } from "../redux/slices/prescriptionS
 import { prescriptionDownload } from "../redux/slices/prescriptionSlice";
 import Chat from "../component/doctorPanel/Chat";
 import Config from "../config/Constant";
+import { Button } from "react-bootstrap";
 const CompletedAppointment = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { id, patientId, appointmentId, chat_id, ds_code, referred } =
-    location.state || {};
-  console.log(
+  const {
     id,
     patientId,
     appointmentId,
     chat_id,
     ds_code,
     referred,
+    prescription_id,
+  } = location.state || {};
+  console.log(
+    // id,
+    // patientId,
+    appointmentId,
+    // chat_id,
+    // ds_code,
+    // referred,
     "Chat idddd***************"
   );
 
@@ -45,7 +53,7 @@ const CompletedAppointment = () => {
 
   useEffect(() => {
     if (id) {
-      dispatch(completeAppointmentPatientDetails({ prescriptionId: id }));
+      dispatch(completeAppointmentPatientDetails({ appointmentId: id }));
       console.log("data", completeAppointmentPatientDetail);
     }
   }, [dispatch, id]);
@@ -53,26 +61,28 @@ const CompletedAppointment = () => {
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleDownloadPrescription = () => {
-    console.log("Downloading prescription ID:", id);
-    dispatch(prescriptionDownload({ prescriptionId: id })).then((action) => {
-      if (prescriptionDownload.fulfilled.match(action)) {
-        // Create a blob from the response
-        const blob = new Blob([action.payload], { type: "application/pdf" });
-        // Create a download link
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        // Set the filename (you might want to get this from headers or response)
-        link.setAttribute("download", `prescription-${id}.pdf`);
-        // Trigger the download
-        document.body.appendChild(link);
-        link.click();
-        // Clean up
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-        console.log(url, "ashfdkjashdfkjhsdfhsfd");
+    console.log("Downloading prescription ID:", prescription_id);
+    dispatch(prescriptionDownload({ prescriptionId: prescription_id })).then(
+      (action) => {
+        if (prescriptionDownload.fulfilled.match(action)) {
+          // Create a blob from the response
+          const blob = new Blob([action.payload], { type: "application/pdf" });
+          // Create a download link
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          // Set the filename (you might want to get this from headers or response)
+          link.setAttribute("download", `prescription-${id}.pdf`);
+          // Trigger the download
+          document.body.appendChild(link);
+          link.click();
+          // Clean up
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+          console.log(url, "ashfdkjashdfkjhsdfhsfd");
+        }
       }
-    });
+    );
   };
 
   return (
@@ -114,28 +124,32 @@ const CompletedAppointment = () => {
                     Download Prescription
                   </a>
                 </div> */}
-
+                {console.log(prescription_id, "****************")}
 
                 <div className="row">
-                  <div className="col-lg-6">
-                  </div>
+                  <div className="col-lg-6"></div>
                   <div className="col-lg-6">
                     <div className="chat-header">
-                      <a
+                      <Button
+                        style={{ backgroundColor: "#f47820", border: "none" }}
+                        disabled={!prescription_id ? true : false}
                         // href="./images/file-icon.svg"
                         className="orange-btn"
                         // download
                         onClick={() => handleDownloadPrescription()}
                       >
                         Download Prescription
-                      </a>
+                      </Button>
                     </div>
                   </div>
                 </div>
 
                 <div className="completed-appoint-scrn-inr row">
-                  <div className="completed-appoint-scrn-left col-lg-6" style={{marginTop : "-80px" }}>
-                    <div className="apointment-detail-card cmn-mb2">
+                  <div
+                    className="completed-appoint-scrn-left col-lg-6"
+                    style={{ marginTop: "-100px" }}
+                  >
+                    <div className="apointment-detail-card cmn-mb2 mb-4">
                       <div className="apoint-dtl-img">
                         {/* <img src="./images/client-img-5.png" alt="Client" /> */}
                         <img

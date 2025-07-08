@@ -211,11 +211,13 @@ const Notifications = () => {
                       onClick={() => {
                         navigate("/completed-appointment-screen", {
                           state: {
-                            id: n?.notification_data?.prescription_id,
+                            id: n?.notification_data?.appointment_id,
                             patientId: n?.notification_data?.patient_id,
                             chat_id: n?.notification_data?.chat_channel,
                             ds_code: n?.notification_data?.ds_code,
                             referred: n?.notification_data?.referred,
+                            prescription_id:
+                              n?.notification_data?.prescription_id,
                           },
                         });
 
@@ -290,9 +292,9 @@ const Notifications = () => {
                       marginTop: "10px",
                     }}
                   >
-                    <label htmlFor={`delete-notification-${n.id}`}>
+                    {/* <label htmlFor={`delete-notification-${n.id}`}>
                       Delete
-                    </label>
+                    </label> */}
                     <input
                       type="checkbox"
                       id={`delete-notification-${n.id}`} // Unique ID for each checkbox
@@ -300,6 +302,7 @@ const Notifications = () => {
                       value={n.id} // The value should be the notification's ID
                       onChange={() => toggleSelect(n?.id)} // This is the key change!
                       checked={selectedIds.includes(n?.id)} // This ensures the checkbox reflects the state
+                      style={{ transform: "scale(1.5)", marginLeft: 5 }} // Increase size by 50%
                     />
                   </div>
                 )}
