@@ -106,13 +106,13 @@ const Notifications = () => {
 
   //notification read one by one
 
-  const deleteOneByOne = async (id) => {
+  const handleMarkOneByOne = async (id) => {
     if (!id) return;
     console.log(id, "hello user*********");
 
     try {
       const read = [String(id)]; // Convert id to string and store in array
-      await dispatch(deleteNotification(read));
+      dispatch(markAllRead({ notification_ids: read }));
       // deleteOnByOne(id);
     } catch (error) {
       console.error("Error deleting notification:", error);
@@ -151,17 +151,16 @@ const Notifications = () => {
               onClick={() => {
                 if (n?.type === "new_message") {
                   // Use strict equality (===)
-
-                  navigate("/completed-appointment-screen", {
-                    state: {
-                      // This is the 'state' object
-                      id: n?.notification_data?.prescription_id,
-                      patientId: n?.notification_data?.patient_id,
-                      chat_id: n?.notification_data?.chat_channel,
-                      ds_code: n?.notification_data?.ds_code,
-                      referred: n?.notification_data?.referred,
-                    }, // Close the 'state' object here
-                  }); // Close the navigate function call and end the statement
+                  // navigate("/completed-appointment-screen", {
+                  //   state: {
+                  //     // This is the 'state' object
+                  //     id: n?.notification_data?.prescription_id,
+                  //     patientId: n?.notification_data?.patient_id,
+                  //     chat_id: n?.notification_data?.chat_channel,
+                  //     ds_code: n?.notification_data?.ds_code,
+                  //     referred: n?.notification_data?.referred,
+                  //   }, // Close the 'state' object here
+                  // }); // Close the navigate function call and end the statement
                 } else {
                   toggleSelect(n?.id);
                 }
@@ -204,33 +203,49 @@ const Notifications = () => {
                 </div>
 
                 {n?.type == "new_message" ? (
-                  <div
-                    className="notif-text"
-                    onClick={() => {
-                      navigate("/completed-appointment-screen", {
-                        state: {
-                          id: n?.notification_data?.prescription_id,
-                          patientId: n?.notification_data?.patient_id,
-                          chat_id: n?.notification_data?.chat_channel,
-                          ds_code: n?.notification_data?.ds_code,
-                          referred: n?.notification_data?.referred,
-                        },
-                      });
-
-                      // setReadNotificationOneByone(n?.id);
-
-                      // deleteOneByOne(n?.id);
-                    }}
-                  >
+                  <div className="notif-text">
                     <h3
                       style={{
                         fontWeight: n.is_read === "true" ? "normal" : "bold",
+                      }}
+                      onClick={() => {
+                        navigate("/completed-appointment-screen", {
+                          state: {
+                            id: n?.notification_data?.prescription_id,
+                            patientId: n?.notification_data?.patient_id,
+                            chat_id: n?.notification_data?.chat_channel,
+                            ds_code: n?.notification_data?.ds_code,
+                            referred: n?.notification_data?.referred,
+                          },
+                        });
+
+                        // setReadNotificationOneByone(n?.id);
+
+                        // deleteOneByOne(n?.id);
+                        handleMarkOneByOne(n?.id);
                       }}
                     >
                       {n.title}
                     </h3>
                     {/* <p>{n?.message}</p> */}
-                    <p>
+                    <p
+                      onClick={() => {
+                        navigate("/completed-appointment-screen", {
+                          state: {
+                            id: n?.notification_data?.prescription_id,
+                            patientId: n?.notification_data?.patient_id,
+                            chat_id: n?.notification_data?.chat_channel,
+                            ds_code: n?.notification_data?.ds_code,
+                            referred: n?.notification_data?.referred,
+                          },
+                        });
+
+                        // setReadNotificationOneByone(n?.id);
+
+                        // deleteOneByOne(n?.id);
+                        handleMarkOneByOne(n?.id);
+                      }}
+                    >
                       {n?.message?.trim()}
                       {n?.message?.trim().endsWith(".") ? "" : "."}
                     </p>
@@ -253,15 +268,41 @@ const Notifications = () => {
                 )}
               </div>
               {/* <div className="notif-time">{n.created_at}</div> */}
-              <div
-                className="notif-time"
-                style={
-                  formatNotificationTime(n.created_at) === "Just now"
-                    ? { width: "69px" }
-                    : {}
-                }
-              >
-                {formatNotificationTime(n.created_at)}
+
+              <div style={{}}>
+                <div
+                  className="notif-time"
+                  style={
+                    formatNotificationTime(n.created_at) === "Just now"
+                      ? { width: "69px" }
+                      : {}
+                  }
+                >
+                  {formatNotificationTime(n.created_at)}
+                </div>
+
+                {n?.type == "new_message" && (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "5px",
+                      marginTop: "10px",
+                    }}
+                  >
+                    <label htmlFor={`delete-notification-${n.id}`}>
+                      Delete
+                    </label>
+                    <input
+                      type="checkbox"
+                      id={`delete-notification-${n.id}`} // Unique ID for each checkbox
+                      name="delete-notification"
+                      value={n.id} // The value should be the notification's ID
+                      onChange={() => toggleSelect(n?.id)} // This is the key change!
+                      checked={selectedIds.includes(n?.id)} // This ensures the checkbox reflects the state
+                    />
+                  </div>
+                )}
               </div>
             </li>
           ))}
@@ -314,7 +355,7 @@ const Notifications = () => {
             <span className="loader"></span>
           </div>
         ) : (
-          <div className="doc-panel-body">
+          <div className="doc-panel-body" style={{ minHeight: "450px" }}>
             <div className="notifications-section">
               <div className="docpnl-sec-head text-center">
                 <h1 className="h2-title px-5">Notifications</h1>
