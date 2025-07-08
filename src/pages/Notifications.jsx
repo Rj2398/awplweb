@@ -234,11 +234,13 @@ const Notifications = () => {
                       onClick={() => {
                         navigate("/completed-appointment-screen", {
                           state: {
-                            id: n?.notification_data?.prescription_id,
+                            id: n?.notification_data?.appointment_id,
                             patientId: n?.notification_data?.patient_id,
                             chat_id: n?.notification_data?.chat_channel,
                             ds_code: n?.notification_data?.ds_code,
                             referred: n?.notification_data?.referred,
+                            prescription_id:
+                              n?.notification_data?.prescription_id,
                           },
                         });
 
