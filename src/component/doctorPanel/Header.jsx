@@ -349,6 +349,7 @@ import {
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isHod, setIsHod] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -387,6 +388,17 @@ const Header = () => {
     dispatch(logout());
     navigate("/");
   };
+
+  useEffect(() => {
+    const doctorData = JSON.parse(
+      localStorage.getItem("doctor-app")
+    ).doctorData;
+    // const isHod = doctorData.is_hod;
+    // console.log("isHodlocalStorage@@@@", isHod);
+    if (doctorData) {
+      setIsHod(doctorData.is_hod);
+    }
+  }, []);
 
   useEffect(() => {
     dispatch(notifyNewChatRes());
@@ -553,17 +565,19 @@ const Header = () => {
                 </Link>
               </li>
 
-              <li>
-                <img
-                  src="https://uxwing.com/wp-content/themes/uxwing/download/web-app-development/database-delete-icon.png"
-                  alt="Icon"
-                  style={{ height: "18px", width: "18px" }}
-                />
+              {isHod && user?.is_hod && (
+                <li>
+                  <img
+                    src="https://uxwing.com/wp-content/themes/uxwing/download/web-app-development/database-delete-icon.png"
+                    alt="Icon"
+                    style={{ height: "18px", width: "18px" }}
+                  />
 
-                <Link to="/hod" onClick={() => setIsSidebarOpen(false)}>
-                  H.O.D
-                </Link>
-              </li>
+                  <Link to="/hod" onClick={() => setIsSidebarOpen(false)}>
+                    H.O.D
+                  </Link>
+                </li>
+              )}
 
               <li className="logout">
                 <img
