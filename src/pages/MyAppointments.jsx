@@ -57,6 +57,7 @@ const MyAppointments = () => {
   const [filters, setFilters] = useState({
     patientName: "",
     age: "",
+    dsCode: "",
     disease: "",
   });
 
@@ -86,6 +87,7 @@ const MyAppointments = () => {
     setFilters({
       patientName: "",
       age: "",
+      dsCode: "",
       disease: "",
     });
     // Reset filtered patients to original data
@@ -123,17 +125,28 @@ const MyAppointments = () => {
       const ageMatch =
         !filters.age || patient.patient_age.toString().includes(filters.age);
 
+        // const dscodeMatch = !filters.dscode || (patient.ds_code && patient.ds_code.toLowerCase().includes(filters.dscode.toLowerCase()));
+
+        const dscodeMatch =
+        !filters.dscode ||
+        (patient.ds_code &&
+          patient.ds_code.toLowerCase().includes(filters.dscode.toLowerCase()));
+
       // For cancelled tab, skip disease matching since those patients might not have disease field
-      if (tab === "cancelled") {
-        return nameMatch && ageMatch;
+      // if (tab === "cancelled") {
+      //   return nameMatch && ageMatch && dscodeMatch;
+      // }
+      if (tab === "cancelled" || tab === "incompleted" || tab === "missed") {
+        return nameMatch && ageMatch && dscodeMatch;
       }
+
       const diagnosisMatch =
         !filters.disease ||
         (patient.diagnosis &&
           patient.diagnosis !== "-" &&
           patient.diagnosis.toLowerCase() === filters.disease.toLowerCase());
 
-      return nameMatch && ageMatch && diagnosisMatch;
+      return nameMatch && ageMatch && dscodeMatch && diagnosisMatch;
     });
   };
 
@@ -175,9 +188,10 @@ const MyAppointments = () => {
 
   const handleFilterChange = (newFilters) => {
     setFilters({
-      patientName: newFilters.name || "",
+      patientName: newFilters.patientName || "",
       age: newFilters.age || "",
-      disease: newFilters.diagnosis || "",
+      dscode: newFilters.dscode || "",
+      disease: newFilters.disease || "",
     });
 
     // Apply filters to the current active tab
@@ -314,14 +328,17 @@ const MyAppointments = () => {
         const dateStr = patient.datetime
           ? new Date(patient.datetime).getDate().toString()
           : "";
+
+          const dsCode = patient.ds_code?.toLowerCase() || "";
         if (isNumeric) {
-          return patientAge === query || patientPhone.includes(query);
+          return (patientAge === query || patientPhone.includes(query) || dsCode.includes(lowerQuery));
         }
         return (
           patient.patient_name?.toLowerCase().includes(lowerQuery) ||
           patient.patient_gender?.toLowerCase() === lowerQuery ||
           patientPhone.includes(query) ||
           dateStr.includes(lowerQuery) ||
+          dsCode.includes(lowerQuery) ||
           patient.datetime?.toLowerCase().includes(lowerQuery) ||
           (activeTab === "completed" &&
             patient.diagnosis?.toLowerCase().includes(lowerQuery))
@@ -395,6 +412,12 @@ const MyAppointments = () => {
         case "cancelled":
           setFilteredCancelledPatients(cancelledAppointment);
           break;
+        case "incompleted":
+          setFilteredCancelledPatients(cancelledAppointment);
+          break;
+        case "missed":
+          setFilteredCancelledPatients(cancelledAppointment);
+          break;
         default:
           break;
       }
@@ -422,6 +445,22 @@ const MyAppointments = () => {
         });
         setFilteredCancelledPatients(filteredCancelled);
         break;
+
+        case "incompleted":
+          const filteredIncompleted = incompletedAppointment.filter((patient) => {
+            const appointmentDate = parseDDMMYYYYTime(patient.datetime);
+            return appointmentDate >= startDate && appointmentDate <= endDate;
+          });
+          setFilteredIncompletedPatients(filteredIncompleted);
+          break;
+    
+        case "missed":
+          const filteredMissed = missedAppointment.filter((patient) => {
+            const appointmentDate = parseDDMMYYYYTime(patient.datetime);
+            return appointmentDate >= startDate && appointmentDate <= endDate;
+          });
+          setFilteredMissedPatients(filteredMissed);
+          break;
 
       default:
         break;

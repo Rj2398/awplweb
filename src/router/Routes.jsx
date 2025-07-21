@@ -33,6 +33,8 @@ import PendingFullAssigned from "../component/doctorPanel/PendingFullAssigned";
 import CompletedAssignedPrescription from "../component/doctorPanel/CompleteAssignedPrescription";
 import UserProfile from "../pages/UserProfile";
 import PastPatient from "../pages/PastPatient";
+import DoctorUnavailability from "../pages/DoctorUnavailability";
+import Hod from "../doctorManagement/Hod";
 // import StartAppointment from "../pages/StartAppointment";
 // import PatientProfile from "../pages/PatientProfile";
 // import PatientDetails from "../pages/Patientdetails";
@@ -217,6 +219,28 @@ function Routers() {
             </PrivateRoute>
           }
         />
+ 
+        <Route
+          path="/doctorUnavailibility"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <DoctorUnavailability />
+              </Layout>
+            </PrivateRoute>
+          }
+        /> 
+
+        <Route
+          path="/hod"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <Hod />
+              </Layout>
+            </PrivateRoute>
+          }
+        /> 
         <Route path="/create-password" element={<CreatePassword />} />
         {/* <Route path="/startappointment" element={<StartAppointment />} /> */}
         {/* <Route path="/patientprofile" element={<PatientProfile />} /> */}

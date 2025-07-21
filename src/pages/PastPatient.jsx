@@ -16,7 +16,7 @@ const PastPatient = () => {
   const itemsPerPage = 4;
 
   const [patients, setPatients] = useState([]);
-  const [filters, setFilters] = useState({ name: "", age: "", disease: "" });
+  const [filters, setFilters] = useState({ name: "", age: "", dscode:"", disease: "" });
   const [showFilter, setShowFilter] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [diseaseOptions, setDiseaseOptions] = useState([]);
@@ -68,7 +68,10 @@ const PastPatient = () => {
         setFilters((prev) => ({ ...prev, [name]: value }));
         // }
       }
-    } else {
+    } else if (name === "dscode") {
+      setFilters((prev) => ({ ...prev, [name]: value }));
+    }
+    else {
       // Default behavior for other fields (e.g., diagnosis)
       setFilters((prev) => ({ ...prev, [name]: value }));
     }
@@ -152,6 +155,7 @@ const PastPatient = () => {
     const formData = new FormData();
     if (filters.name) formData.append("patient_name", filters.name);
     if (filters.age) formData.append("age", filters.age);
+    if (filters.dscode) formData.append("ds_code", filters.dscode);
     if (filters.disease) formData.append("disease", filters.disease);
     dispatch(pastPatient(formData));
     setShowFilter(false);
@@ -159,7 +163,7 @@ const PastPatient = () => {
 
   const handleClearFilter = (e) => {
     e.preventDefault();
-    setFilters({ name: "", age: "", disease: "" });
+    setFilters({ name: "", age: "", dscode: "", disease: "" });
 
     // 🔁 API call bina filter ke to get original data
     const formData = new FormData(); // empty formData
@@ -251,7 +255,8 @@ const PastPatient = () => {
 
               <p>
                 <span style={{ color: "black" }}>Referred by </span>
-                <span style={{ color: "#199FD9" }}>{patient.ds_code}</span>
+                {/* <span style={{ color: "#199FD9" }}>{patient.ds_code}</span> */}
+                <span style={{ color: "#199FD9" }}>{patient.referred_by_patient_name}</span>
               </p>
             ) : (
               // <p>DS Code: {patient.ds_code}</p>
@@ -451,6 +456,23 @@ const PastPatient = () => {
                           inputMode="numeric"
                         />
                       </div>
+{/* // add new thing , search by dscode  */}
+                      <div className="filter-grp">
+                        <label>DS Code</label>
+                       
+
+                        <input
+                          id="dscode"
+                          type="text"
+                          name="dscode"
+                          value={filters.dscode}
+                          onChange={handleInputChange}
+                          placeholder="DS Code"
+                          // pattern="[0-9]*"
+                          // inputMode="numeric"
+                        />
+                      </div>
+
                       <div className="filter-grp">
                         <label>Disease</label>
                         <select

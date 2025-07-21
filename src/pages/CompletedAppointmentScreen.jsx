@@ -9,6 +9,7 @@ import { prescriptionDownload } from "../redux/slices/prescriptionSlice";
 import Chat from "../component/doctorPanel/Chat";
 import Config from "../config/Constant";
 import { Button } from "react-bootstrap";
+import { getAllNotifications } from "../redux/slices/notificationSlice";
 const CompletedAppointment = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -57,6 +58,10 @@ const CompletedAppointment = () => {
       console.log("data", completeAppointmentPatientDetail);
     }
   }, [dispatch, id]);
+
+  useEffect(() => {
+    dispatch(getAllNotifications());
+  }, []);
 
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
 

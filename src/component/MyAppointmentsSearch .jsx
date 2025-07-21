@@ -15,7 +15,7 @@ const MyAppointmentsSearch = ({
   const [age, setAge] = useState("");
   const [showFilter, setShowFilter] = useState(false);
   const [diagnosisOptions, setDiagnosisOptions] = useState([]);
-  const [filters, setFilters] = useState({ name: "", age: "", diagnosis: "" });
+  const [filters, setFilters] = useState({ name: "", age: "",dscode:"", diagnosis: "" });
   const [showCalendar, setShowCalendar] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -55,7 +55,7 @@ const MyAppointmentsSearch = ({
     // Reset calendar and filters when tab changes
     resetForm();
     onSearchDate(null); // Clear any date filtering
-    onFilterChange({ name: "", age: "", diagnosis: "" }); // Clear other filters
+    onFilterChange({ name: "", age: "", dscode:"", diagnosis: "" }); // Clear other filters
   }, [activeTab]);
 
   useEffect(() => {
@@ -117,6 +117,8 @@ const MyAppointmentsSearch = ({
         setFilters((prev) => ({ ...prev, [name]: value }));
         // }
       }
+    } else if (name === "dscode") {
+      setFilters((prev) => ({ ...prev, [name]: value }));
     } else {
       // Default behavior for other fields (e.g., diagnosis)
       setFilters((prev) => ({ ...prev, [name]: value }));
@@ -348,13 +350,29 @@ const MyAppointmentsSearch = ({
     }
   };
 
+  // const handleFilterSubmit = (action) => {
+  //   if (action === "clear") {
+  //     setFilters({ name: "", age: "", dscode: "", diagnosis: "" });
+  //     onFilterChange({ name: "", age: "", dscode: "", diagnosis: "" });
+  //     setShowFilter(false);
+  //   } else {
+  //     onFilterChange(filters);
+  //     setShowFilter(false);
+  //   }
+  // };
+
   const handleFilterSubmit = (action) => {
     if (action === "clear") {
-      setFilters({ name: "", age: "", diagnosis: "" });
-      onFilterChange({ name: "", age: "", diagnosis: "" });
+      setFilters({ name: "", age: "", dscode: "", diagnosis: "" });
+      onFilterChange({ patientName: "", age: "", dscode: "", disease: "" }); // Make sure all fields are cleared
       setShowFilter(false);
     } else {
-      onFilterChange(filters);
+      onFilterChange({
+        patientName: filters.name,
+        age: filters.age,
+        dscode: filters.dscode, // Make sure this is passed
+        disease: filters.diagnosis
+      });
       setShowFilter(false);
     }
   };
@@ -437,8 +455,8 @@ const MyAppointmentsSearch = ({
   // Filter suggestions based on input
   const filteredSuggestions = filters.name
     ? patientSuggestions.filter((patient) =>
-        patient.name.toLowerCase().includes(filters.name.toLowerCase())
-      )
+      patient.name.toLowerCase().includes(filters.name.toLowerCase())
+    )
     : patientSuggestions;
 
   const handleSuggestionClick = (patient) => {
@@ -483,18 +501,32 @@ const MyAppointmentsSearch = ({
       }}
     >
       {/* <div className='datepicker-wrp' style={(activeTab == "upcoming" || activeTab == "cancelled") ? { display: "none" } : {}}> */}
-      <div
+      {/* <div
         className="datepicker-wrp"
         style={
-          activeTab == "upcoming" ||
-          activeTab == "incompleted" ||
-          activeTab == "missed"
+          activeTab == "upcoming"
+            // activeTab == "incompleted" ||
+            // activeTab == "missed"
             ? { display: "none" }
             : activeTab === "cancelled"
-            ? { width: "50%" }
-            : {}
+              ? { width: "50%" }
+              : {}
         }
-      >
+      > */}
+      <div
+  className="datepicker-wrp"
+  style={
+    activeTab === "upcoming"
+      ? { display: "none" }
+      : ["cancelled", "incompleted", "missed"].includes(activeTab)
+        ? { width: "50%" }
+        : {}
+  }
+>
+
+
+
+
         {/* <input
           type="text"
           id="dateRangeInput"
@@ -701,9 +733,9 @@ const MyAppointmentsSearch = ({
         style={
           activeTab == "completed"
             ? { display: "none" }
-            : activeTab === "cancelled"
-            ? { width: "50%" }
-            : {}
+            : ["cancelled", "incompleted", "missed"].includes(activeTab)
+              ? { width: "50%" }
+              : {}
         }
       >
         <input
@@ -719,9 +751,9 @@ const MyAppointmentsSearch = ({
         className="past-patient-filter-wrp"
         style={
           activeTab === "cancelled" ||
-          activeTab === "upcoming" ||
-          activeTab === "incompleted" ||
-          activeTab === "missed"
+            activeTab === "upcoming" ||
+            activeTab === "incompleted" ||
+            activeTab === "missed"
             ? { display: "none" }
             : {}
         }
@@ -833,6 +865,25 @@ const MyAppointmentsSearch = ({
                   pattern="[0-9]*" // Helps with mobile numeric keyboard
                 />
               </div>
+
+              {/* // add new thing , search by dscode  */}
+              <div className="filter-grp">
+                <label>DS Code</label>
+
+
+                <input
+                  id="dscode"
+                  type="text"
+                  name="dscode"
+                  value={filters.dscode}
+                  onChange={handleInputChange}
+                  placeholder="DS Code"
+                // pattern="[0-9]*"
+                // inputMode="numeric"
+                />
+              </div>
+
+
               <div className="filter-grp">
                 <label>Disease</label>
                 <select

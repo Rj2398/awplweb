@@ -4242,6 +4242,51 @@ span.eye-btn.eye-open {
 
 /* DatePicker */
 
+
+
+/* SS210725 Begin */
+
+.myapintmnt-table.tbl-large table{
+    min-width: 2100px;
+}
+.myapintmnt-table table tr td:nth-child(2) {
+    text-align: left;
+    display: revert;
+}
+body:has(.availability-switch) .modal-body{
+    padding: 0;
+    position: static;
+}
+.unavailability-form-inr1 .formfield {
+    margin-bottom: 0;
+}
+.p-dcrse1 .modal-content {
+    padding: 40px !important;
+}
+.p-dcrse1 .modal-content .cstm-input-lbl1 {
+    margin-bottom: 0;
+}
+.p-dcrse1 .modal-content .btn-wrp1 {
+    margin-top: 30px;
+}
+.unavailability-form-inr1 .formfield label{
+    text-align: left !important;
+}
+.react-datepicker-wrapper {
+    flex: auto;
+}
+body:has(.availability-switch) .modal-icon1{
+    margin-bottom: 15px;
+}
+.myapintmnt-table table tr td:nth-child(3){
+  text-align: center !important;
+  padding: 8px 15px 35px !important;
+}
+
+
+/* End Of SS210725 */
+
+
 /* ========== Responsive CSS ========== */
 
 @media only screen and (min-width: 1300px) {

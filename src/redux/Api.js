@@ -398,6 +398,89 @@ export const notifyNewChatRes = (formData) =>
     },
   });
 
+  //new changes by client 
+
+
+    export const unavailabilityRequest = (formData) => 
+      API.post("/doctor/unavailability/submit", formData, {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("doctor-app"))?.token
+          }`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      //mark unavailability screen
+    export const doctorUnavailability = () =>
+      API.get("/doctor/unavailability/list", {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("doctor-app"))?.token
+          }`,
+        },
+      });
+
+      //HOD SCREEN REQUESTS
+    export const hodScreenRequestsList = () =>
+      API.get("/doctor/unavailability/all-list", {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("doctor-app"))?.token
+          }`,
+        },
+      });
+
+      export const hodRequestsConfirmButton = (formData) => 
+        API.post("/doctor/unavailability/confirm", formData, {
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("doctor-app"))?.token
+            }`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+      export const hodRequestsRespondButton = (formData) => 
+        API.post("/doctor/unavailability/respond", formData, {
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("doctor-app"))?.token
+            }`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+      export const hodScreenDoctorsList = (formData) => 
+        API.post("/doctor/unavailability/doctors", formData, {
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("doctor-app"))?.token
+            }`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+      export const markDoctorAvailable = (formData) => 
+        API.post("/doctor/unavailability/mark-doctor-available", formData, {
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("doctor-app"))?.token
+            }`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+      export const unavailabilitySubmitByHod = (formData) => 
+        API.post("/doctor/unavailability/submit-by-hod", formData, {
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("doctor-app"))?.token
+            }`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
 // export const logout = (id) => API.post('/api/logout', id, {
 //   headers: {
 //     'Authorization': `Bearer ${JSON.parse(localStorage.getItem("doctor-app"))?.token}`,

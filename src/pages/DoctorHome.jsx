@@ -15,7 +15,10 @@ import { getDoctorProfile } from "../redux/slices/userSlice";
 import axios from "axios";
 import { setVideoData } from "../redux/slices/infoSlice";
 import SuspensionModal from "../component/SuspensionModal";
-import { notifyNewChatRes } from "../redux/slices/notificationSlice";
+import {
+  getAllNotifications,
+  notifyNewChatRes,
+} from "../redux/slices/notificationSlice";
 
 const DoctorHome = () => {
   const navigate = useNavigate();
@@ -234,7 +237,9 @@ const DoctorHome = () => {
   // };
 
   //
-
+  useEffect(() => {
+    dispatch(getAllNotifications());
+  }, []);
   const handleCreateChannel = async (id) => {
     console.log("call 11");
     setIsLoading(true); // Start loader
@@ -519,9 +524,9 @@ const DoctorHome = () => {
               </div>
               <div className="doc-profile-body">
                 <Link to="/UserProfile">
-                <p style={{ color: "#199FD9" }}>
-                  {user?.name || "Doctor Name"}
-                </p>
+                  <p style={{ color: "#199FD9" }}>
+                    {user?.name || "Doctor Name"}
+                  </p>
                 </Link>
               </div>
             </div>
