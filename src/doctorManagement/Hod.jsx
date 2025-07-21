@@ -1234,7 +1234,10 @@ const Hod = () => {
                                   </Button>
                                 ) : data.status == "Approved" &&
                                   !data.approvalRequired ? (
-                                  "--"
+                                  "Approved"
+                                ) : data.status == "Rejected" &&
+                                  !data.approvalRequired ? (
+                                  "Rejected"
                                 ) : data.status === "Pending" ? (
                                   <>
                                     <div
