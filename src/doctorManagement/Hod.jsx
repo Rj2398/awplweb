@@ -1219,19 +1219,25 @@ const Hod = () => {
                               <td style={{ color: "#199FD9" }}>
                                 {/* <div className="mb-4 text-right" style={{border:"2px solid red"}}> */}
                                 {data.status === "Approved" &&
-                                data.approvalRequired ? (
-                                  <Button
-                                    style={{ backgroundColor: "#199FD9" }}
-                                    className="border-0 px-6 rounded-lg shadow-md text-white flex items-center gap-2"
-                                    onClick={() =>
-                                      handleConfirmClick(data.unavailability_id)
-                                    }
-                                  >
-                                    {hodRequestsConfirmButtonLoading
-                                      ? "Confirming.."
-                                      : "Confirm"}
-                                    {/* Confirm */}
-                                  </Button>
+                                data.type === "Emergency" ? (
+                                  data?.emergency_status ? (
+                                    "Approved"
+                                  ) : (
+                                    <Button
+                                      style={{ backgroundColor: "#199FD9" }}
+                                      className="border-0 px-6 rounded-lg shadow-md text-white flex items-center gap-2"
+                                      onClick={() =>
+                                        handleConfirmClick(
+                                          data.unavailability_id
+                                        )
+                                      }
+                                    >
+                                      {hodRequestsConfirmButtonLoading
+                                        ? "Confirming.."
+                                        : "Confirm"}
+                                      {/* Confirm */}
+                                    </Button>
+                                  )
                                 ) : data.status == "Approved" &&
                                   !data.approvalRequired ? (
                                   "Approved"
