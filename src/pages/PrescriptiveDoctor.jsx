@@ -438,6 +438,7 @@ const PrescriptiveDoctor = () => {
     const payload = {
       appointment_id: id, // 'id' needs to be defined in the component's scope
       diagnosis: data.disease_name,
+      notes: adviceText,
       medicines: data.treatments.map((treatment) => ({
         // medicine_id: treatment.medicine_id,
         medicine_name: treatment.medicine_name,
@@ -449,7 +450,6 @@ const PrescriptiveDoctor = () => {
         meal_timing: treatment.meal_timing,
         day_time: treatment.day_time,
         remarks: treatment.remarks,
-        notes: adviceText,
       })),
     };
 
