@@ -568,7 +568,7 @@ const Header = () => {
               {isHod && user?.is_hod && (
                 <li>
                   <img
-                    src="https://uxwing.com/wp-content/themes/uxwing/download/web-app-development/database-delete-icon.png"
+                    src="/images/user-tie.com.svg"
                     alt="Icon"
                     style={{ height: "18px", width: "18px" }}
                   />
