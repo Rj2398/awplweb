@@ -72,24 +72,16 @@ const Hod = () => {
         const unavailability = doctor.unavailabilities?.[0];
         if (!unavailability) return;
 
-        const fromDateTime = new Date(
-          `${unavailability.fromDate} ${unavailability.fromTime}`
-        );
-        const toDateTime = new Date(
-          `${unavailability.toDate} ${unavailability.toTime}`
-        );
+        const fromDateTime = new Date(`${unavailability.fromDate} ${unavailability.fromTime}`);
+        const toDateTime = new Date(`${unavailability.toDate} ${unavailability.toTime}`);
 
         // Compare current time to fromDateTime or toDateTime
         const nowFormatted = now.toLocaleString("en-US", { hour12: true });
-        const fromFormatted = fromDateTime.toLocaleString("en-US", {
-          hour12: true,
-        });
-        const toFormatted = toDateTime.toLocaleString("en-US", {
-          hour12: true,
-        });
+        const fromFormatted = fromDateTime.toLocaleString("en-US", { hour12: true });
+        const toFormatted = toDateTime.toLocaleString("en-US", { hour12: true });
 
         const isFromTimeMatch = Math.abs(now - fromDateTime) < 60 * 1000; // ±1 min
-        const isToTimeMatch = Math.abs(now - toDateTime) < 60 * 1000; // ±1 min
+        const isToTimeMatch = Math.abs(now - toDateTime) < 60 * 1000;     // ±1 min
 
         if (isFromTimeMatch || isToTimeMatch) {
           console.log("Time matched. Fetching updated doctor list...");
@@ -196,6 +188,7 @@ const Hod = () => {
       .catch((error) => {
         toast.error("An error occurred while Confirming for doctor's leave");
       });
+
   };
 
   const handleApproveClick = (id, status) => {
@@ -203,15 +196,14 @@ const Hod = () => {
 
     dispatch(
       hodRequestsRespondButton({ unavailability_id: id, status: status })
-    )
-      .then((action) => {
-        if (action.payload?.status) {
-          toast.success(action.payload.message);
-          dispatch(hodScreenRequestsList()); // Refresh the list
-        } else {
-          toast.error(action.payload?.message);
-        }
-      })
+    ).then((action) => {
+      if (action.payload?.status) {
+        toast.success(action.payload.message);
+        dispatch(hodScreenRequestsList()); // Refresh the list
+      } else {
+        toast.error(action.payload?.message);
+      }
+    })
       .catch((error) => {
         toast.error("An error occurred while Approving doctor's leave'");
       });
@@ -221,15 +213,14 @@ const Hod = () => {
     console.log("Declining request with ID:", id);
     dispatch(
       hodRequestsRespondButton({ unavailability_id: id, status: status })
-    )
-      .then((action) => {
-        if (action.payload?.status) {
-          toast.success(action.payload.message);
-          dispatch(hodScreenRequestsList()); // Refresh the list
-        } else {
-          toast.error(action.payload?.message);
-        }
-      })
+    ).then((action) => {
+      if (action.payload?.status) {
+        toast.success(action.payload.message);
+        dispatch(hodScreenRequestsList()); // Refresh the list
+      } else {
+        toast.error(action.payload?.message);
+      }
+    })
       .catch((error) => {
         toast.error("An error occurred while Declining doctor's leave'");
       });
@@ -746,6 +737,22 @@ const Hod = () => {
   //   return appointmentDate < now;
   // };
 
+  const formatTimeTo12Hour = (timeStr) => {
+    const [start, end] = timeStr.split(" - ");
+    const format = (time) => {
+      const [hour, minute] = time.split(":");
+      const date = new Date();
+      date.setHours(hour, minute);
+      return date.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
+    };
+    return `${format(start)} - ${format(end)}`;
+  };
+
+
   return (
     <div className="doctor-panel">
       <div className="container-fluid">
@@ -760,7 +767,7 @@ const Hod = () => {
         ) : (
           <div className="doc-panel-body">
             <div className="docpnl-sec-head">
-              <h1 className="h2-title">Doctor Management</h1>
+              <h1 className="h2-title">Unavailability Management</h1>
             </div>
             {/* Add the search component for each tab */}
             {/* <div
@@ -798,10 +805,10 @@ const Hod = () => {
                         style={
                           activeTab == "upcoming"
                             ? {
-                                backgroundColor: "white",
-                                borderRadius: "10px",
-                                color: "#356598",
-                              }
+                              backgroundColor: "white",
+                              borderRadius: "10px",
+                              color: "#356598",
+                            }
                             : {}
                         }
                         onClick={() => setActiveTab("upcoming")}
@@ -812,10 +819,10 @@ const Hod = () => {
                         style={
                           activeTab == "completed"
                             ? {
-                                backgroundColor: "white",
-                                borderRadius: "10px",
-                                color: "#356598",
-                              }
+                              backgroundColor: "white",
+                              borderRadius: "10px",
+                              color: "#356598",
+                            }
                             : {}
                         }
                         onClick={() => setActiveTab("completed")}
@@ -852,9 +859,8 @@ const Hod = () => {
                 <div className="my-appointments-tab-content-wrp">
                   {/* HOD dOCTORS SCREEN */}
                   <div
-                    className={`myapintmnt-content-tab ${
-                      activeTab === "upcoming" ? "upcoming" : ""
-                    }`}
+                    className={`myapintmnt-content-tab ${activeTab === "upcoming" ? "upcoming" : ""
+                      }`}
                     style={{
                       display: activeTab === "upcoming" ? "block" : "none",
                     }}
@@ -864,7 +870,7 @@ const Hod = () => {
                         <thead>
                           <tr>
                             <th>S.no.</th>
-                            <th style={{ width: "200px" }}>Doctor Name</th>
+                            <th>Doctor Name</th>
                             <th>Experience</th>
                             <th>phone Number</th>
                             <th>Email Address</th>
@@ -899,8 +905,8 @@ const Hod = () => {
                               <td style={{ color: "#199FD9" }}>
                                 {String(
                                   (currentPage1 - 1) * requestsPerPage +
-                                    index +
-                                    1
+                                  index +
+                                  1
                                 ).padStart(2, "0")}
                               </td>
 
@@ -921,7 +927,8 @@ const Hod = () => {
                               <td style={{ color: "#199FD9" }}>{data.email}</td>
 
                               <td style={{ color: "#199FD9" }}>
-                                {data.shiftTiming}
+                                {/* {data.shiftTiming} */}
+                                {formatTimeTo12Hour(data.shiftTiming)}
                               </td>
                               <td style={{ color: "#199FD9" }}>
                                 {data.signupDate}
@@ -1033,9 +1040,18 @@ const Hod = () => {
                                   : data?.unavailabilities?.[0]?.status}
                               </td>
                               <td style={{ color: "#199FD9" }}>
+                                {/* {data.isSuspended || !data.hasUnavailability
+                                  ? "--"
+                                  : data?.unavailabilities?.[0]?.reason} */}
                                 {data.isSuspended || !data.hasUnavailability
                                   ? "--"
-                                  : data?.unavailabilities?.[0]?.reason}
+                                  : <span
+                                    dangerouslySetInnerHTML={{
+                                      __html: data?.unavailabilities?.[0]?.reason.replace(/(.{20})/g, "$1<br/>")
+                                    }}
+                                  />}
+
+
                               </td>
                             </tr>
                           ))}
@@ -1099,9 +1115,8 @@ const Hod = () => {
 
                   {/* REQUESTS Tab */}
                   <div
-                    className={`myapintmnt-content-tab ${
-                      activeTab === "completed" ? "completed" : ""
-                    }`}
+                    className={`myapintmnt-content-tab ${activeTab === "completed" ? "completed" : ""
+                      }`}
                     style={{
                       display: activeTab === "completed" ? "block" : "none",
                     }}
@@ -1111,7 +1126,7 @@ const Hod = () => {
                         <thead>
                           <tr>
                             <th>S.no.</th>
-                            <th style={{ width: "200px" }}>Doctor Name</th>
+                            <th>Doctor Name</th>
                             <th>Applied On</th>
                             <th>From</th>
                             <th>To</th>
@@ -1143,8 +1158,8 @@ const Hod = () => {
                               <td style={{ color: "#199FD9" }}>
                                 {String(
                                   (currentPage - 1) * requestsPerPage +
-                                    index +
-                                    1
+                                  index +
+                                  1
                                 ).padStart(2, "0")}
                               </td>
 
@@ -1209,9 +1224,12 @@ const Hod = () => {
                               </td>
                               <td style={{ color: "#199FD9" }}>
                                 {/* {data.reason} */}
-                                {data.reason.length > 6
-                                  ? data.reason.substring(0, 6) + "..."
-                                  : data.reason}
+                                {/* {data.reason.length > 6 ? data.reason.substring(0, 6) + "..." : data.reason} */}
+                                <span
+                                  dangerouslySetInnerHTML={{
+                                    __html: data.reason.replace(/(.{20})/g, "$1<br/>")
+                                  }}
+                                />
                               </td>
                               <td style={{ color: "#199FD9" }}>
                                 {data.timePeriod}
@@ -1219,7 +1237,7 @@ const Hod = () => {
                               <td style={{ color: "#199FD9" }}>
                                 {/* <div className="mb-4 text-right" style={{border:"2px solid red"}}> */}
                                 {data.status === "Approved" &&
-                                data.type === "Emergency" ? (
+                                  data.type === "Emergency" ? (
                                   data?.emergency_status ? (
                                     "Approved"
                                   ) : (
@@ -1242,49 +1260,49 @@ const Hod = () => {
                                   !data.approvalRequired ? (
                                   "Approved"
                                 ) : data.status == "Rejected" &&
-                                  !data.approvalRequired ? (
-                                  "Rejected"
-                                ) : data.status === "Pending" ? (
-                                  <>
-                                    <div
-                                      style={{ display: "flex", gap: "4px" }}
-                                    >
-                                      <Button
-                                        style={{
-                                          backgroundColor: "#28a745",
-                                          marginRight: "8px",
-                                        }}
-                                        className="border-0 px-4 rounded-lg shadow-md text-white flex items-center gap-2"
-                                        onClick={() =>
-                                          handleApproveClick(
-                                            data.unavailability_id,
-                                            "approved"
-                                          )
-                                        }
+                                  !data.approvalRequired ? "Rejected"
+
+                                  : data.status === "Pending" ? (
+                                    <>
+                                      <div
+                                        style={{ display: "flex", gap: "4px" }}
                                       >
-                                        {hodRequestsRespondButtonLoading
-                                          ? "Approving.."
-                                          : "Approve"}
-                                        {/* Approve */}
-                                      </Button>
-                                      <Button
-                                        style={{ backgroundColor: "#dc3545" }}
-                                        className="border-0 px-4 rounded-lg shadow-md text-white flex items-center gap-2"
-                                        onClick={() =>
-                                          handleDeclineClick(
-                                            data.unavailability_id,
-                                            "rejected"
-                                          )
-                                        }
-                                      >
-                                        {hodRequestsRespondButtonLoading
-                                          ? "Declining.."
-                                          : "Decline"}
-                                        {/* Decline */}
-                                      </Button>
-                                    </div>
-                                  </>
-                                ) : null}
+                                        <Button
+                                          style={{
+                                            backgroundColor: "#28a745",
+                                            marginRight: "8px",
+                                          }}
+                                          className="border-0 px-4 rounded-lg shadow-md text-white flex items-center gap-2"
+                                          onClick={() =>
+                                            handleApproveClick(
+                                              data.unavailability_id,
+                                              "approved"
+                                            )
+                                          }
+                                        >
+                                          {hodRequestsRespondButtonLoading
+                                            ? "Approving.."
+                                            : "Approve"}
+                                          {/* Approve */}
+                                        </Button>
+                                        <Button
+                                          style={{ backgroundColor: "#dc3545" }}
+                                          className="border-0 px-4 rounded-lg shadow-md text-white flex items-center gap-2"
+                                          onClick={() =>
+                                            handleDeclineClick(
+                                              data.unavailability_id,
+                                              "rejected"
+                                            )
+                                          }
+                                        >
+                                          {hodRequestsRespondButtonLoading
+                                            ? "Declining.."
+                                            : "Decline"}
+                                          {/* Decline */}
+                                        </Button>
+                                      </div>
+                                    </>
+                                  ) : null}
                                 {/* </div> */}
                               </td>
                             </tr>
@@ -1355,6 +1373,7 @@ const Hod = () => {
                         value={unavailabilityData.startDate}
                         onChange={handleInputChange}
                         placeholder="Start Date"
+                      // min={new Date().toISOString().split('T')[0]} // Disable past dates
                       />
                     </div>
                   </div>
@@ -1368,6 +1387,7 @@ const Hod = () => {
                         name="endDate"
                         value={unavailabilityData.endDate}
                         onChange={handleInputChange}
+                      // min={new Date().toISOString().split('T')[0]}
                       />
                     </div>
                   </div>

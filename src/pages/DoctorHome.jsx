@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Header from "../component/doctorPanel/Header";
 import Footer from "../component/doctorPanel/Footer";
 import CustomModal from "../component/CustomModal";
@@ -11,6 +11,9 @@ import {
   getJoinVideoCall,
   sendPushNotification,
 } from "../redux/slices/myAppointmentSlice";
+
+import { feedbackapi } from "../redux/slices/patientProfileSlice";
+
 import { getDoctorProfile } from "../redux/slices/userSlice";
 import axios from "axios";
 import { setVideoData } from "../redux/slices/infoSlice";
@@ -19,12 +22,17 @@ import {
   getAllNotifications,
   notifyNewChatRes,
 } from "../redux/slices/notificationSlice";
+import StarRating from "../component/StartRating";
 
 const DoctorHome = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const [nextApiCallTime, setNextApiCallTime] = useState(null);
 
   console.log(nextApiCallTime, "asdfasdfhkashdfksh");
+
+  const localStorageModal = JSON.parse(localStorage.getItem("feedbackPopup"));
+  console.log(localStorageModal, "data seted from here this is");
 
   const appData = JSON.parse(localStorage.getItem("doctor-app") || "{}");
   const DoctorLoginId = appData.doctorData;
@@ -35,12 +43,17 @@ const DoctorHome = () => {
   const dispatch = useDispatch();
   // const {userdata, loading} = useSelector((state) => state.dataSlice)
   const { userdata, loading, error } = useSelector((state) => state.userdata);
-
+  const { appointmentIdd, modaleOpen } = location.state || {};
   const { channelDetails } = useSelector((state) => state.appointments);
   console.log(channelDetails, "jfaklshfsahdfks");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const { feedbackSubmit, feedbackLoading } = useSelector(
+    (state) => state.patientProfile
+  );
 
   const { user } = useSelector((state) => state.user);
+
+  console.log(appointmentIdd, "appointment idddddd", modaleOpen);
 
   useEffect(() => {
     if (!user?.profile_path) {
@@ -501,6 +514,32 @@ const DoctorHome = () => {
   useEffect(() => {
     checkSuspensionStatus();
   }, [checkSuspensionStatus]);
+
+  ///
+
+  // feedback popup
+  const [showRatingModal, setShowRatingModal] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [feedback, setFeedback] = useState("");
+
+  useEffect(() => {
+    if (modaleOpen && appointmentIdd && localStorageModal != "1") {
+      setShowRatingModal(true);
+    }
+  }, [modaleOpen, appointmentIdd]);
+
+  const handleRatingSubmit = () => {
+    dispatch(
+      feedbackapi({
+        appointment_id: appointmentIdd,
+        rating: rating,
+        comment: feedback,
+      })
+    );
+
+    setShowRatingModal(false);
+  };
+
   return (
     <>
       {/* <Header /> */}
@@ -1134,6 +1173,61 @@ const DoctorHome = () => {
           onCancel={() => setShowSuccessModal(false)}
           actionType="success"
         />
+
+        {/* feedback modal */}
+
+        {showRatingModal && (
+          <div
+            className="modal fade show"
+            style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
+          >
+            <div className="modal-dialog modal-dialog-centered">
+              <div
+                className="modal-content"
+                style={{ padding: "20px", borderRadius: "10px" }}
+              >
+                <div className="modal-header">
+                  <h5 className="modal-title">Rate Your Experience</h5>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={() => setShowRatingModal(false)}
+                    style={{ color: "#199FD9", fontSize: 30 }}
+                  >
+                    ×
+                  </button>
+                </div>
+                <div className="modal-body text-center">
+                  <StarRating rating={rating} onRatingChange={setRating} />
+                  <textarea
+                    className="form-control mt-3"
+                    placeholder="Share your feedback (optional)"
+                    value={feedback}
+                    onChange={(e) => setFeedback(e.target.value)}
+                    rows="3"
+                  />
+                </div>
+                <div className="modal-footer justify-content-center">
+                  <button
+                    type="button"
+                    className="btn btn-secondary mr-2"
+                    onClick={() => setShowRatingModal(false)}
+                  >
+                    Skip
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    style={{ backgroundColor: "#199FD9" }}
+                    onClick={handleRatingSubmit}
+                  >
+                    {feedbackLoading ? "Submitting..." : "Submit"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </>
   );

@@ -1612,7 +1612,7 @@ const MyAppointments = () => {
                             <th>Gender</th>
                             <th>Phone number</th>
                             <th>Appointment date</th>
-                            <th>Reason</th>
+                            {/* <th>Reason</th> */}
                           </tr>
                         </thead>
                         <tbody>
@@ -1757,21 +1757,10 @@ const MyAppointments = () => {
                                     {patient.datetime.split(" ")[2]}
                                   </div>
                                 </td>
-                                <td style={{ color: "#199FD9" }}>
-                                  {/* <Link
-                                    to="/patient-profile"
-                                    state={{
-                                      patientId: patient.patient_id,
-                                      appointmentId: patient.appointment_id,
-                                      source: "cancelled",
-                                      hideSchedule: false,
-                                    }}
-                                    className="cmn-btn"
-                                  >
-                                    View Profile
-                                  </Link> */}
+                                {/* <td style={{ color: "#199FD9" }}>
+                                  
                                   {patient.reason}
-                                </td>
+                                </td> */}
                               </tr>
                             )
                           )}

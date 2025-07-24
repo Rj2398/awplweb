@@ -4,6 +4,7 @@ import Header from "../component/doctorPanel/Header";
 import Footer from "../component/doctorPanel/Footer";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { addDays } from 'date-fns';
 import {
   doctorUnavailability,
   unavailabilityRequest,
@@ -122,6 +123,11 @@ const doctorUnavailibility = () => {
       .catch((error) => {
         toast.error("An error occurred while Confirming for doctor's leave");
       });
+      setShowModal(false);
+      setFromDate(null);
+      setToDate(null);
+      setRequestType("");
+      setReason("");
   };
 
   const handleCancel = () => {
@@ -129,6 +135,7 @@ const doctorUnavailibility = () => {
     setFromDate(null);
     setToDate(null);
     setRequestType("");
+    setReason("");
     // setTotalTime("00:00:00");
   };
 
@@ -211,7 +218,7 @@ const doctorUnavailibility = () => {
             <div className="doc-panel-body">
               <div
                 className="docpnl-sec-head"
-                style={{ display: "flex", alignItems: "center"}}
+                style={{ display: "flex", alignItems: "center" }}
               >
                 <h1 className="h2-title">Mark Unavailability</h1>
                 <div
@@ -354,9 +361,12 @@ const doctorUnavailibility = () => {
                               <td style={{ color: "#199FD9" }}>
                                 {data.timePeriod}
                               </td>
-                              <td style={{ color: "#199FD9" }}>
-                              {data.reason.length > 12 ? data.reason.substring(0, 12) + "..." : data.reason}
-                              {/* {data.reason.length > 50 ? `${data.reason.substring(0, 10)}...` : data.reason} */}
+                              <td style={{ color: "#199FD9", }}>
+                                <span
+                                  dangerouslySetInnerHTML={{
+                                    __html: data.reason.replace(/(.{20})/g, "$1<br/>")
+                                  }}
+                                />
                               </td>
                               <td style={{ color: "#199FD9" }}>
                                 {/* <div className="mb-4 text-right">
@@ -403,7 +413,7 @@ const doctorUnavailibility = () => {
                 <Form.Group className="mb-3">
                   <Form.Label>Applied For:</Form.Label>
                   <div className="d-flex gap-2">
-                    <DatePicker
+                    {/* <DatePicker
                       selected={fromDate}
                       onChange={(date) => setFromDate(date)}
                       showTimeSelect
@@ -424,6 +434,34 @@ const doctorUnavailibility = () => {
                       dateFormat="MMMM d, yyyy h:mm aa"
                       placeholderText="To"
                       className="form-control"
+                    /> */}
+
+
+
+                    <DatePicker
+                      selected={fromDate}
+                      onChange={(date) => setFromDate(date)}
+                      showTimeSelect
+                      timeIntervals={15}
+                      timeCaption="Time"
+                      dateFormat="MMMM d, yyyy h:mm aa"
+                      placeholderText="From"
+                      className="form-control"
+                      minDate={new Date()} // Disables dates before today
+
+                    />
+
+                    <DatePicker
+                      selected={toDate}
+                      onChange={(date) => setToDate(date)}
+                      showTimeSelect
+                      timeIntervals={15}
+                      timeCaption="Time"
+                      dateFormat="MMMM d, yyyy h:mm aa"
+                      placeholderText="To"
+                      className="form-control"
+                      minDate={fromDate || new Date()} // Can't select before fromDate or today
+
                     />
                   </div>
                 </Form.Group>
@@ -452,7 +490,7 @@ const doctorUnavailibility = () => {
                     value={reason}
                     onChange={(e) => setReason(e.target.value)}
                     placeholder="Reason..."
-                    // maxLength={50}
+                  // maxLength={50}
                   />
                 </Form.Group>
               </Form>

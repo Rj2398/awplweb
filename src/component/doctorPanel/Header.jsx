@@ -387,6 +387,7 @@ const Header = () => {
     localStorage.removeItem("doctor-app");
     dispatch(logout());
     navigate("/");
+    localStorage.removeItem("feedbackPopup");
   };
 
   useEffect(() => {
@@ -568,13 +569,14 @@ const Header = () => {
               {isHod && user?.is_hod && (
                 <li>
                   <img
+                    // src="data:image/png;base64,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"
                     src="/images/user-tie.com.svg"
                     alt="Icon"
                     style={{ height: "18px", width: "18px" }}
                   />
 
                   <Link to="/hod" onClick={() => setIsSidebarOpen(false)}>
-                    H.O.D
+                    Unavailability Management
                   </Link>
                 </li>
               )}

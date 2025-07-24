@@ -427,11 +427,11 @@ const PendingPrescpt = ({ id }) => {
 
     const payload = {
       appointment_id: id,
-      notes: adviceText,
       diagnosis: data.disease_name,
+      notes: adviceText,
       medicines: data.treatments.map((treatment) => ({
         medicine_name: treatment.medicine_name,
-        medicine_id: treatment.medicine_id,
+        // medicine_id: treatment.medicine_id,
         dosage: treatment.dosage,
         duration: treatment.duration,
         unit: treatment.unit,

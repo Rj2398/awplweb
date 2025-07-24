@@ -16,6 +16,7 @@ import axios from "axios";
 
 const VideoCall = () => {
   const navigate = useNavigate();
+
   const [isMuted, setIsMuted] = useState(false);
   const [isCameraOn, setIsCameraOn] = useState(true);
 
@@ -423,7 +424,15 @@ const VideoCall = () => {
     });
   };
 
-  const handleEndCall = () => navigate("/doctor-home");
+  // const handleEndCall = () => navigate("/doctor-home");
+
+  const handleEndCall = (id) =>
+    navigate("/doctor-home", {
+      state: {
+        appointmentIdd: id,
+        modaleOpen: true,
+      },
+    });
 
   // const formatTime = (totalSeconds) => {
   //   const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
@@ -561,7 +570,7 @@ const VideoCall = () => {
 
                         <button
                           className="vdo-call-end-btn"
-                          onClick={handleEndCall}
+                          onClick={() => handleEndCall(id)}
                           style={{
                             borderRadius: "50%",
                             padding: "10px",
